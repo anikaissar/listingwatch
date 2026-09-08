@@ -1,0 +1,15 @@
+name = "kam-status-writer"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+
+# Non-secret settings — edit these, then `wrangler deploy`.
+[vars]
+GITHUB_OWNER = "REPLACE_WITH_YOUR_GITHUB_USERNAME_OR_ORG"
+GITHUB_REPO = "REPLACE_WITH_YOUR_REPO_NAME"
+GITHUB_BRANCH = "main"
+DATA_PATH = "docs/data.json"
+ALLOWED_ORIGIN = "https://REPLACE_WITH_YOUR_GITHUB_USERNAME.github.io"
+
+# Secrets — do NOT put these here. Set them with:
+#   wrangler secret put GITHUB_TOKEN
+#   wrangler secret put API_KEY   (optional but recommended)

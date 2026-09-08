@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+pipeline/observed_flipkart_latest.csv
+pipeline/nathabit_reference_latest.csv
+pipeline/qa_diff_latest.csv
+worker/node_modules/
+.wrangler/

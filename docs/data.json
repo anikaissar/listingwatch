@@ -192,7 +192,7 @@
       "fsn": "MSCHCGTQMVC9M65G",
       "issue": "Shelf life -- Flipkart default (\"3 Months\")",
       "detail": "D2C 9 months vs Flipkart 3 months",
-      "flipkart_title": "Nat Habit Pure Aloe Vera Gel for Face \u2013 Moisturiser & Hydration for Glowing Skin",
+      "flipkart_title": "Nat Habit Pure Aloe Vera Gel for Face – Moisturiser & Hydration for Glowing Skin",
       "d2c_title": "Pure Aloe Vera Gel",
       "reminders_sent": 0,
       "status_changed_at": null
@@ -271,7 +271,7 @@
       "issue": "Shelf life -- Flipkart default (\"3 Months\")",
       "detail": "D2C 6 months vs Flipkart 3 months",
       "flipkart_title": "Nat Habit Men's Revital Winter Dasabuti Hair Oil for Hairfall, With 16 Herbs Hair Oil",
-      "d2c_title": "Men\u2019s Hair Revital DASABUTI Winter Hair Oil",
+      "d2c_title": "Men’s Hair Revital DASABUTI Winter Hair Oil",
       "reminders_sent": 0,
       "status_changed_at": null
     },
@@ -336,7 +336,7 @@
       "issue": "Shelf life -- Flipkart default (\"3 Months\")",
       "detail": "D2C 9 months vs Flipkart 3 months",
       "flipkart_title": "Nat Habit 5-Oil Hibiscus FRESH Hair Mask|Hair Growth,Hairfall Contro,Frizzy Hair Treatment",
-      "d2c_title": "Five Oil Hibiscus Hair Mask for Hair Growth \u2013 Nat Habit",
+      "d2c_title": "Five Oil Hibiscus Hair Mask for Hair Growth – Nat Habit",
       "reminders_sent": 0,
       "status_changed_at": null
     },
@@ -349,7 +349,7 @@
       "issue": "Shelf life -- Flipkart default (\"3 Months\")",
       "detail": "D2C 9 months vs Flipkart 3 months",
       "flipkart_title": "Nat Habit 5-Oil Hibiscus FRESH Hair Mask (NutriMask) | Hair",
-      "d2c_title": "Five Oil Hibiscus Hair Mask for Hair Growth \u2013 Nat Habit",
+      "d2c_title": "Five Oil Hibiscus Hair Mask for Hair Growth – Nat Habit",
       "reminders_sent": 0,
       "status_changed_at": null
     },
@@ -668,7 +668,7 @@
     {
       "doc_id": "BA-BU-CMA2-080__BWSGKY4GEWQKGA4A",
       "priority": "P2",
-      "status": "Open",
+      "status": "Resolved",
       "nh_sku": "BA-BU-CMA2-080",
       "fsn": "BWSGKY4GEWQKGA4A",
       "issue": "Shelf life mismatch",
@@ -676,7 +676,7 @@
       "flipkart_title": "Nat Habit Baby Ubtan Powder With Charoli Milk Almond| Natural Daily Body Wash",
       "d2c_title": "Fresh Baby Daily Ubtan - Charoli Milk Almond",
       "reminders_sent": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-09T08:18:49.348Z"
     },
     {
       "doc_id": "BA-BU-GG2-080__BWSGKY5QUP3J3XZN",
@@ -803,7 +803,7 @@
       "fsn": "BSLGGFZNA4KCTYTG",
       "issue": "Shelf life mismatch",
       "detail": "D2C 45 days vs Flipkart 6 months",
-      "flipkart_title": "Nat Habit Cinnamon Respite Foot Salt\ufffdPedicure Kit Women|Pain & Inflammation\ufffdReliefing",
+      "flipkart_title": "Nat Habit Cinnamon Respite Foot Salt�Pedicure Kit Women|Pain & Inflammation�Reliefing",
       "d2c_title": "Cinnamon Respite Foot Salt",
       "reminders_sent": 0,
       "status_changed_at": null
@@ -856,7 +856,7 @@
       "issue": "Shelf life mismatch",
       "detail": "D2C 12 months vs Flipkart 6 months",
       "flipkart_title": "Nat Habit Conditioner For Men With Castor & Blackseed, Hair Revitalizing ,Sulphate-Free",
-      "d2c_title": "Men\u2019s Hair Revital Nutri-Conditioner",
+      "d2c_title": "Men’s Hair Revital Nutri-Conditioner",
       "reminders_sent": 0,
       "status_changed_at": null
     },
@@ -869,7 +869,7 @@
       "issue": "Shelf life mismatch",
       "detail": "D2C 12 months vs Flipkart 6 months",
       "flipkart_title": "Nat Habit Conditioner For Men With Castor & Blackseed, Hair Revitalizing ,Sulphate-Free",
-      "d2c_title": "Men\u2019s Hair Revital Nutri-Conditioner",
+      "d2c_title": "Men’s Hair Revital Nutri-Conditioner",
       "reminders_sent": 0,
       "status_changed_at": null
     },
@@ -1311,7 +1311,7 @@
       "issue": "Broken listing",
       "detail": "Generic placeholder page, not real product data",
       "flipkart_title": "X Store Online - Buy X Online at Best Price in India | Flipkart.com",
-      "d2c_title": "Men\u2019s Brightening &amp; Oil Balance Tikta Face Wash",
+      "d2c_title": "Men’s Brightening &amp; Oil Balance Tikta Face Wash",
       "reminders_sent": 0,
       "status_changed_at": null
     },

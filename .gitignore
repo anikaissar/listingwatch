@@ -5,3 +5,4 @@ pipeline/nathabit_reference_latest.csv
 pipeline/qa_diff_latest.csv
 worker/node_modules/
 .wrangler/
+docs/data.test.json

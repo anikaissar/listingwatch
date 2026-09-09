@@ -195,6 +195,24 @@ def main():
     prior_rows = load_prior_rows(data_json_path)
     rows, stats = merge(diff_csv, prior_rows)
 
+    if args.limit:
+        # A --limit run only ever looks at part of the catalog, so `rows` here
+        # reflects just that slice -- it must never overwrite the real
+        # data.json (which holds every currently-flagged product), or a
+        # smoke test silently wipes out everyone else's open issues. Write
+        # to a throwaway file instead, and skip the sanity checks below --
+        # they're calibrated for full-catalog runs and will always look
+        # like a "failure" against a partial one.
+        test_out = data_json_path.with_name(data_json_path.stem + ".test" + data_json_path.suffix)
+        write_data_json(rows, test_out)
+        print(f"\n--limit {args.limit} was set, so this only scraped part of the catalog.")
+        print(f"Wrote {len(rows)} test rows to {test_out} for inspection -- "
+              f"the live {args.data_path} was left untouched and nothing was pushed.")
+        print(f"Stats: {stats}")
+        print("This confirms the scrape + diff + merge steps work end to end. "
+              "Run again WITHOUT --limit for a real, full-catalog refresh.")
+        return
+
     problem = sanity_check(rows, prior_rows, args.min_rows, args.max_drop_pct)
     if problem:
         print(f"\nABORTING -- {problem}\nNothing was written or pushed. Check the scrape output before retrying.\n", file=sys.stderr)

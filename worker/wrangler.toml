@@ -4,11 +4,11 @@ compatibility_date = "2024-11-01"
 
 # Non-secret settings — edit these, then `wrangler deploy`.
 [vars]
-GITHUB_OWNER = "REPLACE_WITH_YOUR_GITHUB_USERNAME_OR_ORG"
-GITHUB_REPO = "REPLACE_WITH_YOUR_REPO_NAME"
+GITHUB_OWNER = "anikaissar"
+GITHUB_REPO = "listingwatch"
 GITHUB_BRANCH = "main"
 DATA_PATH = "docs/data.json"
-ALLOWED_ORIGIN = "https://REPLACE_WITH_YOUR_GITHUB_USERNAME.github.io"
+ALLOWED_ORIGIN = "https://anikaissar.github.io"
 
 # Secrets — do NOT put these here. Set them with:
 #   wrangler secret put GITHUB_TOKEN

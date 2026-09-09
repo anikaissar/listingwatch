@@ -694,7 +694,7 @@
     {
       "doc_id": "BC-BU-MR2-080__BWSGKJF8TC9HVANV",
       "priority": "P2",
-      "status": "Open",
+      "status": "Resolved",
       "nh_sku": "BC-BU-MR2-080",
       "fsn": "BWSGKJF8TC9HVANV",
       "issue": "Shelf life mismatch",
@@ -702,7 +702,7 @@
       "flipkart_title": "Nat Habit Masoor Rub Bath Ubtan Scrub|Skin Polishing & Brightening|Detan Body Wash",
       "d2c_title": "Masoor Rub Bath Ubtan",
       "reminders_sent": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-09T08:23:32.838Z"
     },
     {
       "doc_id": "BC-BU-NC2-080__BWSGKJFJWAGRQZRP",

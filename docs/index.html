@@ -199,7 +199,7 @@
       </details>
 
       <div class="filter-row">
-        <input type="search" id="searchInput" placeholder="Search SKU, FSN, or title…" aria-label="Search rows" />
+        <input type="search" id="searchInput" placeholder="Search SKU, ID, or title…" aria-label="Search rows" />
         <select id="tierFilter" aria-label="Filter by priority tier">
           <option value="all">All tiers</option>
           <option value="P1">P1 — Shelf Life Mismatch</option>
@@ -223,9 +223,9 @@
             <tr>
               <th>Priority</th>
               <th>NH SKU</th>
-              <th>FSN</th>
+              <th id="thPlatformId">FSN</th>
               <th>Detail</th>
-              <th>Flipkart title</th>
+              <th id="thMarketTitle">Flipkart title</th>
               <th>D2C title</th>
               <th style="text-align:center;" title="Reminder cycles sent since this was first flagged">Reminders</th>
               <th title="Change directly here — saves automatically">Status</th>
@@ -277,10 +277,24 @@ var EMBEDDED_DATA = window.__DASHBOARD_DATA__ || null;
   // remap unless build_kam_review.py's numbering actually changes again.
   var STATUSES = ["Open", "Resolved", "Not an Issue"];
   var BACKEND_CONFIGURED = !!(WORKER_URL && WORKER_URL.indexOf("REPLACE_WITH") !== 0);
+  // Column header text per platform tab -- Flipkart's ID is an FSN, Nykaa's
+  // is its numeric product ID; same idea, different label.
+  var PLATFORM_ID_LABEL = { flipkart: "FSN", nykaa: "Nykaa ID" };
+  var PLATFORM_TITLE_LABEL = { flipkart: "Flipkart title", nykaa: "Nykaa title" };
 
   var allRows = [];
   var localOverrides = {}; // doc_id -> {status, status_changed_at}
   var pollTimer = null;
+  // Which platform tab is currently showing real data. Defaults to
+  // flipkart (the tab that's selected on page load).
+  var currentPlatform = "flipkart";
+
+  // Rows written before the "platform" field existed are all Flipkart --
+  // same idea as weekly_refresh.py's load_prior_rows() on the Python side,
+  // so old data.json content keeps working with no migration needed.
+  function rowPlatform(r) { return r.platform || "flipkart"; }
+  function platformId(r) { return r.platform_id || r.fsn || r.nykaa_product_id || ""; }
+  function marketplaceTitle(r) { return r.marketplace_title || r.flipkart_title || r.nykaa_title || ""; }
 
   function escapeHtml(s) {
     return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
@@ -368,10 +382,11 @@ var EMBEDDED_DATA = window.__DASHBOARD_DATA__ || null;
   function applyFilters(rows) {
     var f = currentFilters();
     return rows.filter(function (r) {
+      if (rowPlatform(r) !== currentPlatform) return false;
       if (f.tier !== "all" && r.priority !== f.tier) return false;
       if (f.status !== "all" && r.status !== f.status) return false;
       if (f.search) {
-        var hay = [r.nh_sku, r.fsn, r.flipkart_title, r.d2c_title, r.issue].join(" ").toLowerCase();
+        var hay = [r.nh_sku, platformId(r), marketplaceTitle(r), r.d2c_title, r.issue].join(" ").toLowerCase();
         if (hay.indexOf(f.search) === -1) return false;
       }
       return true;
@@ -475,9 +490,9 @@ var EMBEDDED_DATA = window.__DASHBOARD_DATA__ || null;
       return '<tr>' +
         '<td><span class="tier-chip" title="' + escapeHtml(TIER_MEANING[r.priority] || "") + '"><span class="tier-bar" style="background:' + (TIER_COLOR[r.priority] || "var(--text-muted)") + '"></span>' + escapeHtml(r.priority) + '</span></td>' +
         '<td>' + escapeHtml(r.nh_sku) + '</td>' +
-        '<td>' + escapeHtml(r.fsn) + '</td>' +
+        '<td>' + escapeHtml(platformId(r)) + '</td>' +
         '<td class="detail-cell" title="' + escapeHtml(r.detail) + '">' + escapeHtml(r.detail) + '</td>' +
-        '<td class="title-cell" title="' + escapeHtml(r.flipkart_title) + '">' + escapeHtml(r.flipkart_title) + '</td>' +
+        '<td class="title-cell" title="' + escapeHtml(marketplaceTitle(r)) + '">' + escapeHtml(marketplaceTitle(r)) + '</td>' +
         '<td class="title-cell" title="' + escapeHtml(r.d2c_title) + '">' + escapeHtml(r.d2c_title) + '</td>' +
         '<td class="num">' + (Number(r.reminders_sent) || 0) + '</td>' +
         '<td><select class="status-select ' + statusClass(r.status) + '" data-doc="' + escapeHtml(r.doc_id) + '">' + opts + '</select><span class="saving-flag"></span></td>' +
@@ -489,7 +504,7 @@ var EMBEDDED_DATA = window.__DASHBOARD_DATA__ || null;
   }
 
   function renderAll() {
-    var rows = effectiveRows();
+    var rows = effectiveRows().filter(function (r) { return rowPlatform(r) === currentPlatform; });
     var summary = computeSummary(rows);
     renderStatTiles(summary.grand);
     renderSummaryTable(summary.byTier, summary.grand);
@@ -508,19 +523,29 @@ var EMBEDDED_DATA = window.__DASHBOARD_DATA__ || null;
   });
 
   var PLATFORM_LABELS = { amazon: "Amazon", flipkart: "Flipkart", myntra: "Myntra", nykaa: "Nykaa" };
+  // Platforms with a real, wired-up data feed -- everything else still
+  // shows the "not connected yet" placeholder. Nykaa joined Flipkart here
+  // once nykaa_pdp_scraper.py / nykaa_qa_diff.py / weekly_refresh.py were
+  // wired up (2026-09-11).
+  var PLATFORMS_WITH_DATA = { flipkart: true, nykaa: true };
   Array.prototype.forEach.call(document.querySelectorAll(".platform-tab"), function (tab) {
     tab.addEventListener("click", function () {
       var platform = tab.getAttribute("data-platform");
       Array.prototype.forEach.call(document.querySelectorAll(".platform-tab"), function (t) {
         t.setAttribute("aria-selected", t === tab ? "true" : "false");
       });
-      var isFlipkart = platform === "flipkart";
-      document.getElementById("flipkartPanel").hidden = !isFlipkart;
+      var hasData = !!PLATFORMS_WITH_DATA[platform];
+      document.getElementById("flipkartPanel").hidden = !hasData;
       var placeholder = document.getElementById("platformPlaceholder");
-      placeholder.hidden = isFlipkart;
-      if (!isFlipkart) {
+      placeholder.hidden = hasData;
+      if (!hasData) {
         document.getElementById("placeholderTitle").textContent = PLATFORM_LABELS[platform] || platform;
+        return;
       }
+      currentPlatform = platform;
+      document.getElementById("thPlatformId").textContent = PLATFORM_ID_LABEL[platform] || "ID";
+      document.getElementById("thMarketTitle").textContent = PLATFORM_TITLE_LABEL[platform] || (PLATFORM_LABELS[platform] || platform) + " title";
+      renderAll();
     });
   });
 

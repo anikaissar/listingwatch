@@ -9,36 +9,56 @@ best-effort shelf-life/expiry read. Nykaa product pages are public (no login
 required to view), unlike Flipkart.
 
 Extraction strategy (same resilience-first approach as the Flipkart scraper):
+  0. Nykaa's own window.__PRELOADED_STATE__ blob  -> page_not_found, expiry
   1. JSON-LD  <script type="application/ld+json"> Product block  -> name, image[], description, price
   2. og:/meta tags                                              -> title, image, description
-  3. Whole-page text regex scan for shelf-life/expiry phrasing   -> best-effort only
+  3. Whole-page text regex scan for shelf-life/expiry phrasing   -> fallback only,
+     used only when step 0's state blob isn't present at all
 
-IMPORTANT CAVEAT (read before trusting obs_shelf_life in bulk):
-Unlike the Flipkart scraper's obs_max_shelf_life field -- which was built and
-validated against real production HTML (Flipkart's structured Specifications
-grid, see flipkart_pdp_scraper.py's extract_specifications()) -- this file's
-shelf-life extraction (_extract_shelf_life_text) has NOT yet been validated
-against a real, live Nykaa PDP's raw HTML. It was written from general
-knowledge of common Nykaa page phrasing ("Shelf Life", "Best Before", "Use
-By", "Expiry") without being able to inspect an actual page's DOM/JSON
-structure from the sandbox this was authored in. Treat obs_shelf_life as a
-best-effort field until it's been checked against a handful of real scraped
-rows -- if it comes back empty or wrong across the board, that's a signal
-this regex needs to be rewritten against Nykaa's actual page structure,
-exactly the same kind of gap flipkart_pdp_scraper.py's docstring describes
-having hit and fixed for Flipkart's own Specifications grid.
+PAGE-NOT-FOUND FINDING (confirmed 2026-09-11, product 10346740 / SKU
+BC-SM-MNS-120): this SKU is listed Active in our own product master, but
+Nykaa itself returns a 404 for it (appReducer.statusCode:404,
+productPage.isNotFound:true, productPage.product:null). is_page_not_found()
+reads this directly -- a real "page broken/removed" signal, distinct from
+"unavailable" (page exists, out of stock) and worth a separate
+pdp_availability value: "page_not_found". obs_page_not_found is True/False
+on every row so downstream diffing doesn't need to string-match the enum.
+
+SHELF-LIFE FINDING (confirmed at scale, 2026-09-11 -- 45/45 real products
+sampled across two test rounds): Nykaa's own product page embeds a full
+state blob in that same `window.__PRELOADED_STATE__ = {...}` script tag,
+and it has exactly one `expiry` field, at `productPage.product.expiry` --
+Nykaa's own structured field for shelf-life/expiry, authoritative and far
+more reliable than guessing from rendered text (which is what the old
+_extract_shelf_life_text() regex scan did). parse_preloaded_state() reads
+this field directly.
+
+However: across all 45 real Nykaa products sampled so far, this field was
+`null` on every single one. That's not a scraper bug -- Nykaa's own catalog
+simply has no expiry value configured for any Nat Habit listing checked.
+obs_shelf_life will come back blank for most/all Nykaa rows, and that in
+itself is worth surfacing to whoever manages the Nykaa listings as an
+action item (Nykaa lets sellers set this field; it's just not populated),
+separate from anything qa_diff.py can compute -- there is currently no
+Flipkart-style "shelf life mismatch" tier possible for Nykaa via scraping.
+Keep the old free-text regex scan as a fallback only for the rare case a
+page doesn't have the __PRELOADED_STATE__ blob at all -- when the blob IS
+present and expiry is null, treat that as a real, known-blank answer rather
+than falling back to fuzzy text matching (the JSON-LD availability bug
+already showed that text heuristics on this site produce false positives).
 
 Your own nykaa_worklist.csv already carries a `master_shelf_life_days`
-column (from your internal product master, e.g. 360 days), which is a much
-more reliable ground truth than anything scraped off the live page -- prefer
-diffing against that column over obs_shelf_life once we wire this into
-qa_diff.py, rather than relying on this scraper to have correctly read
-Nykaa's page.
+column (from your internal product master, e.g. 360 days) -- that's your
+ground truth. obs_shelf_life is what Nykaa's page itself claims, which may
+legitimately be blank; the interesting QA signal may end up being "master
+says X days but Nykaa has nothing configured" rather than a mismatch in
+values.
 
 NETWORK: the live scrape hits nykaa.com, unreachable from this sandbox. Run
-in your environment. Use --selftest to validate the parser against a bundled
-fixture (JSON-LD/meta only -- there is no real-HTML shelf-life fixture yet,
-see caveat above).
+in your environment. Use --selftest to validate the parser against bundled
+fixtures (JSON-LD/meta/__PRELOADED_STATE__ synthetic fixtures -- the actual
+field paths and behavior were confirmed against real scraped HTML dumps,
+see the findings above).
 """
 
 import argparse
@@ -57,7 +77,7 @@ OUT_COLS = [
     "nh_sku", "nykaa_product_id", "pdp_availability", "obs_title", "obs_image_count",
     "obs_image_urls",
     "obs_description_len", "obs_description_text", "obs_price",
-    "extraction_source", "obs_shelf_life", "scraped_at",
+    "extraction_source", "obs_shelf_life", "obs_page_not_found", "scraped_at",
 ]
 
 # ---- tunables ----
@@ -104,11 +124,13 @@ def parse_jsonld(html):
                 if isinstance(offers, list):
                     offers = offers[0] if offers else {}
                 price = offers.get("price", "") if isinstance(offers, dict) else ""
+                availability = offers.get("availability", "") if isinstance(offers, dict) else ""
                 return {
                     "title": _clean(c.get("name", "")),
                     "images": [i for i in imgs if i],
                     "description": _clean(c.get("description", "")),
                     "price": str(price),
+                    "availability": str(availability),
                     "source": "json-ld",
                 }
     return {}
@@ -149,8 +171,10 @@ _SHELF_LIFE_PATTERNS = [
 
 
 def extract_shelf_life_text(html):
-    """Best-effort only -- see module docstring caveat. Strips tags to plain
-    text first so phrasing split across nested elements still matches."""
+    """Best-effort only, used only as a fallback when the page has no
+    __PRELOADED_STATE__ blob to read (see parse_preloaded_state and the
+    module docstring's SHELF-LIFE FINDING). Strips tags to plain text first
+    so phrasing split across nested elements still matches."""
     text = re.sub(r"<[^>]+>", " ", html)
     text = re.sub(r"\s+", " ", text)
     for pat in _SHELF_LIFE_PATTERNS:
@@ -160,12 +184,119 @@ def extract_shelf_life_text(html):
     return ""
 
 
+_PRELOADED_STATE_RE = re.compile(r"window\.__PRELOADED_STATE__\s*=\s*")
+
+
+def _parse_preloaded_state_raw(html):
+    """Locate and JSON-parse Nykaa's own embedded
+    `window.__PRELOADED_STATE__ = {...}` blob. Returns the parsed dict, or
+    None if the blob isn't present or doesn't parse. Both
+    parse_preloaded_state() (shelf-life) and is_page_not_found() (page
+    broken/removed) read from this same parsed blob rather than each
+    re-scanning the page."""
+    m = _PRELOADED_STATE_RE.search(html)
+    if not m or m.end() >= len(html) or html[m.end()] != "{":
+        return None
+
+    # Brace-balance scan to find the matching closing brace, respecting
+    # quoted strings (which may contain escaped quotes/braces).
+    start = m.end()
+    i = start
+    n = len(html)
+    depth = 0
+    in_str = False
+    while i < n:
+        c = html[i]
+        if in_str:
+            if c == "\\":
+                i += 2
+                continue
+            if c == '"':
+                in_str = False
+            i += 1
+            continue
+        if c == '"':
+            in_str = True
+        elif c == "{":
+            depth += 1
+        elif c == "}":
+            depth -= 1
+            if depth == 0:
+                i += 1
+                break
+        i += 1
+    blob = html[start:i]
+
+    try:
+        return json.loads(blob)
+    except json.JSONDecodeError:
+        return None
+
+
+def parse_preloaded_state(html, state=None):
+    """Read productPage.product.expiry from Nykaa's own
+    __PRELOADED_STATE__ blob -- confirmed (2026-09-11, against two real
+    Nykaa PDPs -- a wooden comb and a face mask) to be the one real
+    structured field Nykaa uses for shelf-life/expiry data. This is the
+    authoritative source; see the module docstring's SHELF-LIFE FINDING for
+    why it should NOT be treated the same as a missing value.
+
+    Pass `state` (an already-parsed blob from _parse_preloaded_state_raw)
+    to avoid re-parsing when the caller also needs is_page_not_found().
+
+    Returns a dict: {"found": bool, "expiry": str}.
+      - found=False means the blob wasn't present or didn't parse -- caller
+        should fall back to extract_shelf_life_text().
+      - found=True, expiry="" means the blob WAS found and its expiry field
+        is null/blank -- a real answer, not a signal to fall back.
+    """
+    data = state if state is not None else _parse_preloaded_state_raw(html)
+    if data is None:
+        return {"found": False, "expiry": ""}
+    expiry = (data.get("productPage") or {}).get("product", {}).get("expiry")
+    return {"found": True, "expiry": _clean(str(expiry)) if expiry else ""}
+
+
+def is_page_not_found(html, state=None):
+    """Read Nykaa's own productPage.isNotFound / appReducer.statusCode==404
+    fields -- confirmed (2026-09-11) against a real dead listing
+    (BC-SM-MNS-120, product 10346740: appReducer.statusCode was 404 and
+    productPage.product was null/None, even though our own product master
+    lists this SKU as Active). This is a much more reliable "page broken"
+    signal than inferring it from JSON-LD/meta simply being absent.
+
+    Pass `state` (an already-parsed blob from _parse_preloaded_state_raw)
+    to avoid re-parsing when the caller also needs parse_preloaded_state().
+
+    Returns True/False, or None if the state blob wasn't found at all (in
+    which case the caller should fall back to other signals, e.g. no title
+    anywhere -> "no_content")."""
+    data = state if state is not None else _parse_preloaded_state_raw(html)
+    if data is None:
+        return None
+    pp = data.get("productPage") or {}
+    if pp.get("isNotFound"):
+        return True
+    if (data.get("appReducer") or {}).get("statusCode") == 404:
+        return True
+    return False
+
+
 def detect_unavailable(html):
-    """Heuristic: is this a dead/suppressed PDP rather than a live product?"""
+    """Fallback heuristic, used only when the JSON-LD Product block has no
+    offers.availability field to go on (see extract()). Confirmed against a
+    real 3-row test run that this text-substring approach alone gives false
+    positives -- all 3 real, in-stock, fully-priced products got flagged
+    "unavailable" by it, most likely because a phrase like "out of stock"
+    appears somewhere in the page's inline JS/template code (e.g. a hidden
+    "notify me" widget or a related/recommended item) even though it's not
+    shown for *this* product. Real availability is far more reliably read
+    from JSON-LD's own offers.availability field (schema.org InStock /
+    OutOfStock) -- extract() only falls back to this function when that
+    field is missing entirely."""
     low = html.lower()
     signals = [
         "product is currently unavailable",
-        "out of stock",
         "page not found",
         "sorry, this product",
         "we couldn't find that page",
@@ -173,25 +304,58 @@ def detect_unavailable(html):
     return any(s in low for s in signals)
 
 
+# Nykaa's own product-image CDN path. JSON-LD only lists ONE image per
+# product on Nykaa (confirmed: a real page with 11 images in its visible
+# gallery still had just 1 in JSON-LD) -- unlike Flipkart, where JSON-LD
+# carries the full set. This regex scans the whole page for every image URL
+# under this CDN path as a best-effort stand-in for the real gallery count.
+# CAVEAT (unvalidated at scale): this could also pick up "you may also like"/
+# recommended-product thumbnails elsewhere on the page, which would inflate
+# the count above the true gallery size -- treat obs_image_count as an
+# approximation until checked against a real product's actual gallery count.
+_GALLERY_IMG_RE = re.compile(
+    r'https://images-static\.nykaa\.com/media/catalog/product/[^\s"\'\\)]+',
+    re.IGNORECASE,
+)
+
+
+def extract_gallery_images(html):
+    seen = []
+    for m in _GALLERY_IMG_RE.finditer(html):
+        url = m.group(0)
+        if url not in seen:
+            seen.append(url)
+    return seen
+
+
 def extract(html):
-    """Merge strategies into a single observed record."""
-    if detect_unavailable(html):
-        base = parse_jsonld(html) or parse_meta(html)
-        images = base.get("images", [])
-        return {
-            "pdp_availability": "unavailable",
-            "obs_title": base.get("title", ""),
-            "obs_image_count": len(images),
-            "obs_image_urls": "|".join(images),
-            "obs_description_len": len(base.get("description", "")),
-            "obs_description_text": base.get("description", ""),
-            "obs_price": base.get("price", ""),
-            "extraction_source": base.get("source", "none"),
-            "obs_shelf_life": "",
-        }
+    """Merge strategies into a single observed record.
+
+    Check order: page-not-found (a Nykaa-confirmed structural signal) wins
+    over everything else, since a 404'd listing has no meaningful title/
+    image/availability data to report -- see is_page_not_found()'s docstring
+    for the real dead-listing case this was found against."""
+    raw_state = _parse_preloaded_state_raw(html)
+    not_found = is_page_not_found(html, state=raw_state)
+
     j = parse_jsonld(html)
     m = parse_meta(html)
     primary = j if j.get("title") else m
+
+    if not_found:
+        return {
+            "pdp_availability": "page_not_found",
+            "obs_title": primary.get("title", ""),
+            "obs_image_count": 0,
+            "obs_image_urls": "",
+            "obs_description_len": 0,
+            "obs_description_text": "",
+            "obs_price": "",
+            "extraction_source": primary.get("source", "none"),
+            "obs_shelf_life": "",
+            "obs_page_not_found": True,
+        }
+
     if not primary.get("title"):
         return {
             "pdp_availability": "no_content",
@@ -199,10 +363,45 @@ def extract(html):
             "obs_description_len": 0,
             "obs_description_text": "", "obs_price": "", "extraction_source": "none",
             "obs_shelf_life": "",
+            "obs_page_not_found": False,
         }
-    images = j.get("images") or m.get("images") or []
+
+    # Prefer JSON-LD's own offers.availability signal (schema.org InStock /
+    # OutOfStock) over free-text scanning -- see detect_unavailable()'s
+    # docstring for why the text heuristic alone gave false positives.
+    availability_field = (j.get("availability") or "").lower()
+    if availability_field:
+        unavailable = "outofstock" in availability_field.replace(" ", "")
+    else:
+        unavailable = detect_unavailable(html)
+
+    gallery = extract_gallery_images(html)
+    images = gallery if len(gallery) > len(j.get("images") or []) else (j.get("images") or m.get("images") or [])
+
+    if unavailable:
+        return {
+            "pdp_availability": "unavailable",
+            "obs_title": primary.get("title", ""),
+            "obs_image_count": len(images),
+            "obs_image_urls": "|".join(images),
+            "obs_description_len": len(primary.get("description", "")),
+            "obs_description_text": primary.get("description", ""),
+            "obs_price": primary.get("price", ""),
+            "extraction_source": primary.get("source", "none"),
+            "obs_shelf_life": "",
+            "obs_page_not_found": False,
+        }
     desc = j.get("description") or m.get("description") or ""
     price = j.get("price") or m.get("price") or ""
+
+    # Prefer Nykaa's own structured expiry field over free-text guessing --
+    # see parse_preloaded_state()'s docstring and the module docstring's
+    # SHELF-LIFE FINDING. Only fall back to the text scan when the state
+    # blob itself couldn't be found/parsed at all. Reuse raw_state (already
+    # parsed above for the not-found check) instead of re-parsing.
+    state = parse_preloaded_state(html, state=raw_state)
+    shelf_life = state["expiry"] if state["found"] else extract_shelf_life_text(html)
+
     return {
         "pdp_availability": "available",
         "obs_title": primary["title"],
@@ -212,7 +411,8 @@ def extract(html):
         "obs_description_text": desc,
         "obs_price": price,
         "extraction_source": primary["source"],
-        "obs_shelf_life": extract_shelf_life_text(html),
+        "obs_shelf_life": shelf_life,
+        "obs_page_not_found": False,
     }
 
 
@@ -265,14 +465,16 @@ async def _worker(name, queue, context, out_writer, fail_writer, lock, counter):
             row = queue.get_nowait()
         except asyncio.QueueEmpty:
             return
-        await _scrape_one(context, row, out_writer, fail_writer, lock)
+        ok = await _scrape_one(context, row, out_writer, fail_writer, lock)
+        if not ok:
+            counter["failed"] += 1
         counter["done"] += 1
         if counter["done"] % 25 == 0:
             print(f"  ...{counter['done']}/{counter['total']} scraped", file=sys.stderr)
         await asyncio.sleep(random.uniform(MIN_DELAY, MAX_DELAY))
 
 
-async def run(worklist_path, out_path, fail_path, limit=None):
+async def run(worklist_path, out_path, fail_path, limit=None, headed=False):
     from playwright.async_api import async_playwright
     work = load_worklist(worklist_path)
     done = load_done(out_path)
@@ -299,13 +501,30 @@ async def run(worklist_path, out_path, fail_path, limit=None):
     for r in todo:
         queue.put_nowait(r)
     lock = asyncio.Lock()
-    counter = {"done": 0, "total": len(todo)}
+    counter = {"done": 0, "total": len(todo), "failed": 0}
 
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=True)
-        ctx_kwargs = {"user_agent": ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                                     "AppleWebKit/537.36 (KHTML, like Gecko) "
-                                     "Chrome/124.0 Safari/537.36")}
+        # --disable-http2: nykaa.com's servers reset the connection with
+        # net::ERR_HTTP2_PROTOCOL_ERROR on every single request from a
+        # default headless Chromium launch (confirmed against a real 10-row
+        # test run -- 10/10 failures, all this exact error). Forcing HTTP/1.1
+        # was tried as a fix but a follow-up 10-row run still failed 10/10
+        # (first attempt: same HTTP2 error; retry: a plain 30s timeout with
+        # nothing loading at all) -- pointing at Nykaa detecting and blocking
+        # the headless browser itself, not just an HTTP/2 quirk. `headed`
+        # runs a real, visible browser window instead, which some anti-bot
+        # systems treat differently than a headless one; use --headed to
+        # test this theory (needs a real desktop session, not useful for an
+        # unattended Task Scheduler run if it turns out to be required).
+        browser = await p.chromium.launch(headless=not headed, args=["--disable-http2"])
+        ctx_kwargs = {
+            "user_agent": ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                           "AppleWebKit/537.36 (KHTML, like Gecko) "
+                           "Chrome/124.0 Safari/537.36"),
+            "locale": "en-IN",
+            "viewport": {"width": 1366, "height": 900},
+            "extra_http_headers": {"Accept-Language": "en-IN,en;q=0.9"},
+        }
         context = await browser.new_context(**ctx_kwargs)
         workers = [
             asyncio.create_task(
@@ -318,7 +537,8 @@ async def run(worklist_path, out_path, fail_path, limit=None):
 
     out_f.close()
     fail_f.close()
-    print(f"Done. Observed -> {out_path} | failures -> {fail_path}")
+    print(f"Done. Observed -> {out_path} | failures -> {fail_path} "
+          f"({counter['failed']}/{counter['total']} rows failed this run)")
 
 
 # ===========================================================================
@@ -348,8 +568,38 @@ FIXTURE_META_ONLY = """
 """
 
 FIXTURE_DEAD = """
-<html><head><title>Nykaa</title></head>
-<body><div>Sorry, this product is currently unavailable.</div></body></html>
+<html><head>
+<meta property="og:title" content="Nat Habit Some Discontinued Product">
+</head>
+<body><div>Sorry, this product is currently unavailable and has been discontinued.</div></body></html>
+"""
+
+# Reproduces the real bug found in a 3-row production test: all 3 were real,
+# in-stock, fully-priced products, but got flagged "unavailable" by the old
+# text-only heuristic -- almost certainly because a phrase like "out of
+# stock" appears somewhere in the page's inline JS/templates (e.g. a hidden
+# widget for a *different*, related item) even though this product itself is
+# in stock. JSON-LD's own offers.availability field must win over that.
+FIXTURE_INSTOCK_WITH_MISLEADING_TEXT = """
+<html><head>
+<script type="application/ld+json">
+{"@type":"Product","name":"Nat Habit Comb Real Available Product",
+ "image":["https://nykaa/comb.jpg"],
+ "description":"A real comb.",
+ "offers":{"@type":"Offer","price":"199","availability":"http://schema.org/InStock"}}
+</script></head><body>
+<div style="display:none">Related item: XYZ is out of stock right now.</div>
+</body></html>
+"""
+
+FIXTURE_OUTOFSTOCK_JSONLD = """
+<html><head>
+<script type="application/ld+json">
+{"@type":"Product","name":"Nat Habit Discontinued Serum",
+ "image":["https://nykaa/serum2.jpg"],
+ "description":"Discontinued serum.",
+ "offers":{"@type":"Offer","price":"0","availability":"http://schema.org/OutOfStock"}}
+</script></head><body></body></html>
 """
 
 FIXTURE_WITH_SHELF_LIFE_TEXT = """
@@ -362,6 +612,54 @@ FIXTURE_WITH_SHELF_LIFE_TEXT = """
 </script></head><body>
 <div class="product-details">Shelf Life: 12 months from date of manufacture.</div>
 </body></html>
+"""
+
+# Real Nykaa pages carry a window.__PRELOADED_STATE__ blob with a
+# productPage.product.expiry field -- confirmed (2026-09-11) against two
+# real PDPs. When it's populated, it should win outright.
+FIXTURE_PRELOADED_STATE_WITH_EXPIRY = """
+<html><head>
+<script type="application/ld+json">
+{"@type":"Product","name":"Nat Habit Onion Hair Oil 100ml",
+ "image":["https://nykaa/onion.jpg"],
+ "description":"Onion hair oil.",
+ "offers":{"@type":"Offer","price":"299","availability":"http://schema.org/InStock"}}
+</script>
+<script>window.__PRELOADED_STATE__ = {"productPage":{"product":{"expiry":"12 Months from date of manufacture","sku":"NATHA0001"}}};</script>
+</head><body></body></html>
+"""
+
+# When the state blob IS found but its expiry is null, that's a real, known
+# answer (Nykaa has no expiry configured for this listing) -- NOT a signal
+# to fall back to free-text scanning. This fixture deliberately also
+# contains misleading shelf-life-looking text elsewhere on the page to
+# prove the null stays null rather than picking that up.
+FIXTURE_PRELOADED_STATE_NULL_EXPIRY = """
+<html><head>
+<script type="application/ld+json">
+{"@type":"Product","name":"Nat Habit Kacchi Neem Wooden Comb",
+ "image":["https://nykaa/comb.jpg"],
+ "description":"Wooden comb.",
+ "offers":{"@type":"Offer","price":"195","availability":"http://schema.org/InStock"}}
+</script>
+<script>window.__PRELOADED_STATE__ = {"productPage":{"product":{"expiry":null,"sku":"NATHA0002"}}};</script>
+</head><body>
+<div style="display:none">Unrelated widget text: Shelf Life: 24 months (not this product's real data)</div>
+</body></html>
+"""
+
+
+# Reproduces the real dead-listing case (2026-09-11): product 10346740
+# (BC-SM-MNS-120), listed as Active in our own product master, actually
+# returns a 404 from Nykaa -- appReducer.statusCode:404, productPage.product
+# null. No JSON-LD/meta at all, same as any other empty page, but this
+# structured signal lets us call it out distinctly as "page broken/removed"
+# rather than lumping it in with "no_content" (which could also mean a
+# transient scrape hiccup).
+FIXTURE_PAGE_NOT_FOUND = """
+<html><head>
+<script>window.__PRELOADED_STATE__ = {"appReducer":{"statusCode":404},"productPage":{"isNotFound":true,"product":null}};</script>
+</head><body></body></html>
 """
 
 
@@ -381,15 +679,54 @@ def selftest():
 
     dead = extract(FIXTURE_DEAD)
     assert dead["pdp_availability"] == "unavailable", dead
-    print("PASS  dead PDP detected as:", dead["pdp_availability"])
+    print("PASS  dead PDP (no JSON-LD, text fallback) detected as:", dead["pdp_availability"])
+
+    misleading = extract(FIXTURE_INSTOCK_WITH_MISLEADING_TEXT)
+    assert misleading["pdp_availability"] == "available", misleading
+    print("PASS  JSON-LD availability:InStock overrides misleading incidental "
+          "'out of stock' text elsewhere on the page (the real bug this fixture "
+          "reproduces -- see its comment)")
+
+    oos = extract(FIXTURE_OUTOFSTOCK_JSONLD)
+    assert oos["pdp_availability"] == "unavailable", oos
+    print("PASS  JSON-LD availability:OutOfStock correctly read from the "
+          "structured field")
 
     shelf = extract(FIXTURE_WITH_SHELF_LIFE_TEXT)
     assert shelf["obs_shelf_life"] == "12 months", shelf
-    print("PASS  shelf-life text pattern (synthetic, NOT validated against a "
-          "real Nykaa page -- see module docstring):", shelf["obs_shelf_life"])
+    print("PASS  shelf-life text fallback (no __PRELOADED_STATE__ blob "
+          "present, so falls back to text scan):", shelf["obs_shelf_life"])
 
-    print("\nAll parser self-tests passed "
-          "(shelf-life extraction still needs real-page validation).")
+    with_expiry = extract(FIXTURE_PRELOADED_STATE_WITH_EXPIRY)
+    assert with_expiry["obs_shelf_life"] == "12 Months from date of manufacture", with_expiry
+    print("PASS  __PRELOADED_STATE__ expiry field read directly (real "
+          "Nykaa structured field, confirmed against live pages 2026-09-11):",
+          with_expiry["obs_shelf_life"])
+
+    null_expiry = extract(FIXTURE_PRELOADED_STATE_NULL_EXPIRY)
+    assert null_expiry["obs_shelf_life"] == "", null_expiry
+    print("PASS  __PRELOADED_STATE__ found with expiry:null stays blank "
+          "(a real known-absent answer) instead of falling back to "
+          "misleading text elsewhere on the page")
+
+    not_found = extract(FIXTURE_PAGE_NOT_FOUND)
+    assert not_found["pdp_availability"] == "page_not_found", not_found
+    assert not_found["obs_page_not_found"] is True, not_found
+    print("PASS  page_not_found correctly read from productPage.isNotFound/"
+          "appReducer.statusCode (the real dead-listing case found "
+          "2026-09-11 against product 10346740, listed Active in our own "
+          "master but 404 on Nykaa)")
+
+    for label, rec in [
+        ("live", live), ("meta", meta), ("dead", dead),
+        ("misleading", misleading), ("oos", oos), ("shelf", shelf),
+        ("with_expiry", with_expiry), ("null_expiry", null_expiry),
+    ]:
+        assert rec["obs_page_not_found"] is False, (label, rec)
+    print("PASS  obs_page_not_found is False on every other fixture (no "
+          "false positives)")
+
+    print("\nAll parser self-tests passed.")
 
 
 # ===========================================================================
@@ -400,9 +737,12 @@ if __name__ == "__main__":
     ap.add_argument("--out", default=OUT_DEFAULT)
     ap.add_argument("--failures", default=FAIL_DEFAULT)
     ap.add_argument("--limit", type=int, help="scrape only the first N (smoke test)")
+    ap.add_argument("--headed", action="store_true",
+                     help="show the actual browser window instead of running hidden -- "
+                          "try this if every row fails (see run()'s comment)")
     a = ap.parse_args()
 
     if a.selftest:
         selftest()
     else:
-        asyncio.run(run(a.worklist, a.out, a.failures, a.limit))
+        asyncio.run(run(a.worklist, a.out, a.failures, a.limit, headed=a.headed))

@@ -248,8 +248,8 @@
 // ---- Configuration -----------------------------------------------------
 // Set this to your deployed Cloudflare Worker URL (see /worker/README.md).
 // Example: "https://kam-status-writer.yourname.workers.dev"
-var WORKER_URL = "https://kam-status-writer.anikanathabit.workers.dev";
-var API_KEY = "nathabit2026"; // must match the Worker's API_KEY secret, or leave "" if you skipped that step
+var WORKER_URL = "REPLACE_WITH_WORKER_URL";
+var API_KEY = "REPLACE_WITH_API_KEY_OR_LEAVE_BLANK"; // must match the Worker's API_KEY secret, or leave "" if you skipped that step
 var DATA_URL = "./data.json";
 var POLL_MS = 20000;
 // EMBEDDED_DATA lets a preview build inject data directly (window.__DASHBOARD_DATA__
@@ -268,14 +268,13 @@ var EMBEDDED_DATA = window.__DASHBOARD_DATA__ || null;
     P3: "Title Mismatch",
     P4: "Product Photo Mismatch"
   };
-  // The source data still uses the old 5-tier numbering (P1..P5, where P1 and P2 were both
-  // shelf-life mismatches). This dashboard now shows 4 tiers, numbered in order, so raw values
-  // get remapped: old P1 & P2 -> new P1 (Shelf Life Mismatch), old P3 -> new P2 (Page Broken),
-  // old P4 -> new P3 (Title Mismatch), old P5 -> new P4 (Product Photo Mismatch). The
-  // scraper/diff script will be updated to emit the new numbering directly — remove this once
-  // that lands.
-  var PRIORITY_REMAP = { P1: "P1", P2: "P1", P3: "P2", P4: "P3", P5: "P4" };
-  function normalizePriority(p) { return PRIORITY_REMAP[p] || p; }
+  // build_kam_review.py has emitted the new 4-tier numbering directly since 2026-09-08
+  // (P1 Shelf Life Mismatch, P2 Page Broken, P3 Title Mismatch, P4 Product Photo Mismatch) --
+  // r.priority is already correct as-is. There used to be a PRIORITY_REMAP shim here for the
+  // old 5-tier source data (old P3/P4/P5 -> new P2/P3/P4); it was left in after the script was
+  // updated and was silently re-remapping already-correct values (e.g. real P2 "Page Broken"
+  // rows got shown as P1), which is what surfaced this. Removed for good -- do not re-add a
+  // remap unless build_kam_review.py's numbering actually changes again.
   var STATUSES = ["Open", "Resolved", "Not an Issue"];
   var BACKEND_CONFIGURED = !!(WORKER_URL && WORKER_URL.indexOf("REPLACE_WITH") !== 0);
 
@@ -317,7 +316,7 @@ var EMBEDDED_DATA = window.__DASHBOARD_DATA__ || null;
     TIER_ORDER.forEach(function (t) { byTier[t] = { total: 0, Open: 0, Resolved: 0, "Not an Issue": 0, reminders: 0 }; });
     var grand = { total: 0, Open: 0, Resolved: 0, "Not an Issue": 0, reminders: 0 };
     rows.forEach(function (r) {
-      var t = byTier[normalizePriority(r.priority)];
+      var t = byTier[r.priority];
       if (!t) return;
       t.total++; grand.total++;
       var st = STATUSES.indexOf(r.status) >= 0 ? r.status : "Open";
@@ -369,7 +368,7 @@ var EMBEDDED_DATA = window.__DASHBOARD_DATA__ || null;
   function applyFilters(rows) {
     var f = currentFilters();
     return rows.filter(function (r) {
-      if (f.tier !== "all" && normalizePriority(r.priority) !== f.tier) return false;
+      if (f.tier !== "all" && r.priority !== f.tier) return false;
       if (f.status !== "all" && r.status !== f.status) return false;
       if (f.search) {
         var hay = [r.nh_sku, r.fsn, r.flipkart_title, r.d2c_title, r.issue].join(" ").toLowerCase();
@@ -381,7 +380,7 @@ var EMBEDDED_DATA = window.__DASHBOARD_DATA__ || null;
 
   function sortRows(rows) {
     return rows.slice().sort(function (a, b) {
-      var ta = TIER_ORDER.indexOf(normalizePriority(a.priority)), tb = TIER_ORDER.indexOf(normalizePriority(b.priority));
+      var ta = TIER_ORDER.indexOf(a.priority), tb = TIER_ORDER.indexOf(b.priority);
       if (ta !== tb) return ta - tb;
       var sa = a.status === "Open" ? 0 : 1, sb = b.status === "Open" ? 0 : 1;
       if (sa !== sb) return sa - sb;
@@ -474,7 +473,7 @@ var EMBEDDED_DATA = window.__DASHBOARD_DATA__ || null;
         return '<option value="' + s + '"' + (r.status === s ? " selected" : "") + '>' + s + '</option>';
       }).join("");
       return '<tr>' +
-        '<td><span class="tier-chip" title="' + escapeHtml(TIER_MEANING[normalizePriority(r.priority)] || "") + '"><span class="tier-bar" style="background:' + (TIER_COLOR[normalizePriority(r.priority)] || "var(--text-muted)") + '"></span>' + escapeHtml(normalizePriority(r.priority)) + '</span></td>' +
+        '<td><span class="tier-chip" title="' + escapeHtml(TIER_MEANING[r.priority] || "") + '"><span class="tier-bar" style="background:' + (TIER_COLOR[r.priority] || "var(--text-muted)") + '"></span>' + escapeHtml(r.priority) + '</span></td>' +
         '<td>' + escapeHtml(r.nh_sku) + '</td>' +
         '<td>' + escapeHtml(r.fsn) + '</td>' +
         '<td class="detail-cell" title="' + escapeHtml(r.detail) + '">' + escapeHtml(r.detail) + '</td>' +

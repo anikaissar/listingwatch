@@ -25,11 +25,12 @@ pieces, in order.
 - **P4 — Product Photo Mismatch** — product photo is a weak visual match to
   the D2C listing.
 
-(This is a renumbered 4-tier scheme. `pipeline/build_kam_review.py` still
-emits the old 5-tier numbering (P1-P5, where P1 and P2 were both shelf-life
-mismatches); the dashboard remaps old P1/P2 -> new P1, old P3 -> new P2, old
-P4 -> new P3, old P5 -> new P4. Update the script to emit the new numbering
-directly, then remove that remap from `docs/index.html`.)
+(`pipeline/build_kam_review.py` emits this 4-tier numbering directly. An
+older 5-tier scheme existed briefly during development, with a remap step in
+`docs/index.html` to translate it -- that remap was removed on 2026-09-11
+after it was found silently re-remapping already-correct values (e.g. a real
+P2 "Page Broken" row was being shown under P1). Both the script and the
+dashboard now agree on P1-P4 as listed above with no translation needed.)
 
 ## How data flows
 

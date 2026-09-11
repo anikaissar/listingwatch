@@ -129,17 +129,50 @@ def classify(rr):
     return None, None, None
 
 
+def classify_nykaa(rr):
+    """Nykaa counterpart to classify() above. Same P1-P4 tier numbering and
+    labels (TIER_LABEL), but P1 (Shelf Life Mismatch) never fires here --
+    confirmed (2026-09-11, 45/45 real Nykaa products sampled) that Nykaa's
+    own structured expiry field is null on every product checked, so there
+    is nothing on Nykaa's side to diff a shelf-life claim against. Revisit
+    this if Nykaa ever starts populating that field for some SKUs.
+
+    P2 (Page Broken) covers Nykaa's own 404/isNotFound signal as well as a
+    total extraction failure (no_content) -- see nykaa_qa_diff.py's
+    is_nykaa_page_broken() and nykaa_pdp_scraper.py's page-not-found
+    finding for the real case (product 10346740) this was built against."""
+    if rr["nykaa_page_broken"] is True:
+        return "P2", TIER_LABEL["P2"], "Nykaa page broken, removed, or returned no usable content"
+    if rr["title_plausible"] is False:
+        return "P3", TIER_LABEL["P3"], "Nykaa title doesn't share the SKU's core words"
+    vb = rr["visual_best_similarity"]
+    if vb is not None and vb < 0.6:
+        return "P4", TIER_LABEL["P4"], f"Best photo match scores {vb:.2f} (< 0.6)"
+    return None, None, None
+
+
 DIFF_COLS_TYPES = {
     "flipkart_page_broken": "bool", "title_plausible": "bool",
     "visual_best_similarity": "float",
 }
 
+NYKAA_DIFF_COLS_TYPES = {
+    "nykaa_page_broken": "bool", "title_plausible": "bool",
+    "visual_best_similarity": "float",
+}
 
-def load_diff_rows(path):
+
+def load_diff_rows(path, col_types=None):
+    """col_types defaults to DIFF_COLS_TYPES (Flipkart's diff column set) --
+    pass NYKAA_DIFF_COLS_TYPES when loading a nykaa_qa_diff.py output file,
+    since its bool column is named nykaa_page_broken rather than
+    flipkart_page_broken."""
+    if col_types is None:
+        col_types = DIFF_COLS_TYPES
     rows = []
     with open(path, newline="", encoding="utf-8") as f:
         for r in csv.DictReader(f):
-            for c, kind in DIFF_COLS_TYPES.items():
+            for c, kind in col_types.items():
                 v = r.get(c, "")
                 if kind == "bool":
                     r[c] = True if v == "True" else (False if v == "False" else None)

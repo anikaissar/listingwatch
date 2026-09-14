@@ -253,6 +253,11 @@ var WORKER_URL = "REPLACE_WITH_WORKER_URL";
 var API_KEY = "REPLACE_WITH_API_KEY_OR_LEAVE_BLANK"; // must match the Worker's API_KEY secret, or leave "" if you skipped that step
 var DATA_URL = "./data.json";
 var POLL_MS = 20000;
+// SALES_URL is a static per-SKU MTD unit-sales snapshot (see sales_salience.json) used only
+// to order rows within a tier by sales salience -- unlike data.json it is NOT touched by
+// weekly_refresh.py and is not polled; it's loaded once at startup. To refresh it later,
+// regenerate the file from a newer sales master export and redeploy -- no code change needed.
+var SALES_URL = "./sales_salience.json";
 // EMBEDDED_DATA lets a preview build inject data directly (window.__DASHBOARD_DATA__
 // set in a <script> before this one) instead of fetching DATA_URL — used for reviewing
 // the dashboard before it's deployed anywhere. Leave this alone for a real deployment;
@@ -300,6 +305,14 @@ var EMBEDDED_DATA = window.__DASHBOARD_DATA__ || null;
   function rowPlatform(r) { return r.platform || "flipkart"; }
   function platformId(r) { return r.platform_id || r.fsn || r.nykaa_product_id || ""; }
   function marketplaceTitle(r) { return r.marketplace_title || r.flipkart_title || r.nykaa_title || ""; }
+  // Static MTD unit-sales snapshot (loaded once from SALES_URL, see loadSalience()) keyed
+  // {platform: {nh_sku: qty}}. -1 (not 0) for a SKU with no row in that snapshot, so a SKU
+  // that genuinely sold zero units still ranks above one we have no sales data for at all.
+  var SALES_SALIENCE = {};
+  function salesQty(r) {
+    var m = SALES_SALIENCE[rowPlatform(r)];
+    return (m && Object.prototype.hasOwnProperty.call(m, r.nh_sku)) ? m[r.nh_sku] : -1;
+  }
 
   function escapeHtml(s) {
     return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
@@ -404,6 +417,8 @@ var EMBEDDED_DATA = window.__DASHBOARD_DATA__ || null;
       if (ta !== tb) return ta - tb;
       var sa = a.status === "Open" ? 0 : 1, sb = b.status === "Open" ? 0 : 1;
       if (sa !== sb) return sa - sb;
+      var qa = salesQty(a), qb = salesQty(b);
+      if (qa !== qb) return qb - qa; // higher MTD units sold first -- fix the SKUs that matter most first
       return String(a.nh_sku).localeCompare(String(b.nh_sku));
     });
   }
@@ -591,7 +606,20 @@ var EMBEDDED_DATA = window.__DASHBOARD_DATA__ || null;
     pollTimer = setInterval(loadData, POLL_MS);
   }
 
-  loadData().then(function () {
+  function loadSalience() {
+    // Static file, loaded once -- never polled, never touched by weekly_refresh.py.
+    // Missing/broken file just means sorting falls back to alphabetical within a tier;
+    // the dashboard must never break or block on this.
+    return fetch(SALES_URL + "?t=" + Date.now(), { cache: "no-store" })
+      .then(function (res) { if (!res.ok) throw new Error("HTTP " + res.status); return res.json(); })
+      .then(function (payload) { SALES_SALIENCE = payload || {}; })
+      .catch(function (err) { console.warn("sales_salience.json not loaded -- sorting within a tier falls back to SKU order.", err); });
+  }
+
+  // Load the static salience snapshot FIRST (or let it fail) so the very first render
+  // already sorts correctly -- data.json is polled repeatedly afterward, but
+  // sales_salience.json never changes again after this one load.
+  loadSalience().then(loadData).then(function () {
     if (!EMBEDDED_DATA) startPolling();
   });
 })();

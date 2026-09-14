@@ -172,6 +172,44 @@ def classify_nykaa(rr):
     return None, None, None
 
 
+def classify_myntra(rr):
+    """Myntra counterpart to classify() above. UNLIKE Nykaa, Myntra DOES get
+    a real P1 Shelf Life Mismatch tier -- confirmed (2026-09-14, both real
+    sample products checked) that Myntra's articleAttributes carries real,
+    populated shelf-life fields. Per Anika's explicit instruction, only the
+    "maximum" one (Total Shelf Life in Months, reformatted by
+    myntra_pdp_scraper.py to e.g. "6 Months") is compared -- same semantics
+    as Flipkart's "Maximum Shelf Life" spec field, so this reuses the same
+    shelf_life_status/shelf_life_match() plumbing unchanged. There's no
+    Myntra equivalent of Flipkart's flat "3 Months" default sub-case, so
+    unlike classify() there's only one P1 detail message here.
+
+    P2 (Page Broken) covers Myntra's own pdpData-missing signal -- see
+    myntra_qa_diff.py's is_myntra_page_broken() and myntra_pdp_scraper.py's
+    page-not-found finding (confirmed against a deliberately bogus style
+    ID, since no real SKU tried turned out to be actually dead on Myntra).
+
+    P5 (No D2C Reference Match), same as classify()/classify_nykaa() above:
+    fires when this SKU has no row at all in the D2C reference file. Not
+    labeled "discontinued" -- could be marketplace-only, a D2C scrape gap,
+    or a stale URL. Checked first, same reasoning as classify()."""
+    if rr.get("no_d2c_match") is True:
+        return "P5", TIER_LABEL["P5"], "No D2C reference row for this SKU -- check the SKU codes master for its live status (may be marketplace-only)"
+    if rr["shelf_life_status"] == "mismatch":
+        mx_val = (rr.get("myntra_max_shelf_life") or "").strip()
+        d2c_short = _short_duration(rr.get("d2c_shelf_life", ""))
+        mx_short = _short_duration(mx_val) if mx_val else "not on articleAttributes"
+        return "P1", TIER_LABEL["P1"], f"D2C {d2c_short} vs Myntra {mx_short}"
+    if rr["myntra_page_broken"] is True:
+        return "P2", TIER_LABEL["P2"], "Myntra page broken, delisted, or returned no usable content"
+    if rr["title_plausible"] is False:
+        return "P3", TIER_LABEL["P3"], "Myntra title doesn't share the SKU's core words"
+    vb = rr["visual_best_similarity"]
+    if vb is not None and vb < 0.6:
+        return "P4", TIER_LABEL["P4"], f"Best photo match scores {vb:.2f} (< 0.6)"
+    return None, None, None
+
+
 DIFF_COLS_TYPES = {
     "flipkart_page_broken": "bool", "title_plausible": "bool",
     "visual_best_similarity": "float", "no_d2c_match": "bool",
@@ -179,6 +217,11 @@ DIFF_COLS_TYPES = {
 
 NYKAA_DIFF_COLS_TYPES = {
     "nykaa_page_broken": "bool", "title_plausible": "bool",
+    "visual_best_similarity": "float", "no_d2c_match": "bool",
+}
+
+MYNTRA_DIFF_COLS_TYPES = {
+    "myntra_page_broken": "bool", "title_plausible": "bool",
     "visual_best_similarity": "float", "no_d2c_match": "bool",
 }
 

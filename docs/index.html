@@ -287,6 +287,19 @@ var EMBEDDED_DATA = window.__DASHBOARD_DATA__ || null;
   // marketplace-only by design; see build_kam_review.py's classify()/classify_nykaa().
   var STATUSES = ["Open", "Resolved", "Not an Issue"];
   var BACKEND_CONFIGURED = !!(WORKER_URL && WORKER_URL.indexOf("REPLACE_WITH") !== 0);
+  // Reminder cycles are calendar weeks, not a per-SKU sum -- mirrors
+  // CYCLE_ANCHOR/current_cycle() in pipeline/weekly_refresh.py exactly, so
+  // the number shown here always matches what the pipeline just used. Cycle
+  // 1 is the week starting 2026-09-24 (Anika's requested restart date,
+  // 2026-09-14); before that, 0 means "not started yet".
+  var CYCLE_ANCHOR = new Date(Date.UTC(2026, 8, 24)); // month is 0-indexed: 8 = September
+  function currentCycle(now) {
+    now = now || new Date();
+    var todayUTC = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+    if (todayUTC < CYCLE_ANCHOR.getTime()) return 0;
+    var days = Math.floor((todayUTC - CYCLE_ANCHOR.getTime()) / 86400000);
+    return Math.floor(days / 7) + 1;
+  }
   // Column header text per platform tab -- Flipkart's ID is an FSN, Nykaa's
   // is its numeric product ID; same idea, different label.
   var PLATFORM_ID_LABEL = { flipkart: "FSN", nykaa: "Nykaa ID", myntra: "Style ID" };
@@ -365,7 +378,11 @@ var EMBEDDED_DATA = window.__DASHBOARD_DATA__ || null;
       { label: "Open", value: grand.Open, dot: "var(--warning)", sub: "needs KAM action" },
       { label: "Resolved", value: grand.Resolved, dot: "var(--good)", sub: "fix confirmed" },
       { label: "Not an issue", value: grand["Not an Issue"], dot: "var(--text-muted)", sub: "closed, won't fix" },
-      { label: "Total tracked", value: grand.total, dot: "var(--seq-450)", sub: grand.reminders + " reminder-cycles sent" }
+      { label: "Total tracked", value: grand.total, dot: "var(--seq-450)", sub: (function () {
+          var c = currentCycle();
+          return c === 0 ? "reminder cycles start " + CYCLE_ANCHOR.toISOString().slice(0, 10)
+                          : "reminder cycle " + c + " (since " + CYCLE_ANCHOR.toISOString().slice(0, 10) + ")";
+        })() }
     ];
     document.getElementById("statRow").innerHTML = tiles.map(function (t) {
       return '<div class="card stat-tile">' +

@@ -86,3 +86,24 @@ in an interactive desktop session -- see its module docstring and SETUP.md.
 Status and Reminders Sent live in git history from now on — every change,
 whether from a weekly refresh or a manual click, is a commit, so there's a
 full audit trail for free.
+
+## Reminder cycles
+
+Each row's `reminders_sent` count used to bump by 1 every time
+`weekly_refresh.py` ran and found the row still open -- which meant a SKU
+could rack up several "reminders" within the same real week if the script
+happened to run more than once that week (exactly what happened during
+Myntra's rollout/testing: some rows hit 5 before Myntra had even gone live).
+As of 2026-09-14, reminders are calendar-anchored instead: `CYCLE_ANCHOR =
+2026-09-24` in `weekly_refresh.py` marks the start of cycle 1, the week
+after is cycle 2, and so on, and each row now also carries
+`last_reminder_cycle` so a second run inside the same week is a safe
+no-op -- `reminders_sent` increments at most once per real week no matter
+how many times the pipeline actually runs. Before 2026-09-24 nothing
+increments at all. `docs/index.html` mirrors the same anchor/cycle math in
+JS (`currentCycle()`) so the dashboard's "Total tracked" stat tile shows the
+actual current cycle number ("reminder cycle 2 (since 2026-09-24)") instead
+of a sum of every row's reminder count, which used to read like a number
+tied to catalog size rather than elapsed weeks. Every platform's
+`reminders_sent` was manually reset to 0 in `docs/data.json` on 2026-09-14
+as part of this change, so cycle 1 starts genuinely clean.

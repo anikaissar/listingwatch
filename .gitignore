@@ -6,3 +6,4 @@ pipeline/qa_diff_latest.csv
 worker/node_modules/
 .wrangler/
 docs/data.test.json
+flipkart_state.json

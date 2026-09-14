@@ -22,6 +22,16 @@ Run this on Anika's Windows machine (via Task Scheduler) once a week. It:
      merged independently (only ever compared against its own prior rows)
      then combined into one rows list, tagged with a "platform" field so the
      dashboard can tell them apart.
+
+     REMINDER CYCLES ARE CALENDAR-ANCHORED (added 2026-09-14, at Anika's
+     request): "+1 reminder" above happens at most once per real week, not
+     once per script run. CYCLE_ANCHOR = 2026-09-24 -- that week is cycle 1,
+     the week after is cycle 2, and so on; every row now also carries
+     "last_reminder_cycle" so a second run in the same week is a safe no-op
+     instead of double-counting. Before 2026-09-24, current_cycle() is 0 and
+     nothing increments at all. All platforms' reminders_sent were manually
+     reset to 0 in docs/data.json on 2026-09-14 as part of this change, so
+     counting genuinely starts clean from cycle 1.
   4. Writes the merged result to docs/data.json, verifies it round-trips
      (loads back and matches what was just written -- the project has been
      burned before by a "successful" write that wasn't), and commits +
@@ -80,13 +90,20 @@ def run(cmd, cwd=None):
         raise SystemExit(f"Command failed ({result.returncode}): {' '.join(cmd)}")
 
 
-def scrape(pipeline_dir, flipkart_out, d2c_out, limit=None):
+def scrape_flipkart(pipeline_dir, flipkart_out, limit=None):
     fk_cmd = [sys.executable, str(pipeline_dir / "flipkart_pdp_scraper.py"), "--out", str(flipkart_out)]
-    d2c_cmd = [sys.executable, str(pipeline_dir / "nathabit_pdp_scraper.py"), "--out", str(d2c_out)]
     if limit:
         fk_cmd += ["--limit", str(limit)]
-        d2c_cmd += ["--limit", str(limit)]
     run(fk_cmd, cwd=pipeline_dir)
+
+
+def scrape_d2c(pipeline_dir, d2c_out, limit=None):
+    # The D2C (nathabit.in) reference is shared by every platform's diff --
+    # Nykaa and Myntra need it just as much as Flipkart does, so this runs
+    # even on a Flipkart-skipped (Nykaa-only/Myntra-only) smoke test.
+    d2c_cmd = [sys.executable, str(pipeline_dir / "nathabit_pdp_scraper.py"), "--out", str(d2c_out)]
+    if limit:
+        d2c_cmd += ["--limit", str(limit)]
     run(d2c_cmd, cwd=pipeline_dir)
 
 
@@ -148,6 +165,34 @@ def load_prior_rows(data_json_path):
     return out
 
 
+# Reminder cycles are calendar-anchored, not run-anchored: reminders_sent
+# used to bump by 1 every time this script ran and found a row still open,
+# which meant a SKU could get "reminded" more than once in the same real
+# week if the script happened to run more than once that week (as it did
+# repeatedly during Myntra's rollout/testing) -- so the number on the
+# dashboard ended up reflecting how many times the pipeline had been run
+# (roughly tracking how much SKU/testing churn there'd been), not how many
+# real weekly reminders had gone out. CYCLE_ANCHOR fixes that: cycle 1 is
+# the week starting 2026-09-24 (Anika's requested restart date), cycle 2 the
+# week after, etc, and reminders_sent now increments AT MOST ONCE per cycle
+# no matter how many times weekly_refresh.py actually runs inside it. Every
+# row also carries "last_reminder_cycle" so a second run in the same week is
+# a safe no-op. Before 2026-09-24, current_cycle() is 0 and nothing
+# increments at all -- see Anika's request on 2026-09-14 to reset every
+# platform's reminders_sent to 0 and hold the count there until the 24th.
+CYCLE_ANCHOR = datetime.date(2026, 9, 24)
+
+
+def current_cycle(today=None):
+    """Weekly reminder-cycle number counting from CYCLE_ANCHOR. Returns 0 for
+    any date before the anchor (tracking hasn't started -- no cycle has been
+    sent yet), 1 for the anchor week itself, 2 for the week after, etc."""
+    today = today or datetime.date.today()
+    if today < CYCLE_ANCHOR:
+        return 0
+    return (today - CYCLE_ANCHOR).days // 7 + 1
+
+
 def merge(diff_csv_path, prior_rows, platform):
     """Same merge-forward rules as build_kam_review.build(), operating on
     dicts instead of an xlsx sheet. platform is "flipkart", "nykaa", or
@@ -178,6 +223,7 @@ def merge(diff_csv_path, prior_rows, platform):
 
     platform_prior_keys = {k for k in prior_rows if k[0] == platform}
     seen_keys = set()
+    cyc = current_cycle()
 
     for rr in diff_rows:
         tier, issue, detail = classify_fn(rr)
@@ -188,18 +234,32 @@ def merge(diff_csv_path, prior_rows, platform):
         seen_keys.add(key)
         prior = prior_rows.get(key)
         if prior is None:
-            status, reminders = "Open", 0
+            # First time this SKU has ever been flagged -- doesn't count as
+            # a reminder itself, but its baseline cycle is set to the
+            # current one so it isn't immediately eligible for another
+            # increment if this script runs again later in the same week.
+            status, reminders, last_cycle = "Open", 0, cyc
             stats["new"] += 1
         elif prior["status"] == "Not an Issue":
             status, reminders = "Not an Issue", prior["reminders_sent"]
+            last_cycle = prior.get("last_reminder_cycle", 0)
             stats["frozen_not_an_issue"] += 1
-        elif prior["status"] == "Resolved":
-            status, reminders = "Open", prior["reminders_sent"] + 1
-            detail = detail + " [recurred after being marked Resolved]"
-            stats["reopened"] += 1
-        else:  # still Open
-            status, reminders = "Open", prior["reminders_sent"] + 1
-            stats["carried_open"] += 1
+        else:
+            prior_cycle = prior.get("last_reminder_cycle", 0)
+            # Only bump reminders_sent if we've reached cycle 1 (2026-09-24
+            # or later) AND this is a new cycle for this row -- a same-week
+            # rerun (or any run before the anchor date) is a no-op here.
+            new_cycle_reached = cyc >= 1 and cyc > prior_cycle
+            if prior["status"] == "Resolved":
+                reminders = prior["reminders_sent"] + 1 if new_cycle_reached else prior["reminders_sent"]
+                last_cycle = cyc if new_cycle_reached else prior_cycle
+                detail = detail + " [recurred after being marked Resolved]"
+                stats["reopened"] += 1
+            else:  # still Open
+                reminders = prior["reminders_sent"] + 1 if new_cycle_reached else prior["reminders_sent"]
+                last_cycle = cyc if new_cycle_reached else prior_cycle
+                stats["carried_open"] += 1
+            status = "Open"
 
         if platform == "flipkart":
             doc_id = f"{rr['nh_sku']}__{platform_id}"
@@ -226,6 +286,7 @@ def merge(diff_csv_path, prior_rows, platform):
             "myntra_title": rr.get(title_col, "") if platform == "myntra" else "",
             "d2c_title": rr.get("d2c_title", ""),
             "reminders_sent": reminders,
+            "last_reminder_cycle": last_cycle,
             "status_changed_at": (prior or {}).get("status_changed_at"),
         })
 
@@ -302,6 +363,10 @@ def main():
     ap.add_argument("--myntra-max-drop-pct", type=float, default=0.5, help="Myntra: abort if row count drops by more than this fraction week over week")
     ap.add_argument("--limit", type=int, help="scrape only the first N products per platform (smoke test)")
     ap.add_argument("--skip-scrape", action="store_true", help="reuse existing observed CSVs instead of scraping again (for testing)")
+    ap.add_argument("--skip-flipkart", action="store_true",
+                     help="skip the Flipkart scrape+diff entirely -- use this for a Nykaa-only or "
+                          "Myntra-only smoke test so a Flipkart login session isn't required just to "
+                          "test another platform")
     ap.add_argument("--skip-nykaa", action="store_true",
                      help="skip the Nykaa scrape+diff entirely -- use this for a Flipkart-only run, e.g. "
                           "if this is running non-interactively and Nykaa's required --headed browser "
@@ -334,19 +399,36 @@ def main():
     myntra_diff_csv = pipeline_dir / "myntra_diff_latest.csv"
 
     if not args.skip_scrape:
-        scrape(pipeline_dir, flipkart_csv, d2c_csv, limit=args.limit)
+        scrape_d2c(pipeline_dir, d2c_csv, limit=args.limit)
+        if not args.skip_flipkart:
+            scrape_flipkart(pipeline_dir, flipkart_csv, limit=args.limit)
         if not args.skip_nykaa:
             scrape_nykaa(pipeline_dir, nykaa_worklist, nykaa_csv, nykaa_fail_csv, limit=args.limit)
         if not args.skip_myntra:
             scrape_myntra(pipeline_dir, myntra_worklist, myntra_csv, myntra_fail_csv, limit=args.limit)
-    diff(pipeline_dir, flipkart_csv, d2c_csv, diff_csv)
+    if not args.skip_flipkart:
+        diff(pipeline_dir, flipkart_csv, d2c_csv, diff_csv)
     if not args.skip_nykaa:
         diff_nykaa(pipeline_dir, nykaa_csv, d2c_csv, nykaa_diff_csv)
     if not args.skip_myntra:
         diff_myntra(pipeline_dir, myntra_csv, d2c_csv, myntra_diff_csv)
 
+    cyc = current_cycle()
+    if cyc == 0:
+        print(f"\nReminder cycle: none yet -- cycles start the week of {CYCLE_ANCHOR.isoformat()}. "
+              f"reminders_sent will NOT increment on this run.")
+    else:
+        print(f"\nReminder cycle: {cyc} (week of {(CYCLE_ANCHOR + datetime.timedelta(days=(cyc - 1) * 7)).isoformat()}). "
+              f"A row already reminded this cycle will not be double-counted if this script runs again before the next cycle.")
+
     prior_rows = load_prior_rows(data_json_path)
-    fk_rows, fk_stats = merge(diff_csv, prior_rows, "flipkart")
+    if args.skip_flipkart:
+        fk_rows, fk_stats = [], {"new": 0, "carried_open": 0, "frozen_not_an_issue": 0, "reopened": 0, "dropped": 0}
+        # Keep whatever Flipkart rows are already in docs/data.json untouched --
+        # a Nykaa-only/Myntra-only smoke test must not silently wipe them out.
+        fk_rows = [r for r in prior_rows.values() if r.get("platform", "flipkart") == "flipkart"]
+    else:
+        fk_rows, fk_stats = merge(diff_csv, prior_rows, "flipkart")
     if args.skip_nykaa:
         nk_rows, nk_stats = [], {"new": 0, "carried_open": 0, "frozen_not_an_issue": 0, "reopened": 0, "dropped": 0}
         # Keep whatever Nykaa rows are already in docs/data.json untouched --
@@ -382,11 +464,12 @@ def main():
               "Run again WITHOUT --limit for a real, full-catalog refresh.")
         return
 
-    fk_prior = {k: v for k, v in prior_rows.items() if k[0] == "flipkart"}
-    problem = sanity_check(fk_rows, fk_prior, args.min_rows, args.max_drop_pct)
-    if problem:
-        print(f"\nABORTING (flipkart) -- {problem}\nNothing was written or pushed. Check the scrape output before retrying.\n", file=sys.stderr)
-        raise SystemExit(1)
+    if not args.skip_flipkart:
+        fk_prior = {k: v for k, v in prior_rows.items() if k[0] == "flipkart"}
+        problem = sanity_check(fk_rows, fk_prior, args.min_rows, args.max_drop_pct)
+        if problem:
+            print(f"\nABORTING (flipkart) -- {problem}\nNothing was written or pushed. Check the scrape output before retrying.\n", file=sys.stderr)
+            raise SystemExit(1)
 
     if not args.skip_nykaa:
         nk_prior = {k: v for k, v in prior_rows.items() if k[0] == "nykaa"}

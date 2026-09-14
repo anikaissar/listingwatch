@@ -1,18 +1,20 @@
 #!/usr/bin/env python3
-"""Weekly refresh for the Listing QA KAM dashboard (Flipkart + Nykaa + Myntra).
+"""Weekly refresh for the Listing QA KAM dashboard (Flipkart + Nykaa + Myntra + Amazon).
 
 Run this on Anika's Windows machine (via Task Scheduler) once a week. It:
 
-  1. Scrapes current Flipkart + Nykaa + Myntra + nathabit.in listing data
-     (reusing a browser session that was already logged in manually for
-     Flipkart -- see "Login" below; Nykaa and Myntra need no login, but DO
-     need a real, visible browser window -- see "NYKAA/MYNTRA NEED --headed"
-     below).
+  1. Scrapes current Flipkart + Nykaa + Myntra + Amazon + nathabit.in
+     listing data (reusing a browser session that was already logged in
+     manually for Flipkart -- see "Login" below; Nykaa, Myntra, and Amazon
+     need no login. Nykaa and Myntra also need a real, visible browser
+     window -- see "NYKAA/MYNTRA NEED --headed" below; Amazon does NOT need
+     --headed, but does need pacing -- see "AMAZON'S BOT-CHECK" below).
   2. Diffs each platform against the same nathabit.in D2C reference
      (qa_diff.py for Flipkart, nykaa_qa_diff.py for Nykaa, myntra_qa_diff.py
-     for Myntra) and classifies the results into priority tiers
-     (classify()/classify_nykaa()/classify_myntra() from build_kam_review.py,
-     imported here so all three never drift apart).
+     for Myntra, amazon_qa_diff.py for Amazon) and classifies the results
+     into priority tiers (classify()/classify_nykaa()/classify_myntra()/
+     classify_amazon() from build_kam_review.py, imported here so all four
+     never drift apart).
   3. Merges the fresh results, per platform, against whatever is CURRENTLY
      in the repo's docs/data.json -- same merge-forward rules as before: a
      brand new row starts at Open/0 reminders; a row still Open and still
@@ -45,8 +47,8 @@ Login: Flipkart requires you to log in by hand once in the browser this
 scraper drives (flipkart_pdp_scraper.py --login), which saves a session
 Playwright reuses for unattended runs. That session eventually expires --
 when scrapes start failing, run --login again. Nothing in this pipeline
-ever asks for or stores a password. Nykaa's and Myntra's product pages are
-public -- no login step needed for either.
+ever asks for or stores a password. Nykaa's, Myntra's, and Amazon's product
+pages are all public -- no login step needed for any of them.
 
 NYKAA/MYNTRA NEED --headed: confirmed (2026-09-11 for Nykaa, 2026-09-14 for
 Myntra) that both sites block a headless Chromium outright
@@ -59,6 +61,17 @@ is set to "Run whether user is logged on or not", the Nykaa and Myntra steps
 will fail (there's no desktop for a visible window to appear on). Use "Run
 only when user is logged on" instead, and make sure the machine is
 unlocked/logged in at the scheduled time -- see SETUP.md.
+
+AMAZON'S BOT-CHECK: confirmed (2026-09-14) that Amazon does NOT block
+headless Chromium outright (unlike Nykaa/Myntra) -- amazon_pdp_scraper.py
+runs headless by default. The real operational issue is a soft anti-bot
+interstitial ("Click the button below to continue shopping") that shows up
+occasionally, more tied to request pacing/behavior than a hard per-ASIN or
+per-session ban -- the scraper detects and retries it automatically (see
+amazon_pdp_scraper.py's BOT-CHECK FINDING), at a deliberately low
+concurrency (2) with a longer delay between requests (3-6s) than Nykaa/
+Myntra use. A handful of amazon_failures.csv rows after a full run is
+expected, not a sign anything is broken -- see the printed failure count.
 
 Usage (from the repo root, with the pipeline/ scripts and a clone of this
 same GitHub repo both available):
@@ -78,8 +91,8 @@ PIPELINE_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(PIPELINE_DIR))
 
 from build_kam_review import (  # noqa: E402
-    classify, classify_nykaa, classify_myntra, load_diff_rows,
-    DIFF_COLS_TYPES, NYKAA_DIFF_COLS_TYPES, MYNTRA_DIFF_COLS_TYPES,
+    classify, classify_nykaa, classify_myntra, classify_amazon, load_diff_rows,
+    DIFF_COLS_TYPES, NYKAA_DIFF_COLS_TYPES, MYNTRA_DIFF_COLS_TYPES, AMAZON_DIFF_COLS_TYPES,
 )
 
 
@@ -147,6 +160,26 @@ def diff_myntra(pipeline_dir, myntra_csv, d2c_csv, diff_out):
         cwd=pipeline_dir)
 
 
+def scrape_amazon(pipeline_dir, amazon_worklist, amazon_out, amazon_fail, limit=None):
+    # No --headed here -- unlike Nykaa/Myntra, Amazon does not block headless
+    # Chromium (see the module docstring's "AMAZON'S BOT-CHECK" section).
+    # amazon_pdp_scraper.py already defaults to headless and to a lower
+    # concurrency / longer delay than the other scrapers to go easy on
+    # Amazon's bot-check.
+    cmd = [sys.executable, str(pipeline_dir / "amazon_pdp_scraper.py"),
+           "--worklist", str(amazon_worklist), "--out", str(amazon_out),
+           "--failures", str(amazon_fail)]
+    if limit:
+        cmd += ["--limit", str(limit)]
+    run(cmd, cwd=pipeline_dir)
+
+
+def diff_amazon(pipeline_dir, amazon_csv, d2c_csv, diff_out):
+    run([sys.executable, str(pipeline_dir / "amazon_qa_diff.py"),
+         "--amazon", str(amazon_csv), "--d2c", str(d2c_csv), "--out", str(diff_out)],
+        cwd=pipeline_dir)
+
+
 def load_prior_rows(data_json_path):
     """Returns {(platform, nh_sku, platform_id): row_dict} from the current
     docs/data.json, or {} if it doesn't exist yet. Rows written before the
@@ -195,14 +228,18 @@ def current_cycle(today=None):
 
 def merge(diff_csv_path, prior_rows, platform):
     """Same merge-forward rules as build_kam_review.build(), operating on
-    dicts instead of an xlsx sheet. platform is "flipkart", "nykaa", or
-    "myntra" -- picks the right diff-column types and classify function, and
-    tags every row with a "platform" field so multiple platforms can share
-    one docs/data.json without colliding. Flipkart's doc_id format
-    (nh_sku__fsn) is left exactly as it always was, for a clean history;
-    Nykaa and Myntra each get a distinct format (nh_sku__nykaa__product_id,
-    nh_sku__myntra__style_id) that can never collide with a Flipkart FSN or
-    each other."""
+    dicts instead of an xlsx sheet. platform is "flipkart", "nykaa",
+    "myntra", or "amazon" -- picks the right diff-column types and classify
+    function, and tags every row with a "platform" field so multiple
+    platforms can share one docs/data.json without colliding. Flipkart's
+    doc_id format (nh_sku__fsn) is left exactly as it always was, for a clean
+    history; Nykaa, Myntra, and Amazon each get a distinct format
+    (nh_sku__nykaa__product_id, nh_sku__myntra__style_id,
+    nh_sku__amazon__asin) that can never collide with a Flipkart FSN or each
+    other. Amazon is the one platform where the same nh_sku can legitimately
+    appear more than once (13 SKUs have 2+ simultaneously-Active ASINs, kept
+    as separate rows in amazon_worklist.csv) -- the nh_sku__amazon__asin key
+    already handles that correctly since asin makes each key unique."""
     if platform == "flipkart":
         diff_rows = load_diff_rows(str(diff_csv_path), DIFF_COLS_TYPES)
         classify_fn = classify
@@ -215,6 +252,10 @@ def merge(diff_csv_path, prior_rows, platform):
         diff_rows = load_diff_rows(str(diff_csv_path), MYNTRA_DIFF_COLS_TYPES)
         classify_fn = classify_myntra
         id_col, title_col = "style_id", "myntra_title"
+    elif platform == "amazon":
+        diff_rows = load_diff_rows(str(diff_csv_path), AMAZON_DIFF_COLS_TYPES)
+        classify_fn = classify_amazon
+        id_col, title_col = "asin", "amazon_title"
     else:
         raise ValueError(f"unknown platform: {platform!r}")
 
@@ -284,6 +325,7 @@ def merge(diff_csv_path, prior_rows, platform):
             "flipkart_title": rr.get(title_col, "") if platform == "flipkart" else "",
             "nykaa_title": rr.get(title_col, "") if platform == "nykaa" else "",
             "myntra_title": rr.get(title_col, "") if platform == "myntra" else "",
+            "amazon_title": rr.get(title_col, "") if platform == "amazon" else "",
             "d2c_title": rr.get("d2c_title", ""),
             "reminders_sent": reminders,
             "last_reminder_cycle": last_cycle,
@@ -361,6 +403,11 @@ def main():
                           "Nykaa's -- this pipeline is brand new, with no full-catalog run yet to "
                           "calibrate a realistic baseline against)")
     ap.add_argument("--myntra-max-drop-pct", type=float, default=0.5, help="Myntra: abort if row count drops by more than this fraction week over week")
+    ap.add_argument("--amazon-min-rows", type=int, default=5,
+                     help="Amazon: abort if fewer than this many rows are flagged (same low default as "
+                          "Nykaa/Myntra -- this pipeline is brand new, with no full-catalog run yet to "
+                          "calibrate a realistic baseline against)")
+    ap.add_argument("--amazon-max-drop-pct", type=float, default=0.5, help="Amazon: abort if row count drops by more than this fraction week over week")
     ap.add_argument("--limit", type=int, help="scrape only the first N products per platform (smoke test)")
     ap.add_argument("--skip-scrape", action="store_true", help="reuse existing observed CSVs instead of scraping again (for testing)")
     ap.add_argument("--skip-flipkart", action="store_true",
@@ -374,10 +421,15 @@ def main():
     ap.add_argument("--skip-myntra", action="store_true",
                      help="skip the Myntra scrape+diff entirely -- same reasoning as --skip-nykaa "
                           "(Myntra also needs a visible --headed browser window)")
+    ap.add_argument("--skip-amazon", action="store_true",
+                     help="skip the Amazon scrape+diff entirely -- useful for a Flipkart/Nykaa/Myntra-only "
+                          "run, or if Amazon's bot-check is being unusually aggressive that day")
     ap.add_argument("--nykaa-worklist", default=None,
                      help="path to nykaa_worklist.csv (default: <pipeline-dir>/nykaa_worklist.csv)")
     ap.add_argument("--myntra-worklist", default=None,
                      help="path to myntra_worklist.csv (default: <pipeline-dir>/myntra_worklist.csv)")
+    ap.add_argument("--amazon-worklist", default=None,
+                     help="path to amazon_worklist.csv (default: <pipeline-dir>/amazon_worklist.csv)")
     args = ap.parse_args()
 
     repo_dir = Path(args.repo_dir).resolve()
@@ -398,6 +450,11 @@ def main():
     myntra_fail_csv = pipeline_dir / "myntra_failures.csv"
     myntra_diff_csv = pipeline_dir / "myntra_diff_latest.csv"
 
+    amazon_worklist = Path(args.amazon_worklist) if args.amazon_worklist else pipeline_dir / "amazon_worklist.csv"
+    amazon_csv = pipeline_dir / "observed_amazon_latest.csv"
+    amazon_fail_csv = pipeline_dir / "amazon_failures.csv"
+    amazon_diff_csv = pipeline_dir / "amazon_diff_latest.csv"
+
     if not args.skip_scrape:
         scrape_d2c(pipeline_dir, d2c_csv, limit=args.limit)
         if not args.skip_flipkart:
@@ -406,12 +463,16 @@ def main():
             scrape_nykaa(pipeline_dir, nykaa_worklist, nykaa_csv, nykaa_fail_csv, limit=args.limit)
         if not args.skip_myntra:
             scrape_myntra(pipeline_dir, myntra_worklist, myntra_csv, myntra_fail_csv, limit=args.limit)
+        if not args.skip_amazon:
+            scrape_amazon(pipeline_dir, amazon_worklist, amazon_csv, amazon_fail_csv, limit=args.limit)
     if not args.skip_flipkart:
         diff(pipeline_dir, flipkart_csv, d2c_csv, diff_csv)
     if not args.skip_nykaa:
         diff_nykaa(pipeline_dir, nykaa_csv, d2c_csv, nykaa_diff_csv)
     if not args.skip_myntra:
         diff_myntra(pipeline_dir, myntra_csv, d2c_csv, myntra_diff_csv)
+    if not args.skip_amazon:
+        diff_amazon(pipeline_dir, amazon_csv, d2c_csv, amazon_diff_csv)
 
     cyc = current_cycle()
     if cyc == 0:
@@ -443,8 +504,15 @@ def main():
         my_rows = [r for r in prior_rows.values() if r.get("platform") == "myntra"]
     else:
         my_rows, my_stats = merge(myntra_diff_csv, prior_rows, "myntra")
-    rows = fk_rows + nk_rows + my_rows
-    stats_by_platform = {"flipkart": fk_stats, "nykaa": nk_stats, "myntra": my_stats}
+    if args.skip_amazon:
+        az_rows, az_stats = [], {"new": 0, "carried_open": 0, "frozen_not_an_issue": 0, "reopened": 0, "dropped": 0}
+        # Same reasoning as --skip-nykaa/--skip-myntra above -- don't wipe
+        # out Amazon's rows just because this run skipped it.
+        az_rows = [r for r in prior_rows.values() if r.get("platform") == "amazon"]
+    else:
+        az_rows, az_stats = merge(amazon_diff_csv, prior_rows, "amazon")
+    rows = fk_rows + nk_rows + my_rows + az_rows
+    stats_by_platform = {"flipkart": fk_stats, "nykaa": nk_stats, "myntra": my_stats, "amazon": az_stats}
 
     if args.limit:
         # A --limit run only ever looks at part of the catalog, so `rows` here
@@ -459,7 +527,7 @@ def main():
         print(f"\n--limit {args.limit} was set, so this only scraped part of the catalog.")
         print(f"Wrote {len(rows)} test rows to {test_out} for inspection -- "
               f"the live {args.data_path} was left untouched and nothing was pushed.")
-        print(f"Stats: flipkart={fk_stats} | nykaa={nk_stats} | myntra={my_stats}")
+        print(f"Stats: flipkart={fk_stats} | nykaa={nk_stats} | myntra={my_stats} | amazon={az_stats}")
         print("This confirms the scrape + diff + merge steps work end to end. "
               "Run again WITHOUT --limit for a real, full-catalog refresh.")
         return
@@ -485,9 +553,16 @@ def main():
             print(f"\nABORTING (myntra) -- {problem}\nNothing was written or pushed. Check the scrape output before retrying.\n", file=sys.stderr)
             raise SystemExit(1)
 
+    if not args.skip_amazon:
+        az_prior = {k: v for k, v in prior_rows.items() if k[0] == "amazon"}
+        problem = sanity_check(az_rows, az_prior, args.amazon_min_rows, args.amazon_max_drop_pct)
+        if problem:
+            print(f"\nABORTING (amazon) -- {problem}\nNothing was written or pushed. Check the scrape output before retrying.\n", file=sys.stderr)
+            raise SystemExit(1)
+
     write_data_json(rows, data_json_path)
-    print(f"Wrote {len(rows)} rows to {data_json_path} ({len(fk_rows)} flipkart, {len(nk_rows)} nykaa, {len(my_rows)} myntra)")
-    print(f"Stats: flipkart={fk_stats} | nykaa={nk_stats} | myntra={my_stats}")
+    print(f"Wrote {len(rows)} rows to {data_json_path} ({len(fk_rows)} flipkart, {len(nk_rows)} nykaa, {len(my_rows)} myntra, {len(az_rows)} amazon)")
+    print(f"Stats: flipkart={fk_stats} | nykaa={nk_stats} | myntra={my_stats} | amazon={az_stats}")
 
     git_commit_and_push(repo_dir, args.data_path, stats_by_platform)
     print("Done.")

@@ -210,6 +210,51 @@ def classify_myntra(rr):
     return None, None, None
 
 
+def classify_amazon(rr):
+    """Amazon counterpart to classify() above. Amazon has no single
+    structured shelf-life field like Myntra's -- when present at all, it's
+    free text under a "Storage:" label inside the "Important information"
+    block (see amazon_pdp_scraper.py's SHELF-LIFE FINDING, confirmed
+    2026-09-14 against real ASIN B0BK1V96Z4 / SKU FC-KL-OK-040: D2C says
+    "2 months", Amazon's Storage text says "30days" -- a genuine mismatch,
+    not a parsing artifact). Many listings (non-perishables, or sellers who
+    just didn't fill it in) have no Storage: text at all, same situation as
+    Nykaa for those rows -- shelf_life_status comes back "d2c_missing" or
+    "not_found" rather than "mismatch" for those, so P1 only fires on a real
+    signal. There's no Amazon equivalent of Flipkart's flat "3 Months"
+    default sub-case, so unlike classify() there's only one P1 detail
+    message here.
+
+    P2 (Page Broken) covers Amazon's own "Page Not Found" static-page signal
+    -- see amazon_qa_diff.py's is_amazon_page_broken() and
+    amazon_pdp_scraper.py's page-not-found finding (confirmed against a
+    deliberately bogus ASIN, B000000000). Amazon's separate soft bot-check
+    interstitial never reaches this far -- it's caught and retried at
+    scrape time (see amazon_pdp_scraper.py's BOT-CHECK FINDING), so it can
+    never be misread here as a real "page broken" signal.
+
+    P5 (No D2C Reference Match), same as classify()/classify_nykaa()/
+    classify_myntra() above: fires when this SKU has no row at all in the
+    D2C reference file. Not labeled "discontinued" -- could be
+    marketplace-only, a D2C scrape gap, or a stale URL. Checked first, same
+    reasoning as classify()."""
+    if rr.get("no_d2c_match") is True:
+        return "P5", TIER_LABEL["P5"], "No D2C reference row for this SKU -- check the SKU codes master for its live status (may be marketplace-only)"
+    if rr["shelf_life_status"] == "mismatch":
+        az_val = (rr.get("amazon_shelf_life") or "").strip()
+        d2c_short = _short_duration(rr.get("d2c_shelf_life", ""))
+        az_short = _short_duration(az_val) if az_val else "not in Important Information"
+        return "P1", TIER_LABEL["P1"], f"D2C {d2c_short} vs Amazon {az_short}"
+    if rr["amazon_page_broken"] is True:
+        return "P2", TIER_LABEL["P2"], "Amazon page broken, delisted, or returned no usable content"
+    if rr["title_plausible"] is False:
+        return "P3", TIER_LABEL["P3"], "Amazon title doesn't share the SKU's core words"
+    vb = rr["visual_best_similarity"]
+    if vb is not None and vb < 0.6:
+        return "P4", TIER_LABEL["P4"], f"Best photo match scores {vb:.2f} (< 0.6)"
+    return None, None, None
+
+
 DIFF_COLS_TYPES = {
     "flipkart_page_broken": "bool", "title_plausible": "bool",
     "visual_best_similarity": "float", "no_d2c_match": "bool",
@@ -222,6 +267,11 @@ NYKAA_DIFF_COLS_TYPES = {
 
 MYNTRA_DIFF_COLS_TYPES = {
     "myntra_page_broken": "bool", "title_plausible": "bool",
+    "visual_best_similarity": "float", "no_d2c_match": "bool",
+}
+
+AMAZON_DIFF_COLS_TYPES = {
+    "amazon_page_broken": "bool", "title_plausible": "bool",
     "visual_best_similarity": "float", "no_d2c_match": "bool",
 }
 

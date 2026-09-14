@@ -24,13 +24,22 @@ pieces, in order.
   confirm.
 - **P4 — Product Photo Mismatch** — product photo is a weak visual match to
   the D2C listing.
+- **P5 — No D2C Reference Match** — this SKU has no row at all in the D2C
+  reference file, so there's nothing to compare against on any other tier.
+  Deliberately NOT labeled "discontinued" -- it could just as easily be a
+  marketplace-only SKU never meant to be on nathabit.in, a D2C scrape that
+  hasn't reached it yet, or a stale D2C URL. The action is neutral: check
+  the SKU codes master for that SKU's live status.
 
-(`pipeline/build_kam_review.py` emits this 4-tier numbering directly. An
+(`pipeline/build_kam_review.py` emits this tier numbering directly. An
 older 5-tier scheme existed briefly during development, with a remap step in
 `docs/index.html` to translate it -- that remap was removed on 2026-09-11
 after it was found silently re-remapping already-correct values (e.g. a real
 P2 "Page Broken" row was being shown under P1). Both the script and the
-dashboard now agree on P1-P4 as listed above with no translation needed.)
+dashboard now agree on P1-P5 as listed above with no translation needed. P5
+was added on 2026-09-14 to stop SKUs with no D2C reference match from being
+silently dropped from the QA sweep entirely -- see `qa_diff.py` /
+`nykaa_qa_diff.py`'s `no_d2c_match` column.)
 
 ## How data flows
 

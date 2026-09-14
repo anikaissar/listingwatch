@@ -206,6 +206,7 @@
           <option value="P2">P2 — Page Broken</option>
           <option value="P3">P3 — Title Mismatch</option>
           <option value="P4">P4 — Product Photo Mismatch</option>
+          <option value="P5">P5 — No D2C Reference Match</option>
         </select>
         <select id="statusFilter" aria-label="Filter by status">
           <option value="all">All statuses</option>
@@ -260,13 +261,14 @@ var EMBEDDED_DATA = window.__DASHBOARD_DATA__ || null;
 // -------------------------------------------------------------------------
 
 (function () {
-  var TIER_ORDER = ["P1", "P2", "P3", "P4"];
-  var TIER_COLOR = { P1: "var(--seq-550)", P2: "var(--seq-450)", P3: "var(--seq-350)", P4: "var(--seq-300)" };
+  var TIER_ORDER = ["P1", "P2", "P3", "P4", "P5"];
+  var TIER_COLOR = { P1: "var(--seq-550)", P2: "var(--seq-450)", P3: "var(--seq-350)", P4: "var(--seq-300)", P5: "var(--seq-250)" };
   var TIER_MEANING = {
     P1: "Shelf Life Mismatch",
     P2: "Page Broken",
     P3: "Title Mismatch",
-    P4: "Product Photo Mismatch"
+    P4: "Product Photo Mismatch",
+    P5: "No D2C Reference Match — check the SKU codes master for this SKU's live status (may be marketplace-only, not necessarily discontinued)"
   };
   // build_kam_review.py has emitted the new 4-tier numbering directly since 2026-09-08
   // (P1 Shelf Life Mismatch, P2 Page Broken, P3 Title Mismatch, P4 Product Photo Mismatch) --
@@ -275,6 +277,9 @@ var EMBEDDED_DATA = window.__DASHBOARD_DATA__ || null;
   // updated and was silently re-remapping already-correct values (e.g. real P2 "Page Broken"
   // rows got shown as P1), which is what surfaced this. Removed for good -- do not re-add a
   // remap unless build_kam_review.py's numbering actually changes again.
+  // P5 (No D2C Reference Match) added 2026-09-14 for SKUs with no row at all in the D2C
+  // reference file -- deliberately NOT labeled "discontinued" since some SKUs may be
+  // marketplace-only by design; see build_kam_review.py's classify()/classify_nykaa().
   var STATUSES = ["Open", "Resolved", "Not an Issue"];
   var BACKEND_CONFIGURED = !!(WORKER_URL && WORKER_URL.indexOf("REPLACE_WITH") !== 0);
   // Column header text per platform tab -- Flipkart's ID is an FSN, Nykaa's

@@ -67,7 +67,9 @@ TIER_FILLS = {
     "P2": PatternFill("solid", fgColor="F6B26B"),
     "P3": PatternFill("solid", fgColor="FFD966"),
     "P4": PatternFill("solid", fgColor="CFE2F3"),
+    "P5": PatternFill("solid", fgColor="D9D2E9"),
 }
+TIER_ORDER = ["P1", "P2", "P3", "P4", "P5"]
 STATUS_OPTIONS = ["Open", "Resolved", "Not an Issue"]
 
 # 4-tier scheme (as of 2026-09-08). The old scheme had 5 tiers, with P1 (Flipkart's
@@ -81,6 +83,7 @@ TIER_LABEL = {
     "P2": "Page Broken",
     "P3": "Title Mismatch",
     "P4": "Product Photo Mismatch",
+    "P5": "No D2C Reference Match",
 }
 # Short line for the top-of-sheet action plan -- kept to one clause each.
 TIER_ACTION = {
@@ -88,6 +91,7 @@ TIER_ACTION = {
     "P2": "Check listing status (dead FSN? soft-blocked?)",
     "P3": "Confirm this is really the right SKU",
     "P4": "Spot-check the product photos",
+    "P5": "Check live status in the SKU codes master (may be marketplace-only, not necessarily discontinued)",
 }
 
 _DURATION_RE = re.compile(r"(\d+)\s*(day|days|month|months|year|years)", re.I)
@@ -111,7 +115,17 @@ def classify(rr):
     catalog team covers every SKU showing this) and any other shelf-life
     mismatch (each needs its own per-SKU fix). Both still say "P1" here, but
     the detail text keeps them tellable apart -- the flat-default rows say
-    so explicitly."""
+    so explicitly.
+
+    P5 (No D2C Reference Match) is checked first: it fires when this SKU
+    has no row at all in the D2C reference file, so there's nothing to
+    compare against on any of the other tiers (they'd all read blank/None
+    anyway). Deliberately NOT labeled "discontinued" -- it could just as
+    easily be a marketplace-only SKU never meant to be on nathabit.in, a
+    D2C scrape that hasn't reached it yet, or a stale D2C URL. The action
+    is neutral: check the SKU codes master for that SKU's live status."""
+    if rr.get("no_d2c_match") is True:
+        return "P5", TIER_LABEL["P5"], "No D2C reference row for this SKU -- check the SKU codes master for its live status (may be marketplace-only)"
     if rr["shelf_life_status"] == "mismatch":
         fk_val = (rr.get("flipkart_max_shelf_life") or "").strip()
         d2c_short = _short_duration(rr.get("d2c_shelf_life", ""))
@@ -140,7 +154,14 @@ def classify_nykaa(rr):
     P2 (Page Broken) covers Nykaa's own 404/isNotFound signal as well as a
     total extraction failure (no_content) -- see nykaa_qa_diff.py's
     is_nykaa_page_broken() and nykaa_pdp_scraper.py's page-not-found
-    finding for the real case (product 10346740) this was built against."""
+    finding for the real case (product 10346740) this was built against.
+
+    P5 (No D2C Reference Match), same as classify() above: fires when this
+    SKU has no row at all in the D2C reference file. Not labeled
+    "discontinued" -- could be marketplace-only, a D2C scrape gap, or a
+    stale URL. Checked first, same reasoning as classify()."""
+    if rr.get("no_d2c_match") is True:
+        return "P5", TIER_LABEL["P5"], "No D2C reference row for this SKU -- check the SKU codes master for its live status (may be marketplace-only)"
     if rr["nykaa_page_broken"] is True:
         return "P2", TIER_LABEL["P2"], "Nykaa page broken, removed, or returned no usable content"
     if rr["title_plausible"] is False:
@@ -153,12 +174,12 @@ def classify_nykaa(rr):
 
 DIFF_COLS_TYPES = {
     "flipkart_page_broken": "bool", "title_plausible": "bool",
-    "visual_best_similarity": "float",
+    "visual_best_similarity": "float", "no_d2c_match": "bool",
 }
 
 NYKAA_DIFF_COLS_TYPES = {
     "nykaa_page_broken": "bool", "title_plausible": "bool",
-    "visual_best_similarity": "float",
+    "visual_best_similarity": "float", "no_d2c_match": "bool",
 }
 
 
@@ -285,7 +306,7 @@ def build(diff_path, existing_path, out_path):
     ws1.cell(row=r, column=1, value="Order of work:").font = SECTION_FONT
     r += 1
     tier_counts = {t: sum(1 for c in classified if c[0] == t) for t in TIER_ACTION}
-    for tier in ["P1", "P2", "P3", "P4"]:
+    for tier in TIER_ORDER:
         cnt = tier_counts.get(tier, 0)
         c = ws1.cell(row=r, column=1, value=tier)
         c.font = Font(name=FONT, bold=True)
@@ -351,7 +372,7 @@ def build(diff_path, existing_path, out_path):
     style_header(ws2, len(headers2), row=r)
     r += 1
     first_data_row = r
-    for tier in ["P1", "P2", "P3", "P4"]:
+    for tier in TIER_ORDER:
         c1 = ws2.cell(row=r, column=1, value=tier)
         c1.font = Font(name=FONT, bold=True)
         c1.fill = TIER_FILLS[tier]

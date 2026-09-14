@@ -65,7 +65,7 @@ OUT_DEFAULT = "nykaa_diff_latest.csv"
 VISUAL_CACHE_DIR = "qa_diff_image_cache"  # shared cache dir with qa_diff.py -- same D2C images get reused, no re-download
 
 OUT_COLS = [
-    "nh_sku", "nykaa_product_id", "pdp_availability", "nykaa_page_broken",
+    "nh_sku", "nykaa_product_id", "pdp_availability", "nykaa_page_broken", "no_d2c_match",
     "nykaa_title", "d2c_title",
     "title_seq_ratio", "title_d2c_term_coverage", "title_plausible",
     "desc_seq_ratio", "desc_token_jaccard",
@@ -131,7 +131,28 @@ def run(nykaa_path, d2c_path, out_path, do_visual=False):
         nh_sku = nk.get("nh_sku", "")
         d2c = d2c_by_sku.get(nh_sku)
         if not d2c:
+            # No D2C reference row for this SKU at all -- can't compare
+            # anything. Deliberately NOT assumed to mean "discontinued": it
+            # could just as easily be a marketplace-only SKU that was never
+            # meant to be on nathabit.in, a D2C scrape that hasn't reached
+            # it yet, or a genuinely stale URL. Flagged as its own tier so a
+            # KAM checks the SKU codes master for that SKU's live status
+            # rather than this silently vanishing from the sweep entirely
+            # (which is what happened before this field existed).
             unmatched.append(nh_sku)
+            out_rows.append({
+                "nh_sku": nh_sku, "nykaa_product_id": nk.get("nykaa_product_id", ""),
+                "pdp_availability": nk.get("pdp_availability", ""),
+                "nykaa_page_broken": "", "no_d2c_match": True,
+                "nykaa_title": nk.get("obs_title", ""), "d2c_title": "",
+                "title_seq_ratio": "", "title_d2c_term_coverage": "", "title_plausible": "",
+                "desc_seq_ratio": "", "desc_token_jaccard": "",
+                "ingredients_coverage": "",
+                "nykaa_extraction_source": nk.get("extraction_source", ""),
+                "nykaa_image_count": nk.get("obs_image_count", ""), "d2c_image_count": "",
+                "image_count_flag": "no_d2c_match",
+                "visual_best_similarity": "", "visual_avg_similarity": "",
+            })
             continue
 
         broken = is_nykaa_page_broken(nk.get("pdp_availability", ""))
@@ -158,7 +179,7 @@ def run(nykaa_path, d2c_path, out_path, do_visual=False):
         out_rows.append({
             "nh_sku": nh_sku, "nykaa_product_id": nk.get("nykaa_product_id", ""),
             "pdp_availability": nk.get("pdp_availability", ""),
-            "nykaa_page_broken": broken,
+            "nykaa_page_broken": broken, "no_d2c_match": False,
             "nykaa_title": nk.get("obs_title", ""), "d2c_title": d2c.get("title", ""),
             "title_seq_ratio": title_sim["seq_ratio"],
             "title_d2c_term_coverage": title_sim["d2c_term_coverage"],
@@ -180,8 +201,10 @@ def run(nykaa_path, d2c_path, out_path, do_visual=False):
     print(f"Diffed {len(out_rows)} Nykaa rows against {len(d2c_by_sku)} D2C reference SKUs.")
     if unmatched:
         uniq = sorted(set(unmatched))
-        print(f"WARNING: {len(unmatched)} Nykaa rows ({len(uniq)} distinct nh_sku) had no D2C match "
-              f"-- not in {d2c_path}. First few: {uniq[:10]}")
+        print(f"NO_D2C_MATCH: {len(unmatched)} Nykaa rows ({len(uniq)} distinct nh_sku) had no D2C match "
+              f"-- not in {d2c_path}. Written to {out_path} with no_d2c_match=True (not assumed "
+              f"discontinued -- could be marketplace-only, a stale D2C URL, or a D2C scrape gap; check "
+              f"the SKU codes master for that SKU's live status). First few: {uniq[:10]}")
     print(f"-> {out_path}")
 
     import collections
@@ -191,7 +214,7 @@ def run(nykaa_path, d2c_path, out_path, do_visual=False):
               f"or had no extractable content at all -- title/description/ingredients/image "
               f"comparisons are skipped for these (nothing to compare against), but they need a "
               f"manual look on Nykaa's side.")
-    comparable = [r for r in out_rows if not r["nykaa_page_broken"]]
+    comparable = [r for r in out_rows if not r["nykaa_page_broken"] and not r["no_d2c_match"]]
     print(f"image_count_flag mix (comparable rows only, n={len(comparable)}):",
           dict(collections.Counter(r["image_count_flag"] for r in comparable)))
     not_plausible = sum(1 for r in comparable if r["title_plausible"] is False)

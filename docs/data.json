@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-15T09:05:34.282793+00:00",
+  "generated_at": "2026-09-15T12:30:40.426204+00:00",
   "source": "weekly_refresh.py",
   "rows": [
     {
@@ -8613,6 +8613,27 @@
       "status_changed_at": null
     },
     {
+      "doc_id": "FC-DU-DR2-040__nykaa__6884338",
+      "platform": "nykaa",
+      "priority": "P4",
+      "status": "Open",
+      "nh_sku": "FC-DU-DR2-040",
+      "platform_id": "6884338",
+      "fsn": "",
+      "nykaa_product_id": "6884338",
+      "issue": "Product Photo Mismatch",
+      "detail": "Best photo match scores 0.59 (< 0.6)",
+      "marketplace_title": "Nat Habit Fresh Daily Ubtan Face Pack - Delicate Rose for Deep Cleansing, Tightening & Instant Glow",
+      "flipkart_title": "",
+      "nykaa_title": "Nat Habit Fresh Daily Ubtan Face Pack - Delicate Rose for Deep Cleansing, Tightening & Instant Glow",
+      "myntra_title": "",
+      "amazon_title": "",
+      "d2c_title": "Delicate Rose Brightening Ubtan Face Pack",
+      "reminders_sent": 0,
+      "last_reminder_cycle": 0,
+      "status_changed_at": null
+    },
+    {
       "doc_id": "FC-DU-SO2-040__nykaa__6884336",
       "platform": "nykaa",
       "priority": "P4",
@@ -8629,6 +8650,27 @@
       "myntra_title": "",
       "amazon_title": "",
       "d2c_title": "Sweet Orange Brightening Ubtan Face Pack",
+      "reminders_sent": 0,
+      "last_reminder_cycle": 0,
+      "status_changed_at": null
+    },
+    {
+      "doc_id": "FC-KL-GK-040__nykaa__7301224",
+      "platform": "nykaa",
+      "priority": "P4",
+      "status": "Open",
+      "nh_sku": "FC-KL-GK-040",
+      "platform_id": "7301224",
+      "fsn": "",
+      "nykaa_product_id": "7301224",
+      "issue": "Product Photo Mismatch",
+      "detail": "Best photo match scores 0.58 (< 0.6)",
+      "marketplace_title": "Nat Habit Gulab Khus Ksheer Lepa, Clay Face Mask for Pore Refining & Tightening, Ayurvedic Face Pack",
+      "flipkart_title": "",
+      "nykaa_title": "Nat Habit Gulab Khus Ksheer Lepa, Clay Face Mask for Pore Refining & Tightening, Ayurvedic Face Pack",
+      "myntra_title": "",
+      "amazon_title": "",
+      "d2c_title": "Fresh Gulab Khus Lepa Face Pack",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
       "status_changed_at": null

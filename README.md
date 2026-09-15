@@ -135,6 +135,22 @@ unreliable -- see `weekly_refresh.py`'s module docstring for the full
 writeup, including how this gap was found (a real rebranded-packaging
 mismatch that went uncaught).
 
+Turning `--visual` on wasn't the whole fix, though: the comparison itself
+(`qa_diff.py`'s `visual_similarity()`, shared by all four platforms) used a
+perceptual hash that's deliberately grayscale, so it's structurally blind
+to a pure color change -- Anika's real rebrand example (old packaging:
+light pink; new packaging: dark maroon) scored 0.64-0.98 "similar" across
+every platform, always above the 0.6 threshold, because the bottle shape
+and studio lighting stayed the same even though the color didn't. As of
+the same day, `visual_similarity()` also computes an RGB color signature
+per image (`_color_signature()`) and combines it with the shape hash via
+`min(shape_sim, color_sim)`, so a pair only counts as "the same photo" if
+it matches on both dimensions. This lives entirely inside `qa_diff.py`
+(imported, not duplicated, by the other three platforms' diff scripts), so
+the fix applies to all four platforms from one place. See `qa_diff.py
+--selftest` for the synthetic rebrand fixture and true-match regression
+check.
+
 **Amazon rollout status (as of 2026-09-14):** the worklist
 (`pipeline/amazon_worklist.csv`, 530 rows / 516 distinct SKUs), scraper,
 diff engine, and classifier are all built and validated against real Amazon

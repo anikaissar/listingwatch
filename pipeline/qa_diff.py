@@ -393,22 +393,92 @@ def _hamming(a, b):
     return bin(a ^ b).count("1")
 
 
+def _color_signature(path):
+    """Coarse color fingerprint: trim letterbox borders (see
+    _autocrop_borders, reused unchanged), resize to a small 8x8 RGB grid,
+    and return the 64 (R, G, B) cell averages as a flat list.
+
+    This exists because _phash() above is deliberately grayscale (see its
+    docstring) and so is structurally blind to a pure color/hue change --
+    confirmed for real with a genuine rebranded product (D2C site still
+    showing the old packaging, marketplaces already showing the new one):
+    the old (light pink) and new (dark maroon) bottle photos are near-
+    identical in composition and lighting, so dHash alone scored them
+    0.64-0.98 similar across all four platforms -- always at or above the
+    0.6 "same photo" threshold, never catching the rebrand. Reproduced
+    synthetically too: two gradient images with matched luminance but
+    different hue (pink vs green) hashed with Hamming distance 0 (a
+    "perfect" shape match) via this exact _phash()/_hamming() pair.
+
+    Kept fully independent of _phash() (own resize, own grid size) rather
+    than bolted on, so the existing shape-hash and its passing selftests
+    are not touched by this at all -- this is a second, separate signal
+    that visual_similarity() below combines with the first."""
+    from PIL import Image
+    try:
+        with Image.open(path) as im:
+            im = im.convert("RGB")
+            im = _autocrop_borders(im)
+            im = im.resize((8, 8), Image.LANCZOS)
+            return list(im.getdata())
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def _color_similarity(sig_a, sig_b):
+    """1 - mean per-cell RGB Euclidean distance, normalized so a maximally
+    different pair of solid colors (e.g. pure black vs pure white) scores 0
+    and an identical pair scores 1. Compares cell-by-cell (not a global
+    average) so a photo that's the same overall brightness but a different
+    color -- exactly the rebrand case this was built for -- still reads as
+    different rather than washing out to a single similar-looking average."""
+    max_dist = (255 ** 2 + 255 ** 2 + 255 ** 2) ** 0.5
+    dists = []
+    for (ar, ag, ab), (br, bg, bb) in zip(sig_a, sig_b):
+        d = ((ar - br) ** 2 + (ag - bg) ** 2 + (ab - bb) ** 2) ** 0.5
+        dists.append(d)
+    mean_dist = sum(dists) / len(dists)
+    return 1 - (mean_dist / max_dist)
+
+
 def visual_similarity(fk_urls, d2c_urls, cache_dir, client):
     """Returns (best_similarity, avg_similarity) in [0,1], or (None, None) if
     either side has no usable images. best = closest single image pair found
     (a strong 'yes, this photo is shared/near-identical' signal); avg = mean
     of each Flipkart image's best match (a rough 'whole gallery overlaps'
-    signal). Similarity = 1 - (Hamming distance / 64 bits)."""
+    signal).
+
+    Each image pair's similarity is the MINIMUM of two independent scores,
+    not an average:
+      - shape similarity = 1 - (dHash Hamming distance / 64 bits) -- same
+        composition/edges, blind to color (see _phash's docstring).
+      - color similarity = 1 - normalized mean per-cell RGB distance (see
+        _color_signature/_color_similarity) -- same coloring, blind to
+        composition (a flat color image has no edges to hash on).
+    Using min() rather than an average is deliberate: a pair should only
+    read as "the same photo" if it matches on BOTH dimensions. An average
+    would let a strong shape match paper over a real color difference (or
+    vice versa) -- which is exactly how the real rebrand case above slipped
+    through when shape was the only signal (0.64-0.98 "similar" on shape
+    alone, despite completely different packaging colors)."""
     if not fk_urls or not d2c_urls:
         return None, None
-    fk_hashes = [h for h in (_phash(_download(u, cache_dir, client) or "") for u in fk_urls) if h is not None]
-    d2c_hashes = [h for h in (_phash(_download(u, cache_dir, client) or "") for u in d2c_urls) if h is not None]
-    if not fk_hashes or not d2c_hashes:
+    fk_paths = [p for p in (_download(u, cache_dir, client) for u in fk_urls) if p]
+    d2c_paths = [p for p in (_download(u, cache_dir, client) for u in d2c_urls) if p]
+    fk_pairs = [(h, _color_signature(p)) for p, h in ((p, _phash(p)) for p in fk_paths) if h is not None]
+    d2c_pairs = [(h, _color_signature(p)) for p, h in ((p, _phash(p)) for p in d2c_paths) if h is not None]
+    fk_pairs = [(h, c) for h, c in fk_pairs if c is not None]
+    d2c_pairs = [(h, c) for h, c in d2c_pairs if c is not None]
+    if not fk_pairs or not d2c_pairs:
         return None, None
     best_per_fk = []
-    for fh in fk_hashes:
-        dist = min(_hamming(fh, dh) for dh in d2c_hashes)
-        best_per_fk.append(1 - dist / 64)
+    for fh, fc in fk_pairs:
+        best = 0.0
+        for dh, dc in d2c_pairs:
+            shape_sim = 1 - _hamming(fh, dh) / 64
+            color_sim = _color_similarity(fc, dc)
+            best = max(best, min(shape_sim, color_sim))
+        best_per_fk.append(best)
     return round(max(best_per_fk), 3), round(sum(best_per_fk) / len(best_per_fk), 3)
 
 
@@ -772,6 +842,72 @@ def selftest():
                         "letterboxing it to a square while the other doesn't crop/pad it "
                         "-- this is the real, common cross-platform case, not a synthetic edge case",
                         _hamming(h_d2c_photo, h_fk_photo) <= 8))
+
+        # --- Color similarity: the fix for the real rebrand gap you found
+        # (D2C still showing old packaging, marketplaces already showing
+        # new). A same-shape-different-color pair like this must NOT read
+        # as a match on shape alone -- that's exactly what let the real
+        # case through at 0.64-0.98 "similar" before this fix existed.
+        def _diag_gradient(size, c1, c2):
+            """Diagonal gradient between two RGB colors -- same edge/luminance
+            structure as _gradient() above (so it still dHashes the same way),
+            but in color instead of grayscale."""
+            im = Image.new("RGB", (size, size))
+            for x in range(size):
+                t = x / (size - 1)
+                r = int(c1[0] + (c2[0] - c1[0]) * t)
+                g = int(c1[1] + (c2[1] - c1[1]) * t)
+                b = int(c1[2] + (c2[2] - c1[2]) * t)
+                for y in range(size):
+                    im.putpixel((x, y), (r, g, b))
+            return im
+
+        def _save_and_sig(im):
+            path = "/tmp/_qa_diff_selftest_color_img.png"
+            im.save(path, format="PNG")
+            return _phash(path), _color_signature(path)
+
+        # Real case, reproduced synthetically: old packaging (light pink)
+        # vs new packaging (a clearly different, darker hue) built with the
+        # *same* per-channel gradient delta as the old one (just a
+        # different starting color) -- that keeps the luminance trend
+        # (and therefore the shape hash) identical between the two while
+        # still being a large, real RGB color difference. Confirmed this
+        # exact pair hashes at Hamming distance 0 (shape sim 1.0) despite
+        # the two photos being visibly different colors.
+        old_pack = _diag_gradient(64, (245, 210, 220), (200, 140, 165))  # old: light pink
+        new_pack = _diag_gradient(64, (90, 90, 80), (45, 20, 25))        # new: dark, different hue
+        h_old, c_old = _save_and_sig(old_pack)
+        h_new, c_new = _save_and_sig(new_pack)
+        shape_sim_rebrand = 1 - _hamming(h_old, h_new) / 64
+        color_sim_rebrand = _color_similarity(c_old, c_new)
+        checks.append(("_phash alone: confirms the bug mechanism -- old/new "
+                        "packaging with matched luminance but different hue "
+                        "still scores as a near-perfect shape match on its own",
+                        shape_sim_rebrand >= 0.9))
+        checks.append(("_color_similarity: the same old/new packaging pair "
+                        "scores clearly low on color, unlike shape",
+                        color_sim_rebrand < 0.6))
+        checks.append(("combined min(shape, color): the rebrand pair now "
+                        "correctly reads as NOT a match once color is "
+                        "factored in, even though shape alone said otherwise",
+                        min(shape_sim_rebrand, color_sim_rebrand) < 0.6))
+
+        # Regression check: a genuine true match (same shape AND same
+        # color, just re-encoded/resized like a real cross-platform photo)
+        # must still score high after adding the color dimension -- the fix
+        # must not make real matches newly fail.
+        true_a = _diag_gradient(64, (245, 210, 220), (200, 140, 165))
+        true_b = _diag_gradient(256, (245, 210, 220), (200, 140, 165)).resize((64, 64), Image.LANCZOS)
+        h_true_a, c_true_a = _save_and_sig(true_a)
+        h_true_b, c_true_b = _save_and_sig(true_b)
+        shape_sim_true = 1 - _hamming(h_true_a, h_true_b) / 64
+        color_sim_true = _color_similarity(c_true_a, c_true_b)
+        checks.append(("combined min(shape, color): a genuine true match "
+                        "(same photo, re-encoded at a different resolution) "
+                        "still scores high on both dimensions -- no false-"
+                        "positive regression from adding the color check",
+                        min(shape_sim_true, color_sim_true) >= 0.85))
     except ImportError:
         print("  [SKIP] visual-hash checks -- Pillow not installed (only needed for --visual)")
 

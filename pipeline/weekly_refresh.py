@@ -96,6 +96,32 @@ product's images from each platform's CDN and nathabit.in's); use
 --skip-visual to fall back to the old (P4-blind) behavior if pillow isn't
 set up yet or a CDN is being unreliable, rather than losing the whole run.
 
+IMAGE COMPARISON, PART 2 -- COLOR (2026-09-15, same day): turning --visual on
+above did NOT catch Anika's actual rebrand example. Real production diff
+data for that SKU (FC-KL-CN-040 / FC-KL-CN2-040) scored visual_best_similarity
+0.64-0.98 across all four platforms -- always at or above classify()'s 0.6
+"same photo" threshold, so P4 still never fired for it. Root cause: the
+perceptual hash in qa_diff.py's _phash() converts every image to grayscale
+before comparing, so it is structurally blind to a pure color/branding
+change -- confirmed synthetically (two gradient images built with the exact
+same luminance profile but a completely different hue hashed at Hamming
+distance 0, i.e. a "perfect" match). The old-vs-new packaging here is
+mostly a color change (light pink -> dark maroon) with similar bottle
+shape/studio lighting, which is exactly the case grayscale hashing cannot
+see. Fix: qa_diff.py's visual_similarity() now also computes a color
+signature per image (RGB, not grayscale -- see _color_signature) and
+combines it with the existing shape hash via min(shape_sim, color_sim), so
+an image pair only reads as "the same photo" when it matches on BOTH
+dimensions. This is a change inside qa_diff.py itself (imported by
+nykaa_qa_diff.py / myntra_qa_diff.py / amazon_qa_diff.py, not duplicated),
+so all four platforms picked up the fix from one place -- no changes needed
+here in weekly_refresh.py itself. Validated with qa_diff.py --selftest
+(the rebrand case reproduced synthetically, plus a true-match regression
+check) and end-to-end through qa_diff.run(..., do_visual=True) -> classify()
+against a synthetic same-shape-different-color pair, confirming P4 now
+fires (scored 0.455, well under the 0.6 threshold) where it previously
+would not have.
+
 Usage (from the repo root, with the pipeline/ scripts and a clone of this
 same GitHub repo both available):
 

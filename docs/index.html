@@ -111,10 +111,35 @@
     color: var(--text-muted); font-weight: 550; font-size: 11px; text-transform: uppercase;
     letter-spacing: 0.02em; position: sticky; top: 0; background: var(--surface-1);
   }
+  table.rows-tbl th.checkbox-col, table.rows-tbl td.checkbox-col { width: 30px; text-align: center; padding-left: 12px; padding-right: 2px; }
   table.rows-tbl td.detail-cell { color: var(--text-secondary); max-width: 240px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   table.rows-tbl td.title-cell { color: var(--text-secondary); max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   table.rows-tbl td.num { font-variant-numeric: tabular-nums; text-align: center; }
   table.rows-tbl tr:hover td { background: var(--muted-wash); }
+
+  /* Bulk-select toolbar -- appears once at least one row's checkbox is
+     ticked, so resolving a batch of flagged rows doesn't mean clicking each
+     row's Status dropdown one at a time. */
+  .bulk-bar {
+    display: none; align-items: center; gap: 10px; flex-wrap: wrap;
+    background: var(--brand-wash); border: 1px solid var(--border); border-radius: 10px;
+    padding: 10px 14px; margin-bottom: 12px;
+  }
+  .bulk-bar.visible { display: flex; }
+  .bulk-bar .bulk-count { font-size: 12px; font-weight: 650; color: var(--text-primary); white-space: nowrap; }
+  .bulk-btn {
+    font-family: inherit; font-size: 12px; font-weight: 600; padding: 6px 12px;
+    border-radius: 7px; border: 1px solid transparent; cursor: pointer;
+  }
+  .bulk-btn:disabled { opacity: 0.5; cursor: default; }
+  .bulk-btn.resolved { background: var(--good-wash); color: #0a6b0a; }
+  .bulk-btn.not-issue { background: var(--muted-wash); color: var(--text-secondary); }
+  .bulk-btn.open { background: var(--warning-wash); color: #8a5a00; }
+  .bulk-bar .clear-btn {
+    font-size: 12px; color: var(--text-secondary); background: none; border: none;
+    cursor: pointer; text-decoration: underline; padding: 0;
+  }
+  .bulk-bar .bulk-progress { font-size: 11px; color: var(--text-muted); margin-left: auto; white-space: nowrap; }
 
   select.status-select {
     font-family: inherit; font-size: 12px; font-weight: 600; padding: 5px 8px;
@@ -218,10 +243,20 @@
         <span class="count" id="rowCount"></span>
       </div>
 
+      <div class="bulk-bar" id="bulkBar">
+        <span class="bulk-count" id="bulkCount">0 selected</span>
+        <button type="button" class="bulk-btn resolved" data-status="Resolved">Mark Resolved</button>
+        <button type="button" class="bulk-btn not-issue" data-status="Not an Issue">Mark Not an Issue</button>
+        <button type="button" class="bulk-btn open" data-status="Open">Reopen</button>
+        <button type="button" class="clear-btn" id="clearSelection">Clear selection</button>
+        <span class="bulk-progress" id="bulkProgress"></span>
+      </div>
+
       <div class="card table-wrap">
         <table class="rows-tbl">
           <thead>
             <tr>
+              <th class="checkbox-col"><input type="checkbox" id="selectAllCheckbox" aria-label="Select all visible rows" /></th>
               <th>Priority</th>
               <th>NH SKU</th>
               <th id="thPlatformId">FSN</th>
@@ -233,7 +268,7 @@
             </tr>
           </thead>
           <tbody id="rowsBody">
-            <tr><td colspan="8" class="loading-state">Loading…</td></tr>
+            <tr><td colspan="9" class="loading-state">Loading…</td></tr>
           </tbody>
         </table>
       </div>
@@ -308,6 +343,14 @@ var EMBEDDED_DATA = window.__DASHBOARD_DATA__ || null;
 
   var allRows = [];
   var localOverrides = {}; // doc_id -> {status, status_changed_at}
+  // Bulk-select state: doc_id -> true for every currently-ticked row,
+  // regardless of which filters are applied right now. Cleared on a
+  // platform-tab switch (a different platform's doc_ids would just show as
+  // a confusing "N selected" with nothing checked on screen) but survives
+  // filter changes and the 20s data poll, so picking "all P5 rows" and then
+  // narrowing/widening the filter, or waiting through a refresh, doesn't
+  // lose the selection.
+  var selectedDocIds = {};
   var pollTimer = null;
   // Which platform tab is currently showing real data. Defaults to
   // flipkart (the tab that's selected on page load).
@@ -513,19 +556,143 @@ var EMBEDDED_DATA = window.__DASHBOARD_DATA__ || null;
     });
   }
 
+  // ---- Bulk select / bulk status change ----------------------------------
+  // Each single-row save above is its own commit to docs/data.json (the
+  // Worker does a GET-the-file / edit / PUT-with-that-sha round trip per
+  // request — see worker/src/index.js). Firing a batch of these at once
+  // would mean N requests racing over the same file's git sha, and the
+  // Worker only retries a sha conflict once — most of a large concurrent
+  // batch would come back 409 and silently fail to save. So a bulk update
+  // sends its requests ONE AT A TIME, waiting for each commit to land before
+  // starting the next. It's slower for a big selection (each row is a real
+  // round trip to GitHub), but every row actually saves instead of most of
+  // them getting lost to conflicts.
+
+  function isRowSelected(docId) { return !!selectedDocIds[docId]; }
+
+  function selectedCount() { return Object.keys(selectedDocIds).length; }
+
+  // Keeps the "select all" checkbox in sync with whatever's currently
+  // ticked among the VISIBLE (filtered) rows -- ticked if every visible row
+  // is selected, indeterminate (a dash) if some but not all are, unticked
+  // otherwise. Selections outside the current filter (e.g. rows picked
+  // before narrowing the filter further) aren't reflected in this checkbox,
+  // but still count toward the bulk bar below.
+  function updateBulkBar(visibleRows) {
+    var n = selectedCount();
+    var bar = document.getElementById("bulkBar");
+    bar.className = "bulk-bar" + (n > 0 ? " visible" : "");
+    document.getElementById("bulkCount").textContent = n + (n === 1 ? " row selected" : " rows selected");
+
+    var allCb = document.getElementById("selectAllCheckbox");
+    if (!allCb || !visibleRows) return;
+    var visibleIds = visibleRows.map(function (r) { return r.doc_id; });
+    var visibleSelected = visibleIds.filter(isRowSelected).length;
+    if (!visibleIds.length || visibleSelected === 0) {
+      allCb.checked = false; allCb.indeterminate = false;
+    } else if (visibleSelected === visibleIds.length) {
+      allCb.checked = true; allCb.indeterminate = false;
+    } else {
+      allCb.checked = false; allCb.indeterminate = true;
+    }
+  }
+
+  function setBulkBusy(busy) {
+    Array.prototype.forEach.call(document.querySelectorAll(".bulk-btn"), function (btn) { btn.disabled = busy; });
+    document.getElementById("clearSelection").disabled = busy;
+    document.getElementById("selectAllCheckbox").disabled = busy;
+    if (!busy) document.getElementById("bulkProgress").textContent = "";
+  }
+
+  function postStatusForBulk(docId, newStatus, now) {
+    var headers = { "Content-Type": "application/json" };
+    if (API_KEY && API_KEY.indexOf("REPLACE_WITH") !== 0) headers["X-Api-Key"] = API_KEY;
+    return fetch(WORKER_URL + "/status", {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify({ doc_id: docId, status: newStatus })
+    }).then(function (res) {
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      return res.json();
+    }).then(function (data) {
+      if (data && data.status_changed_at && localOverrides[docId]) {
+        localOverrides[docId].at = Date.parse(data.status_changed_at) || now;
+      }
+      return true;
+    }).catch(function () {
+      return false;
+    });
+  }
+
+  function applyBulkStatus(newStatus) {
+    var docIds = Object.keys(selectedDocIds);
+    if (!docIds.length) return;
+
+    if (!BACKEND_CONFIGURED) {
+      // Same local-only behavior as the single-row path in onStatusChange().
+      var now0 = Date.now();
+      docIds.forEach(function (docId) {
+        var row = allRows.find(function (r) { return r.doc_id === docId; });
+        if (!row) return;
+        row.status = newStatus;
+        row.status_changed_at = new Date(now0).toISOString();
+        delete localOverrides[docId];
+      });
+      selectedDocIds = {};
+      setSyncState("local", "Preview — not connected to a save service");
+      showBanner("info", "Not connected to a save service — edits apply here but aren't shared with anyone else. See worker/README.md to wire up real saving.");
+      renderAll();
+      return;
+    }
+
+    var total = docIds.length, done = 0, failedIds = [];
+    setBulkBusy(true);
+    setSyncState("busy", "Saving " + total + " status update" + (total === 1 ? "" : "s") + "…");
+
+    function step() {
+      if (done >= total) {
+        setBulkBusy(false);
+        selectedDocIds = {};
+        failedIds.forEach(function (docId) { selectedDocIds[docId] = true; });
+        if (failedIds.length) {
+          showBanner("warn", failedIds.length + " of " + total + " status updates couldn't be saved — those rows are still selected, so hitting the same button again will retry just them.");
+          setSyncState("error", "Some bulk updates failed to save");
+        } else {
+          showBanner("warn", null);
+          setSyncState("ok", "Saved");
+        }
+        renderAll();
+        return;
+      }
+      var docId = docIds[done];
+      var now = Date.now();
+      localOverrides[docId] = { status: newStatus, at: now };
+      document.getElementById("bulkProgress").textContent = "Saving " + (done + 1) + " of " + total + "…";
+      postStatusForBulk(docId, newStatus, now).then(function (ok) {
+        if (!ok) failedIds.push(docId);
+        done++;
+        step();
+      });
+    }
+    step();
+  }
+
   function renderRows() {
     var filtered = sortRows(applyFilters(effectiveRows()));
     document.getElementById("rowCount").textContent = filtered.length + " of " + allRows.length + " rows";
     var body = document.getElementById("rowsBody");
     if (!filtered.length) {
-      body.innerHTML = '<tr><td colspan="8" class="empty-state">No rows match these filters.</td></tr>';
+      body.innerHTML = '<tr><td colspan="9" class="empty-state">No rows match these filters.</td></tr>';
+      updateBulkBar(filtered);
       return;
     }
     body.innerHTML = filtered.map(function (r) {
       var opts = STATUSES.map(function (s) {
         return '<option value="' + s + '"' + (r.status === s ? " selected" : "") + '>' + s + '</option>';
       }).join("");
+      var checked = isRowSelected(r.doc_id) ? " checked" : "";
       return '<tr>' +
+        '<td class="checkbox-col"><input type="checkbox" class="row-select" data-doc="' + escapeHtml(r.doc_id) + '"' + checked + ' aria-label="Select this row" /></td>' +
         '<td><span class="tier-chip" title="' + escapeHtml(TIER_MEANING[r.priority] || "") + '"><span class="tier-bar" style="background:' + (TIER_COLOR[r.priority] || "var(--text-muted)") + '"></span>' + escapeHtml(r.priority) + '</span></td>' +
         '<td>' + escapeHtml(r.nh_sku) + '</td>' +
         '<td>' + escapeHtml(platformId(r)) + '</td>' +
@@ -539,6 +706,15 @@ var EMBEDDED_DATA = window.__DASHBOARD_DATA__ || null;
     Array.prototype.forEach.call(body.querySelectorAll("select.status-select"), function (sel) {
       sel.addEventListener("change", function () { onStatusChange(sel.getAttribute("data-doc"), sel); });
     });
+    Array.prototype.forEach.call(body.querySelectorAll("input.row-select"), function (cb) {
+      cb.addEventListener("change", function () {
+        var docId = cb.getAttribute("data-doc");
+        if (cb.checked) selectedDocIds[docId] = true;
+        else delete selectedDocIds[docId];
+        updateBulkBar(filtered);
+      });
+    });
+    updateBulkBar(filtered);
   }
 
   function renderAll() {
@@ -560,6 +736,23 @@ var EMBEDDED_DATA = window.__DASHBOARD_DATA__ || null;
     renderRows();
   });
 
+  document.getElementById("selectAllCheckbox").addEventListener("change", function () {
+    var checked = this.checked;
+    var visible = sortRows(applyFilters(effectiveRows()));
+    visible.forEach(function (r) {
+      if (checked) selectedDocIds[r.doc_id] = true;
+      else delete selectedDocIds[r.doc_id];
+    });
+    renderRows();
+  });
+  document.getElementById("clearSelection").addEventListener("click", function () {
+    selectedDocIds = {};
+    renderRows();
+  });
+  Array.prototype.forEach.call(document.querySelectorAll(".bulk-btn"), function (btn) {
+    btn.addEventListener("click", function () { applyBulkStatus(btn.getAttribute("data-status")); });
+  });
+
   var PLATFORM_LABELS = { amazon: "Amazon", flipkart: "Flipkart", myntra: "Myntra", nykaa: "Nykaa" };
   // Platforms with a real, wired-up data feed -- everything else still
   // shows the "not connected yet" placeholder. Nykaa joined Flipkart here
@@ -571,6 +764,10 @@ var EMBEDDED_DATA = window.__DASHBOARD_DATA__ || null;
   Array.prototype.forEach.call(document.querySelectorAll(".platform-tab"), function (tab) {
     tab.addEventListener("click", function () {
       var platform = tab.getAttribute("data-platform");
+      // A different platform's rows have entirely different doc_ids, so a
+      // selection made on one tab would just show as an orphaned "N
+      // selected" bar with nothing ticked on the new tab -- clear it.
+      selectedDocIds = {};
       Array.prototype.forEach.call(document.querySelectorAll(".platform-tab"), function (t) {
         t.setAttribute("aria-selected", t === tab ? "true" : "false");
       });
@@ -591,6 +788,12 @@ var EMBEDDED_DATA = window.__DASHBOARD_DATA__ || null;
 
   function applyPayload(payload, sourceLabel) {
     allRows = payload.rows || [];
+    // Drop any selected doc_id that no longer exists in the fresh data --
+    // rare (a row would have to vanish from data.json entirely), but keeps
+    // a stale checkbox from silently sitting in the bulk-action count.
+    var stillExists = {};
+    allRows.forEach(function (r) { if (selectedDocIds[r.doc_id]) stillExists[r.doc_id] = true; });
+    selectedDocIds = stillExists;
     var when = payload.generated_at ? new Date(payload.generated_at).toLocaleString() : "unknown time";
     setSyncState(BACKEND_CONFIGURED ? "ok" : "local", sourceLabel + " as of " + when);
     if (!BACKEND_CONFIGURED) {
@@ -602,7 +805,7 @@ var EMBEDDED_DATA = window.__DASHBOARD_DATA__ || null;
   function showLoadError() {
     setSyncState("error", "Couldn't load data.json");
     document.getElementById("rowsBody").innerHTML =
-      '<tr><td colspan="8" class="error-state">Couldn\'t load data.json. If this dashboard was just deployed, check that the file exists at the path the page expects; otherwise try reloading.</td></tr>';
+      '<tr><td colspan="9" class="error-state">Couldn\'t load data.json. If this dashboard was just deployed, check that the file exists at the path the page expects; otherwise try reloading.</td></tr>';
     document.getElementById("statRow").innerHTML = "";
     document.getElementById("summaryTbl").innerHTML = "";
   }

@@ -41,7 +41,16 @@ pieces, in order.
 - **P3 — Title Mismatch** — title looks implausible for the SKU, worth a
   confirm.
 - **P4 — Product Photo Mismatch** — product photo is a weak visual match to
-  the D2C listing.
+  the D2C listing (perceptual-hash comparison of the actual image content,
+  not just counting how many images each side has). This is the check that
+  catches things like a rebranded package showing old artwork on one side
+  and new artwork on the other. It only ever ran behind each diff script's
+  `--visual` flag, and `weekly_refresh.py` didn't pass that flag through
+  until 2026-09-15 -- found because a real rebrand mismatch (D2C still
+  showing old packaging, marketplaces showing new) went uncaught. Every
+  weekly run before that date never evaluated this tier at all, on any
+  platform, for any SKU -- not a scoring miss, the comparison simply never
+  executed. Now on by default; see "Image comparison" below.
 - **P5 — No D2C Reference Match** — this SKU has no row at all in the D2C
   reference file, so there's nothing to compare against on any other tier.
   Deliberately NOT labeled "discontinued" -- it could just as easily be a
@@ -104,6 +113,27 @@ Nykaa/Myntra use (see the module docstring's "AMAZON'S BOT-CHECK" section).
 Status and Reminders Sent live in git history from now on — every change,
 whether from a weekly refresh or a manual click, is a commit, so there's a
 full audit trail for free.
+
+## Image comparison (P4)
+
+As of 2026-09-15, `weekly_refresh.py` runs every platform's diff with
+`--visual`, which downloads each SKU's product images from both the D2C
+site and the marketplace and compares them with a perceptual hash (robust to
+resizing/re-compression, so it isn't fooled by the same photo being served
+at different sizes) -- this is what actually populates
+`visual_best_similarity`/`visual_avg_similarity` and lets P4 fire. Before
+this date it never ran (each diff script only does the comparison behind its
+own `--visual` flag, and this script never passed it through), so P4 had
+never fired once, for any SKU, on any platform. Running it needs the
+`pillow` package (`pip install pillow`) and network access to every
+platform's image CDN plus nathabit.in's; downloaded images are cached in
+`pipeline/qa_diff_image_cache/` (gitignored, shared across all four
+platforms' diffs since the same D2C image gets reused per SKU) so a repeat
+run only fetches new or changed images. Use `--skip-visual` to fall back to
+the old P4-blind behavior if `pillow` isn't installed yet or a CDN is being
+unreliable -- see `weekly_refresh.py`'s module docstring for the full
+writeup, including how this gap was found (a real rebranded-packaging
+mismatch that went uncaught).
 
 **Amazon rollout status (as of 2026-09-14):** the worklist
 (`pipeline/amazon_worklist.csv`, 530 rows / 516 distinct SKUs), scraper,

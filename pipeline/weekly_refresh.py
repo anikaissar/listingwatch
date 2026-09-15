@@ -14,7 +14,9 @@ Run this on Anika's Windows machine (via Task Scheduler) once a week. It:
      for Myntra, amazon_qa_diff.py for Amazon) and classifies the results
      into priority tiers (classify()/classify_nykaa()/classify_myntra()/
      classify_amazon() from build_kam_review.py, imported here so all four
-     never drift apart).
+     never drift apart). Every diff now runs with --visual (see "IMAGE
+     COMPARISON" below) so P4 (Product Photo Mismatch) actually has data to
+     act on.
   3. Merges the fresh results, per platform, against whatever is CURRENTLY
      in the repo's docs/data.json -- same merge-forward rules as before: a
      brand new row starts at Open/0 reminders; a row still Open and still
@@ -72,6 +74,27 @@ amazon_pdp_scraper.py's BOT-CHECK FINDING), at a deliberately low
 concurrency (2) with a longer delay between requests (3-6s) than Nykaa/
 Myntra use. A handful of amazon_failures.csv rows after a full run is
 expected, not a sign anything is broken -- see the printed failure count.
+
+IMAGE COMPARISON (--visual, on by default as of 2026-09-15): Anika flagged a
+real rebranded-packaging mismatch (D2C site still showing old packaging,
+marketplaces showing the new one) that the dashboard never caught. Root
+cause: qa_diff.py / nykaa_qa_diff.py / myntra_qa_diff.py / amazon_qa_diff.py
+all have a perceptual-hash image comparison (visual_best_similarity /
+visual_avg_similarity, feeding classify()'s P4 "Product Photo Mismatch"
+tier) that's real and validated -- but it only runs behind each script's
+--visual flag (needs network + the `pillow` package, and real extra time),
+and this script never passed that flag through. So P4 had never fired once,
+for any SKU, on any platform, since the pipeline went live -- not a scoring
+bug, the check just never ran. Every diff_*() call now passes --visual by
+default, so make sure `pillow` is installed (`pip install pillow`) in the
+same Python environment this script runs in. Downloaded images are cached
+in pipeline/qa_diff_image_cache/ (shared across all four platforms' diffs,
+since the same D2C image gets reused across a SKU's platforms) so repeat
+runs only download new/changed images -- that folder is gitignored, never
+commit it. This adds real time to every run (downloading + hashing every
+product's images from each platform's CDN and nathabit.in's); use
+--skip-visual to fall back to the old (P4-blind) behavior if pillow isn't
+set up yet or a CDN is being unreliable, rather than losing the whole run.
 
 Usage (from the repo root, with the pipeline/ scripts and a clone of this
 same GitHub repo both available):
@@ -131,16 +154,20 @@ def scrape_nykaa(pipeline_dir, nykaa_worklist, nykaa_out, nykaa_fail, limit=None
     run(cmd, cwd=pipeline_dir)
 
 
-def diff(pipeline_dir, flipkart_csv, d2c_csv, diff_out):
-    run([sys.executable, str(pipeline_dir / "qa_diff.py"),
-         "--flipkart", str(flipkart_csv), "--d2c", str(d2c_csv), "--out", str(diff_out)],
-        cwd=pipeline_dir)
+def diff(pipeline_dir, flipkart_csv, d2c_csv, diff_out, do_visual=True):
+    cmd = [sys.executable, str(pipeline_dir / "qa_diff.py"),
+           "--flipkart", str(flipkart_csv), "--d2c", str(d2c_csv), "--out", str(diff_out)]
+    if do_visual:
+        cmd.append("--visual")
+    run(cmd, cwd=pipeline_dir)
 
 
-def diff_nykaa(pipeline_dir, nykaa_csv, d2c_csv, diff_out):
-    run([sys.executable, str(pipeline_dir / "nykaa_qa_diff.py"),
-         "--nykaa", str(nykaa_csv), "--d2c", str(d2c_csv), "--out", str(diff_out)],
-        cwd=pipeline_dir)
+def diff_nykaa(pipeline_dir, nykaa_csv, d2c_csv, diff_out, do_visual=True):
+    cmd = [sys.executable, str(pipeline_dir / "nykaa_qa_diff.py"),
+           "--nykaa", str(nykaa_csv), "--d2c", str(d2c_csv), "--out", str(diff_out)]
+    if do_visual:
+        cmd.append("--visual")
+    run(cmd, cwd=pipeline_dir)
 
 
 def scrape_myntra(pipeline_dir, myntra_worklist, myntra_out, myntra_fail, limit=None):
@@ -154,10 +181,12 @@ def scrape_myntra(pipeline_dir, myntra_worklist, myntra_out, myntra_fail, limit=
     run(cmd, cwd=pipeline_dir)
 
 
-def diff_myntra(pipeline_dir, myntra_csv, d2c_csv, diff_out):
-    run([sys.executable, str(pipeline_dir / "myntra_qa_diff.py"),
-         "--myntra", str(myntra_csv), "--d2c", str(d2c_csv), "--out", str(diff_out)],
-        cwd=pipeline_dir)
+def diff_myntra(pipeline_dir, myntra_csv, d2c_csv, diff_out, do_visual=True):
+    cmd = [sys.executable, str(pipeline_dir / "myntra_qa_diff.py"),
+           "--myntra", str(myntra_csv), "--d2c", str(d2c_csv), "--out", str(diff_out)]
+    if do_visual:
+        cmd.append("--visual")
+    run(cmd, cwd=pipeline_dir)
 
 
 def scrape_amazon(pipeline_dir, amazon_worklist, amazon_out, amazon_fail, limit=None):
@@ -174,10 +203,12 @@ def scrape_amazon(pipeline_dir, amazon_worklist, amazon_out, amazon_fail, limit=
     run(cmd, cwd=pipeline_dir)
 
 
-def diff_amazon(pipeline_dir, amazon_csv, d2c_csv, diff_out):
-    run([sys.executable, str(pipeline_dir / "amazon_qa_diff.py"),
-         "--amazon", str(amazon_csv), "--d2c", str(d2c_csv), "--out", str(diff_out)],
-        cwd=pipeline_dir)
+def diff_amazon(pipeline_dir, amazon_csv, d2c_csv, diff_out, do_visual=True):
+    cmd = [sys.executable, str(pipeline_dir / "amazon_qa_diff.py"),
+           "--amazon", str(amazon_csv), "--d2c", str(d2c_csv), "--out", str(diff_out)]
+    if do_visual:
+        cmd.append("--visual")
+    run(cmd, cwd=pipeline_dir)
 
 
 def load_prior_rows(data_json_path):
@@ -430,6 +461,15 @@ def main():
                      help="path to myntra_worklist.csv (default: <pipeline-dir>/myntra_worklist.csv)")
     ap.add_argument("--amazon-worklist", default=None,
                      help="path to amazon_worklist.csv (default: <pipeline-dir>/amazon_worklist.csv)")
+    ap.add_argument("--skip-visual", action="store_true",
+                     help="skip the perceptual image comparison (--visual) that all four diff scripts now run "
+                          "by default -- it downloads every product image from each platform's CDN and "
+                          "nathabit.in, so it needs network access and the `pillow` package (pip install "
+                          "pillow), and adds real time to the run (images are cached in "
+                          "pipeline/qa_diff_image_cache/ so a re-run doesn't re-download unchanged ones). "
+                          "Use this flag if pillow isn't installed yet, or the image CDNs are being flaky, "
+                          "rather than losing the whole run -- P4 (Product Photo Mismatch) just won't fire "
+                          "on that run's rows if you skip it, same as every run before 2026-09-15 did.")
     args = ap.parse_args()
 
     repo_dir = Path(args.repo_dir).resolve()
@@ -465,14 +505,15 @@ def main():
             scrape_myntra(pipeline_dir, myntra_worklist, myntra_csv, myntra_fail_csv, limit=args.limit)
         if not args.skip_amazon:
             scrape_amazon(pipeline_dir, amazon_worklist, amazon_csv, amazon_fail_csv, limit=args.limit)
+    do_visual = not args.skip_visual
     if not args.skip_flipkart:
-        diff(pipeline_dir, flipkart_csv, d2c_csv, diff_csv)
+        diff(pipeline_dir, flipkart_csv, d2c_csv, diff_csv, do_visual=do_visual)
     if not args.skip_nykaa:
-        diff_nykaa(pipeline_dir, nykaa_csv, d2c_csv, nykaa_diff_csv)
+        diff_nykaa(pipeline_dir, nykaa_csv, d2c_csv, nykaa_diff_csv, do_visual=do_visual)
     if not args.skip_myntra:
-        diff_myntra(pipeline_dir, myntra_csv, d2c_csv, myntra_diff_csv)
+        diff_myntra(pipeline_dir, myntra_csv, d2c_csv, myntra_diff_csv, do_visual=do_visual)
     if not args.skip_amazon:
-        diff_amazon(pipeline_dir, amazon_csv, d2c_csv, amazon_diff_csv)
+        diff_amazon(pipeline_dir, amazon_csv, d2c_csv, amazon_diff_csv, do_visual=do_visual)
 
     cyc = current_cycle()
     if cyc == 0:

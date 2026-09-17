@@ -122,6 +122,34 @@ against a synthetic same-shape-different-color pair, confirming P4 now
 fires (scored 0.455, well under the 0.6 threshold) where it previously
 would not have.
 
+IMAGE COMPARISON, PART 3 -- HERO-IMAGE ANCHORING (2026-09-17): the color fix
+above still didn't move the real Amazon rebrand row (FC-KL-CN-040, ASIN
+B0BK1SGP2M) -- it stayed at visual_best_similarity=0.984 after re-running
+with the color-aware code confirmed live (checked via `git show
+HEAD:pipeline/qa_diff.py`, so this wasn't a stale-file problem). Root cause,
+found from that same row's visual_avg_similarity being only 0.679 (a big
+gap from 0.984): qa_diff.py's visual_similarity() compared every
+marketplace image against every D2C image (10 x 8 = 80 pairs here) and took
+the single best pair found. Among that many pairs, one non-hero image --
+almost certainly a shared asset like an ingredients graphic or a "how to
+use" diagram, which platforms commonly reuse as the exact same file --
+scored high enough to mask the real packaging photo mismatch entirely, even
+though most of the gallery (reflected in the 0.679 average) genuinely
+didn't match. Fix: visual_similarity() now only compares pairs involving at
+least one side's HERO image (the first image in the gallery -- every
+platform leads with the actual product/packaging shot), matched against the
+OTHER side's entire gallery for its best match. This deliberately does NOT
+require the two hero photos to match each other directly (different studio/
+crop/angle would make that misfire on perfectly good listings) -- it keeps
+all the existing crop/resize/re-encoding tolerance from _phash's autocrop
+step, it just stops letting an unrelated shared graphic decide the score.
+Validated with a selftest fixture that reproduces this exact shape (two
+galleries, each with a genuinely mismatched hero image AND an identical
+decoy image shared between them) -- confirmed the decoy no longer masks the
+mismatch, and a real hero-to-hero match still scores high with an unrelated
+decoy present in both galleries. Again a change entirely inside qa_diff.py,
+so all four platforms picked it up from one place.
+
 Usage (from the repo root, with the pipeline/ scripts and a clone of this
 same GitHub repo both available):
 

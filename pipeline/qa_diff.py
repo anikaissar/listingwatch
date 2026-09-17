@@ -441,12 +441,41 @@ def _color_similarity(sig_a, sig_b):
     return 1 - (mean_dist / max_dist)
 
 
+def _load_hash_pairs(urls, cache_dir, client):
+    """Downloads every url and returns a list of (shape_hash, color_signature)
+    tuples for the ones that hashed successfully, in the SAME order as
+    `urls` -- so index 0 is whatever image the platform lists first. Every
+    marketplace and D2C listing this pipeline scrapes puts the actual
+    product/packaging photo first in the gallery (the "hero" image every
+    shopper sees before clicking further) -- that ordering is what
+    visual_similarity() below relies on to anchor its comparison."""
+    out = []
+    for u in urls:
+        p = _download(u, cache_dir, client)
+        if not p:
+            continue
+        h = _phash(p)
+        if h is None:
+            continue
+        c = _color_signature(p)
+        if c is None:
+            continue
+        out.append((h, c))
+    return out
+
+
+def _pair_similarity(a, b):
+    """Combines shape and color similarity for one image pair via min() --
+    see visual_similarity()'s docstring for why min() rather than average."""
+    (ah, ac), (bh, bc) = a, b
+    shape_sim = 1 - _hamming(ah, bh) / 64
+    color_sim = _color_similarity(ac, bc)
+    return min(shape_sim, color_sim)
+
+
 def visual_similarity(fk_urls, d2c_urls, cache_dir, client):
     """Returns (best_similarity, avg_similarity) in [0,1], or (None, None) if
-    either side has no usable images. best = closest single image pair found
-    (a strong 'yes, this photo is shared/near-identical' signal); avg = mean
-    of each Flipkart image's best match (a rough 'whole gallery overlaps'
-    signal).
+    either side has no usable images.
 
     Each image pair's similarity is the MINIMUM of two independent scores,
     not an average:
@@ -458,28 +487,64 @@ def visual_similarity(fk_urls, d2c_urls, cache_dir, client):
     Using min() rather than an average is deliberate: a pair should only
     read as "the same photo" if it matches on BOTH dimensions. An average
     would let a strong shape match paper over a real color difference (or
-    vice versa) -- which is exactly how the real rebrand case above slipped
-    through when shape was the only signal (0.64-0.98 "similar" on shape
-    alone, despite completely different packaging colors)."""
+    vice versa) -- which is exactly how a real rebrand case (D2C still
+    showing old packaging, marketplaces showing new) slipped through when
+    shape was the only signal (0.64-0.98 "similar" on shape alone, despite
+    completely different packaging colors).
+
+    WHICH PAIRS GET COMPARED (changed 2026-09-17): only pairs involving at
+    least one side's HERO image (index 0 -- see _load_hash_pairs) --
+    marketplace-hero-vs-every-D2C-image, and D2C-hero-vs-every-marketplace-
+    image. NOT a full cross product of every marketplace image against
+    every D2C image. That first version (compare everything to everything,
+    take the best pair found) had a real, confirmed blind spot: a real
+    Amazon row (10 marketplace images x 8 D2C images = 80 possible pairs)
+    still scored visual_best_similarity=0.984 even after the color fix
+    above, while visual_avg_similarity was only 0.679 -- a big gap that
+    means most of the gallery genuinely didn't match, but ONE pair (almost
+    certainly a non-hero image shared verbatim between platforms, like an
+    ingredients graphic or a "how to use" diagram -- these are commonly the
+    exact same file on every platform) scored high enough to mask a real
+    packaging mismatch. Anchoring on the hero image on at least one side
+    removes that blind spot, since the images most likely to be identical
+    across platforms for reasons that have nothing to do with the product's
+    actual packaging (shared marketing graphics, badges, ingredient call-
+    outs) are almost never the hero image -- every platform leads its
+    gallery with the actual product/packaging shot.
+
+    This deliberately does NOT require the two hero images to match each
+    other directly -- they're real photos from different photoshoots
+    (different studio, crop, angle, background) and comparing only
+    hero-to-hero would misfire on perfectly fine listings just because the
+    photography differs. A concrete real-world version of this: D2C sites
+    often use a lifestyle hero shot (product styled with a colored backdrop
+    or other objects around it) while marketplaces typically mandate a
+    plain-background product-only hero image -- a naive hero-to-hero
+    comparison of those two would score low on shape alone, nothing to do
+    with the product itself. Instead each hero image is matched against the
+    OTHER side's entire gallery (best match wins), so all the existing
+    tolerance for cropping/resizing/re-encoding (that's what _phash's
+    autocrop step is for) is preserved, AND the plain-vs-lifestyle case
+    above is a non-issue -- D2C galleries virtually always have a plain
+    product shot somewhere even when it isn't first, so the marketplace's
+    plain hero still finds it. Only the "any image, however unrelated to
+    the actual product shot, can be the deciding match" gap is closed. See
+    the selftest's composited-background fixture for a worked proof of
+    this specific case."""
     if not fk_urls or not d2c_urls:
         return None, None
-    fk_paths = [p for p in (_download(u, cache_dir, client) for u in fk_urls) if p]
-    d2c_paths = [p for p in (_download(u, cache_dir, client) for u in d2c_urls) if p]
-    fk_pairs = [(h, _color_signature(p)) for p, h in ((p, _phash(p)) for p in fk_paths) if h is not None]
-    d2c_pairs = [(h, _color_signature(p)) for p, h in ((p, _phash(p)) for p in d2c_paths) if h is not None]
-    fk_pairs = [(h, c) for h, c in fk_pairs if c is not None]
-    d2c_pairs = [(h, c) for h, c in d2c_pairs if c is not None]
+    fk_pairs = _load_hash_pairs(fk_urls, cache_dir, client)
+    d2c_pairs = _load_hash_pairs(d2c_urls, cache_dir, client)
     if not fk_pairs or not d2c_pairs:
         return None, None
-    best_per_fk = []
-    for fh, fc in fk_pairs:
-        best = 0.0
-        for dh, dc in d2c_pairs:
-            shape_sim = 1 - _hamming(fh, dh) / 64
-            color_sim = _color_similarity(fc, dc)
-            best = max(best, min(shape_sim, color_sim))
-        best_per_fk.append(best)
-    return round(max(best_per_fk), 3), round(sum(best_per_fk) / len(best_per_fk), 3)
+    scores = []
+    fk_hero = fk_pairs[0]
+    for dp in d2c_pairs:
+        scores.append(_pair_similarity(fk_hero, dp))
+    d2c_hero = d2c_pairs[0]
+    for fp in fk_pairs:
+        scores.append(_pair_similarity(d2c_hero, fp))
+    return round(max(scores), 3), round(sum(scores) / len(scores), 3)
 
 
 # ===========================================================================
@@ -908,6 +973,130 @@ def selftest():
                         "still scores high on both dimensions -- no false-"
                         "positive regression from adding the color check",
                         min(shape_sim_true, color_sim_true) >= 0.85))
+
+        # --- Hero-anchoring: the fix for the real Amazon case where
+        # visual_best_similarity stayed at 0.984 even with the color check
+        # above (10 marketplace images x 8 D2C images -- one non-hero pair,
+        # almost certainly a shared graphic unrelated to the actual
+        # packaging photo, scored high enough to mask the real mismatch;
+        # visual_avg_similarity was only 0.679, showing the rest of the
+        # gallery genuinely didn't match). Uses visual_similarity() end to
+        # end via a seeded cache dir (no network needed -- _download()
+        # returns straight from cache when the file's already there).
+        import shutil as _shutil
+        cache = "/tmp/_qa_diff_selftest_hero_cache"
+        _shutil.rmtree(cache, ignore_errors=True)
+        os.makedirs(cache, exist_ok=True)
+
+        def _seed(url, im):
+            path = _cache_path(cache, url)
+            im.save(path, format="PNG")
+
+        # Hero photos: genuinely different packaging colors (old pink vs
+        # new dark), same shape as the earlier rebrand fixture above --
+        # this must NOT be allowed to read as a match.
+        fk_hero_im = _diag_gradient(64, (90, 90, 80), (45, 20, 25))       # marketplace hero: new/dark packaging
+        d2c_hero_im = _diag_gradient(64, (245, 210, 220), (200, 140, 165))  # D2C hero: old/pink packaging
+        # A decoy: the exact same non-hero image (e.g. an ingredients
+        # graphic) appears on both sides, byte-for-byte identical --
+        # exactly the real-world case that inflated visual_best_similarity
+        # before this fix.
+        decoy_im = _checkerboard(64)
+
+        _seed("https://marketplace.example/hero.jpg", fk_hero_im)
+        _seed("https://marketplace.example/decoy.jpg", decoy_im)
+        _seed("https://d2c.example/hero.jpg", d2c_hero_im)
+        _seed("https://d2c.example/decoy.jpg", decoy_im)
+
+        best, avg = visual_similarity(
+            ["https://marketplace.example/hero.jpg", "https://marketplace.example/decoy.jpg"],
+            ["https://d2c.example/hero.jpg", "https://d2c.example/decoy.jpg"],
+            cache, None,
+        )
+        checks.append(("visual_similarity: hero-anchoring closes the real "
+                        "gap -- an identical decoy image shared by both "
+                        "galleries no longer masks a genuine hero-image "
+                        "packaging mismatch (old fix alone would score "
+                        "this ~1.0 via the decoy pair)",
+                        best < 0.6))
+
+        # Regression: heroes that genuinely DO match (same photo, just
+        # re-encoded) still score high even with an unrelated decoy image
+        # also present in both galleries -- the decoy must not drag a
+        # real match down either.
+        _shutil.rmtree(cache, ignore_errors=True)
+        os.makedirs(cache, exist_ok=True)
+        same_hero_a = _diag_gradient(64, (245, 210, 220), (200, 140, 165))
+        same_hero_b = _diag_gradient(256, (245, 210, 220), (200, 140, 165)).resize((64, 64), Image.LANCZOS)
+        _seed("https://marketplace.example/hero.jpg", same_hero_a)
+        _seed("https://marketplace.example/decoy.jpg", decoy_im)
+        _seed("https://d2c.example/hero.jpg", same_hero_b)
+        _seed("https://d2c.example/decoy.jpg", _checkerboard(64, block=4))  # a DIFFERENT decoy, doesn't matter
+
+        best2, avg2 = visual_similarity(
+            ["https://marketplace.example/hero.jpg", "https://marketplace.example/decoy.jpg"],
+            ["https://d2c.example/hero.jpg", "https://d2c.example/decoy.jpg"],
+            cache, None,
+        )
+        checks.append(("visual_similarity: a genuine hero-to-hero match "
+                        "still scores high even with unrelated decoy "
+                        "images also in both galleries -- no regression",
+                        best2 >= 0.85))
+
+        # --- Different backgrounds/composition, not just different color:
+        # the other real worry with hero-anchoring, raised directly -- a
+        # D2C site's hero image is often a lifestyle shot (product with a
+        # busy/colored backdrop, maybe styled with other objects), while
+        # marketplaces typically mandate a plain-background product-only
+        # shot as their hero image. Naive hero-to-hero comparison would
+        # read that composition difference as a mismatch even though it's
+        # the exact same product -- this proves the actual fix (hero vs
+        # the OTHER side's WHOLE gallery, not hero-to-hero) doesn't have
+        # that problem, because D2C listings virtually always have a
+        # plain product shot somewhere in the gallery even when it isn't
+        # first.
+        def _composite(size, c1, c2, busy):
+            bg = _checkerboard(size, block=8) if busy else Image.new("RGB", (size, size), (250, 250, 250))
+            pw, ph = int(size * 0.5), int(size * 0.5)
+            ox, oy = (size - pw) // 2, (size - ph) // 2
+            bg.paste(_diag_gradient(pw, c1, c2), (ox, oy, ox + pw, oy + ph))
+            return bg
+
+        product = ((245, 210, 220), (200, 140, 165))  # same product colors both sides -- only the background differs
+        d2c_hero_lifestyle = _composite(64, *product, busy=True)
+        d2c_secondary_plain = _composite(64, *product, busy=False)
+        marketplace_hero_plain = _composite(64, *product, busy=False)
+
+        _shutil.rmtree(cache, ignore_errors=True)
+        os.makedirs(cache, exist_ok=True)
+        _seed("https://marketplace.example/hero.jpg", marketplace_hero_plain)
+        _seed("https://d2c.example/hero.jpg", d2c_hero_lifestyle)
+        _seed("https://d2c.example/plain.jpg", d2c_secondary_plain)
+
+        h_mkt = _phash(_cache_path(cache, "https://marketplace.example/hero.jpg"))
+        c_mkt = _color_signature(_cache_path(cache, "https://marketplace.example/hero.jpg"))
+        h_d2c_hero = _phash(_cache_path(cache, "https://d2c.example/hero.jpg"))
+        c_d2c_hero = _color_signature(_cache_path(cache, "https://d2c.example/hero.jpg"))
+        naive_hero_to_hero = min(1 - _hamming(h_mkt, h_d2c_hero) / 64, _color_similarity(c_mkt, c_d2c_hero))
+        checks.append(("sanity check: a naive hero-TO-hero-only comparison "
+                        "(not what's implemented) really would misfire here "
+                        "-- same product, but D2C's lifestyle background "
+                        "vs the marketplace's plain one scores low enough "
+                        "to wrongly read as a mismatch",
+                        naive_hero_to_hero < 0.6))
+
+        best3, avg3 = visual_similarity(
+            ["https://marketplace.example/hero.jpg"],
+            ["https://d2c.example/hero.jpg", "https://d2c.example/plain.jpg"],
+            cache, None,
+        )
+        checks.append(("visual_similarity: the actual fix (hero vs the "
+                        "OTHER side's whole gallery) does NOT misfire on "
+                        "this -- it finds the plain product shot elsewhere "
+                        "in the D2C gallery even though D2C's own hero "
+                        "image is a differently-composed lifestyle shot",
+                        best3 >= 0.85))
+        _shutil.rmtree(cache, ignore_errors=True)
     except ImportError:
         print("  [SKIP] visual-hash checks -- Pillow not installed (only needed for --visual)")
 

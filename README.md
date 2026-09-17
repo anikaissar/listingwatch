@@ -151,6 +151,25 @@ the fix applies to all four platforms from one place. See `qa_diff.py
 --selftest` for the synthetic rebrand fixture and true-match regression
 check.
 
+That still wasn't the end of it: the real rebrand row on Amazon (ASIN
+B0BK1SGP2M) stayed at 0.984 even with the color fix confirmed live in the
+repo. Its `visual_avg_similarity` was only 0.679 though -- a big gap from
+the 0.984 "best" score -- which pointed at the real cause: with 10 Amazon
+images and 8 D2C images, `visual_similarity()` was comparing all 80
+possible pairs and taking the single best one, and one non-hero image
+(almost certainly a shared asset like an ingredients graphic, identical
+across platforms for reasons that have nothing to do with the actual
+packaging) scored high enough to mask the real mismatch. Fixed by
+anchoring the comparison on each side's hero image (the first, lead image
+in the gallery -- always the actual product shot) matched against the
+*other* side's whole gallery, rather than every image against every image.
+This doesn't require the two hero photos to be identical shots (different
+studio/crop/angle would make that misfire on genuinely fine listings) --
+it keeps the same crop/resize tolerance as before, it just stops letting
+an unrelated shared graphic decide the outcome. See `qa_diff.py --selftest`
+for a fixture that reproduces this exact shape (a decoy image shared
+between both galleries alongside a real, mismatched hero image).
+
 **Amazon rollout status (as of 2026-09-14):** the worklist
 (`pipeline/amazon_worklist.csv`, 530 rows / 516 distinct SKUs), scraper,
 diff engine, and classifier are all built and validated against real Amazon

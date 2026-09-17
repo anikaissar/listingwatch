@@ -170,6 +170,25 @@ an unrelated shared graphic decide the outcome. See `qa_diff.py --selftest`
 for a fixture that reproduces this exact shape (a decoy image shared
 between both galleries alongside a real, mismatched hero image).
 
+That fix moved the real Amazon row from 0.984 to 0.656 -- real progress,
+but still just above the 0.6 threshold. Rather than nudge the threshold
+blindly, Anika spot-checked several SKUs the fixes so far had newly
+started flagging (see `pipeline/visual_similarity_histogram.py`, a small
+diagnostic that buckets `visual_best_similarity` from the already-
+generated diff CSVs -- worth running after any diff to sanity-check the
+distribution before trusting a threshold): some were genuine rebrands, but
+a couple had identical packaging and were only flagged because they'd
+been shot against a different-colored studio backdrop (plain white vs a
+warm/cream background on the other platform). Root cause: `_color_signature()`
+averaged color across the *whole* photo, and a plain background typically
+fills most of the frame, so its color alone could shift the average
+enough to look like a packaging difference. Fixed by excluding
+background-like pixels (near-white/near-gray, low-saturation, high-
+brightness) before averaging, so the signature reflects the product's own
+color rather than the backdrop -- see `qa_diff.py --selftest` for a
+fixture of the exact case found, plus a regression check confirming a
+genuine color change on an unchanged background is still caught.
+
 **Amazon rollout status (as of 2026-09-14):** the worklist
 (`pipeline/amazon_worklist.csv`, 530 rows / 516 distinct SKUs), scraper,
 diff engine, and classifier are all built and validated against real Amazon

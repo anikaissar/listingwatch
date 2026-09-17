@@ -150,6 +150,40 @@ mismatch, and a real hero-to-hero match still scores high with an unrelated
 decoy present in both galleries. Again a change entirely inside qa_diff.py,
 so all four platforms picked it up from one place.
 
+IMAGE COMPARISON, PART 4 -- BACKGROUND COLOR (2026-09-17, same day): the
+hero-anchoring fix above moved the real Amazon rebrand row from 0.984 down
+to 0.656 -- real progress, confirmed via the histogram-based sanity check
+below, but still just above the 0.6 threshold. Rather than just nudge the
+threshold, Anika spot-checked several SKUs that the fixes so far had newly
+started flagging: some were genuine rebrand mismatches, but a couple had
+IDENTICAL packaging and were only flagged because they'd been photographed
+against a different-colored studio backdrop (e.g. plain white on one
+platform, a warm/cream background on another). Root cause: qa_diff.py's
+_color_signature() averaged color across the WHOLE photo frame, and a
+plain background typically fills most of a product photo -- so its color
+alone could shift the average enough to look like a packaging difference,
+even with the product itself unchanged. Fixed by excluding background-
+like pixels (near-white/near-gray, low-saturation, high-brightness -- see
+_is_backgroundish()) before averaging, so the signature reflects the
+product's own color, not the backdrop. Validated with a selftest fixture
+of the exact case Anika found (identical product color, two different
+plain backgrounds) confirming it now reads as a match, plus a regression
+check confirming a genuine packaging color change on an unchanged
+background is still caught. As with the other three image-comparison
+fixes, this lives entirely in qa_diff.py's _color_signature(), so all four
+platforms picked it up from one place.
+
+Before trusting ANY of these thresholds in production, also see
+pipeline/visual_similarity_histogram.py -- a small diagnostic that buckets
+every platform's visual_best_similarity into ranges from the already-
+generated diff CSVs (no network needed). Run it after a diff to sanity-
+check that scores are behaving as expected before assuming a given
+threshold is catching real mismatches without an unacceptable false-
+positive rate; this is what surfaced the background-color problem above in
+the first place (a smooth, unseparated distribution rather than a clean
+"genuine matches near 1.0, real mismatches near 0" split was the tell that
+something was still off).
+
 Usage (from the repo root, with the pipeline/ scripts and a clone of this
 same GitHub repo both available):
 

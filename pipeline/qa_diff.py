@@ -393,10 +393,27 @@ def _hamming(a, b):
     return bin(a ^ b).count("1")
 
 
+def _is_backgroundish(r, g, b):
+    """True if an (r, g, b) pixel looks like a plain studio backdrop --
+    near-white/near-gray/near-cream and bright -- rather than the product
+    itself. Heuristic: low saturation AND high brightness (HSV). Product
+    packaging, even pale pastel packaging, reads as either more saturated
+    or less bright than a typical plain photography background."""
+    r_, g_, b_ = r / 255.0, g / 255.0, b / 255.0
+    v = max(r_, g_, b_)
+    mn = min(r_, g_, b_)
+    s = 0.0 if v == 0 else (v - mn) / v
+    return s < 0.15 and v > 0.85
+
+
 def _color_signature(path):
-    """Coarse color fingerprint: trim letterbox borders (see
-    _autocrop_borders, reused unchanged), resize to a small 8x8 RGB grid,
-    and return the 64 (R, G, B) cell averages as a flat list.
+    """Background-aware color fingerprint: trim letterbox borders (see
+    _autocrop_borders, reused unchanged), resize to a 16x16 RGB grid, then
+    average R/G/B over only the pixels that DON'T look like a plain studio
+    backdrop (see _is_backgroundish) -- returns a single (r, g, b) tuple,
+    the product's own dominant color. Falls back to averaging every pixel
+    if too few pixels pass that filter (a near-blank/mostly-neutral photo),
+    so this never raises or returns garbage on an edge case.
 
     This exists because _phash() above is deliberately grayscale (see its
     docstring) and so is structurally blind to a pure color/hue change --
@@ -405,40 +422,50 @@ def _color_signature(path):
     the old (light pink) and new (dark maroon) bottle photos are near-
     identical in composition and lighting, so dHash alone scored them
     0.64-0.98 similar across all four platforms -- always at or above the
-    0.6 "same photo" threshold, never catching the rebrand. Reproduced
-    synthetically too: two gradient images with matched luminance but
-    different hue (pink vs green) hashed with Hamming distance 0 (a
-    "perfect" shape match) via this exact _phash()/_hamming() pair.
+    0.6 "same photo" threshold, never catching the rebrand.
 
-    Kept fully independent of _phash() (own resize, own grid size) rather
-    than bolted on, so the existing shape-hash and its passing selftests
-    are not touched by this at all -- this is a second, separate signal
-    that visual_similarity() below combines with the first."""
+    The background-exclusion step (added 2026-09-17) is itself a fix for a
+    real false positive Anika found: the first version of this function
+    averaged over the WHOLE frame, and once tested against real catalog
+    photos, several SKUs were wrongly flagged as a photo mismatch that
+    turned out to have IDENTICAL packaging -- just shot against a
+    different-colored studio background (e.g. one platform's warm/cream
+    backdrop vs another's pure white). Since a plain background typically
+    fills most of a product photo's frame, its color dominated a simple
+    whole-image average even though the actual product (a much smaller
+    share of the pixels) hadn't changed at all. Excluding background-like
+    pixels before averaging fixes that while keeping full sensitivity to
+    an actual packaging color change, since that change lives in exactly
+    the pixels this keeps.
+
+    Kept fully independent of _phash() (own resize, own grid, own logic)
+    rather than bolted on, so the existing shape-hash and its passing
+    selftests are not touched by this at all -- this is a second, separate
+    signal that visual_similarity() below combines with the first."""
     from PIL import Image
     try:
         with Image.open(path) as im:
             im = im.convert("RGB")
             im = _autocrop_borders(im)
-            im = im.resize((8, 8), Image.LANCZOS)
-            return list(im.getdata())
+            im = im.resize((16, 16), Image.LANCZOS)
+            px = list(im.getdata())
+            product_px = [(r, g, b) for (r, g, b) in px if not _is_backgroundish(r, g, b)]
+            use = product_px if len(product_px) >= max(4, len(px) * 0.05) else px
+            n = len(use)
+            return (sum(p[0] for p in use) / n, sum(p[1] for p in use) / n, sum(p[2] for p in use) / n)
     except Exception:  # noqa: BLE001
         return None
 
 
 def _color_similarity(sig_a, sig_b):
-    """1 - mean per-cell RGB Euclidean distance, normalized so a maximally
-    different pair of solid colors (e.g. pure black vs pure white) scores 0
-    and an identical pair scores 1. Compares cell-by-cell (not a global
-    average) so a photo that's the same overall brightness but a different
-    color -- exactly the rebrand case this was built for -- still reads as
-    different rather than washing out to a single similar-looking average."""
+    """1 - normalized Euclidean distance between two (r, g, b) product
+    colors, so an identical pair scores 1 and a maximally different pair
+    (e.g. pure black vs pure white) scores 0."""
     max_dist = (255 ** 2 + 255 ** 2 + 255 ** 2) ** 0.5
-    dists = []
-    for (ar, ag, ab), (br, bg, bb) in zip(sig_a, sig_b):
-        d = ((ar - br) ** 2 + (ag - bg) ** 2 + (ab - bb) ** 2) ** 0.5
-        dists.append(d)
-    mean_dist = sum(dists) / len(dists)
-    return 1 - (mean_dist / max_dist)
+    ar, ag, ab = sig_a
+    br, bg, bb = sig_b
+    d = ((ar - br) ** 2 + (ag - bg) ** 2 + (ab - bb) ** 2) ** 0.5
+    return 1 - (d / max_dist)
 
 
 def _load_hash_pairs(urls, cache_dir, client):
@@ -1097,6 +1124,46 @@ def selftest():
                         "image is a differently-composed lifestyle shot",
                         best3 >= 0.85))
         _shutil.rmtree(cache, ignore_errors=True)
+
+        # --- Background-color false positive: the real gap Anika found by
+        # spot-checking rows the earlier fixes newly flagged -- some had
+        # IDENTICAL packaging, just photographed against a different-
+        # colored studio backdrop (e.g. plain white vs a warm cream). The
+        # first version of _color_signature averaged the WHOLE frame, so a
+        # background that fills most of the photo could shift the average
+        # enough to look like a packaging difference on its own.
+        def _product_on_bg(size, product_c, bg_rgb, frac=0.35):
+            im = Image.new("RGB", (size, size), bg_rgb)
+            pw, ph = int(size * frac), int(size * frac)
+            ox, oy = (size - pw) // 2, (size - ph) // 2
+            im.paste(Image.new("RGB", (pw, ph), product_c), (ox, oy, ox + pw, oy + ph))
+            return im
+
+        def _save_bg_fixture(im, name):
+            path = f"/tmp/_qa_diff_selftest_bg_{name}.png"
+            im.save(path, format="PNG")
+            return _color_signature(path)
+
+        same_product = (150, 60, 70)
+        sig_white = _save_bg_fixture(_product_on_bg(64, same_product, (255, 255, 255)), "white")
+        sig_cream = _save_bg_fixture(_product_on_bg(64, same_product, (235, 210, 170)), "cream")
+        checks.append(("_color_signature: excludes background pixels, so "
+                        "identical packaging photographed on two different "
+                        "studio backdrop colors (plain white vs warm cream) "
+                        "still reads as the same product color -- this is "
+                        "the exact false positive found by spot-checking "
+                        "real flagged rows",
+                        _color_similarity(sig_white, sig_cream) > 0.95))
+
+        # Regression: a genuine packaging color change on the SAME plain
+        # background must still be caught -- the background filter must
+        # not accidentally suppress real sensitivity to product color.
+        different_product = (60, 180, 220)  # clearly different color (blue vs maroon), same white background
+        sig_diff = _save_bg_fixture(_product_on_bg(64, different_product, (255, 255, 255)), "diff")
+        checks.append(("_color_signature: still catches a genuine packaging "
+                        "color change when the background is unchanged -- "
+                        "the background filter didn't cost real sensitivity",
+                        _color_similarity(sig_white, sig_diff) < 0.6))
     except ImportError:
         print("  [SKIP] visual-hash checks -- Pillow not installed (only needed for --visual)")
 

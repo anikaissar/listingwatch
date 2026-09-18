@@ -6747,7 +6747,7 @@
       "doc_id": "FK-HR-CB-HB-03__CBKHJPQYHZ8JGQUU",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FK-HR-CB-HB-03",
       "platform_id": "CBKHJPQYHZ8JGQUU",
       "fsn": "CBKHJPQYHZ8JGQUU",
@@ -6762,7 +6762,7 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:20:27.038Z"
     },
     {
       "doc_id": "FK-HR-CB-TRM-03__CBKHJPQFY7JR3FTA",

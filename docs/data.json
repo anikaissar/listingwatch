@@ -6705,7 +6705,7 @@
       "doc_id": "FK-FW-BUPA-150__FCWHA8F4TH3MGKVA",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FK-FW-BUPA-150",
       "platform_id": "FCWHA8F4TH3MGKVA",
       "fsn": "FCWHA8F4TH3MGKVA",
@@ -6720,7 +6720,7 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T07:19:11.811Z"
     },
     {
       "doc_id": "FK-FW-BUPA2-150__FCWHHSPZ9XHHY2WH",

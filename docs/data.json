@@ -6369,7 +6369,7 @@
       "doc_id": "FK-BC-CPS-NBLT-03__SOPHNGYGSV6FYCYJ",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FK-BC-CPS-NBLT-03",
       "platform_id": "SOPHNGYGSV6FYCYJ",
       "fsn": "SOPHNGYGSV6FYCYJ",
@@ -6384,7 +6384,7 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:17:21.438Z"
     },
     {
       "doc_id": "FK-BC-SM-CID2-120__MSCHHSVZ8KS8PNR4",

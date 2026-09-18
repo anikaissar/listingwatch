@@ -6306,7 +6306,7 @@
       "doc_id": "FK-AOSC-HA-03__CBKHFF76A92XRYVS",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FK-AOSC-HA-03",
       "platform_id": "CBKHFF76A92XRYVS",
       "fsn": "CBKHFF76A92XRYVS",
@@ -6321,7 +6321,7 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:17:06.219Z"
     },
     {
       "doc_id": "FK-AOSC-TR-03__CBKHGZNEYZN9MHGE",

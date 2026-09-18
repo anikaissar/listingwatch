@@ -5760,7 +5760,7 @@
       "doc_id": "FC-FL-GU-190__TNRHA89YBGGTTY6C",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-FL-GU-190",
       "platform_id": "TNRHA89YBGGTTY6C",
       "fsn": "TNRHA89YBGGTTY6C",
@@ -5775,7 +5775,7 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:16:25.285Z"
     },
     {
       "doc_id": "FC-FL-GU2-100__TNRGHY6SXMNJVN2E",

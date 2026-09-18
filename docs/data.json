@@ -6264,7 +6264,7 @@
       "doc_id": "FK-AHO-HA-150__HOLHA8F6XWZFHBGC",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FK-AHO-HA-150",
       "platform_id": "HOLHA8F6XWZFHBGC",
       "fsn": "HOLHA8F6XWZFHBGC",
@@ -6279,7 +6279,7 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:16:52.473Z"
     },
     {
       "doc_id": "FK-AHO-TR-150__HOLHA8EF6DRKQZQF",

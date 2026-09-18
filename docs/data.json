@@ -5865,7 +5865,7 @@
       "doc_id": "FC-FW-BNCR-100__FCWH4NN9V8P6EQKZ",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-FW-BNCR-100",
       "platform_id": "FCWH4NN9V8P6EQKZ",
       "fsn": "FCWH4NN9V8P6EQKZ",
@@ -5880,7 +5880,7 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:16:34.469Z"
     },
     {
       "doc_id": "FC-FW-BNCR2-100__FCWHFFUXGGGCARJZ",

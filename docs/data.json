@@ -5907,7 +5907,7 @@
       "doc_id": "FC-FW-BUCM-02__FCWHE39FEVYBGGX8",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-FW-BUCM-02",
       "platform_id": "FCWHE39FEVYBGGX8",
       "fsn": "FCWHE39FEVYBGGX8",
@@ -5922,7 +5922,7 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:16:43.992Z"
     },
     {
       "doc_id": "FC-FW-GPCR-100__FCWGS3KSDZQDZFJZ",

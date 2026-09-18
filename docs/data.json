@@ -4143,7 +4143,7 @@
       "doc_id": "BC-PO-CO2-200__HOLHE2KDEXJHZJXW",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BC-PO-CO2-200",
       "platform_id": "HOLHE2KDEXJHZJXW",
       "fsn": "HOLHE2KDEXJHZJXW",
@@ -4158,7 +4158,7 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:16:07.655Z"
     },
     {
       "doc_id": "BC-PO-CO3-200__HOLHE38Z7USWYNHR",

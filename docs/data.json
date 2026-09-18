@@ -5655,7 +5655,7 @@
       "doc_id": "FC-DM-AA2-030__MSCHH3ZTGQHFXANS",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-DM-AA2-030",
       "platform_id": "MSCHH3ZTGQHFXANS",
       "fsn": "MSCHH3ZTGQHFXANS",
@@ -5670,7 +5670,7 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:16:21.000Z"
     },
     {
       "doc_id": "FC-DU-LB-040__FCWGEFZGPEGFPNC3",

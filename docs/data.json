@@ -6579,7 +6579,7 @@
       "doc_id": "FK-CB-OMRC-05__CBKHJPQFYYA6QGV5",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FK-CB-OMRC-05",
       "platform_id": "CBKHJPQFYYA6QGV5",
       "fsn": "CBKHJPQFYYA6QGV5",
@@ -6594,7 +6594,7 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:17:56.779Z"
     },
     {
       "doc_id": "FK-CB-TVBM-04__CBKHGF5AXGGDAHTF",

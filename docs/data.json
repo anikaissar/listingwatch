@@ -6012,7 +6012,7 @@
       "doc_id": "FC-FW-MGNG-02__FCWHEB8674RDD7X2",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-FW-MGNG-02",
       "platform_id": "FCWHEB8674RDD7X2",
       "fsn": "FCWHEB8674RDD7X2",
@@ -6027,7 +6027,7 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:16:47.880Z"
     },
     {
       "doc_id": "FC-FW-RCCR-100__FCWGT8ARAWQHN2EG",

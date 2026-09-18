@@ -3891,7 +3891,7 @@
       "doc_id": "BC-CPS-NLHL-125__SOPHEG4UVBYVZJSZ",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BC-CPS-NLHL-125",
       "platform_id": "SOPHEG4UVBYVZJSZ",
       "fsn": "SOPHEG4UVBYVZJSZ",
@@ -3906,7 +3906,7 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:15:55.205Z"
     },
     {
       "doc_id": "BC-CPS-NLHL3-125__SOPHQDPTMAXWTTHY",

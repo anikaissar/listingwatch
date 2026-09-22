@@ -3807,7 +3807,7 @@
       "doc_id": "BC-CP-CA-190__HOLHA89BHCXGYY8W",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BC-CP-CA-190",
       "platform_id": "HOLHA89BHCXGYY8W",
       "fsn": "HOLHA89BHCXGYY8W",
@@ -3822,7 +3822,7 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:15:50.939Z"
     },
     {
       "doc_id": "BC-CP-GR-030__MSOGN493CUSWFRRC",
@@ -3891,7 +3891,7 @@
       "doc_id": "BC-CPS-NLHL-125__SOPHEG4UVBYVZJSZ",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BC-CPS-NLHL-125",
       "platform_id": "SOPHEG4UVBYVZJSZ",
       "fsn": "SOPHEG4UVBYVZJSZ",
@@ -3906,7 +3906,7 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:15:55.205Z"
     },
     {
       "doc_id": "BC-CPS-NLHL3-125__SOPHQDPTMAXWTTHY",
@@ -3933,7 +3933,7 @@
       "doc_id": "BC-CPS-NLTB-125__SOPHEHPNE967FVWQ",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BC-CPS-NLTB-125",
       "platform_id": "SOPHEHPNE967FVWQ",
       "fsn": "SOPHEHPNE967FVWQ",
@@ -3948,13 +3948,13 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:19:47.632Z"
     },
     {
       "doc_id": "BC-CPS-NLTB3-125__SOPHPSFPTZCTAUZH",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BC-CPS-NLTB3-125",
       "platform_id": "SOPHPSFPTZCTAUZH",
       "fsn": "SOPHPSFPTZCTAUZH",
@@ -3969,7 +3969,7 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:16:03.262Z"
     },
     {
       "doc_id": "BC-CPS-SS3-125__SOPH9EGFAX5BVFXN",
@@ -4143,7 +4143,7 @@
       "doc_id": "BC-PO-CO2-200__HOLHE2KDEXJHZJXW",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BC-PO-CO2-200",
       "platform_id": "HOLHE2KDEXJHZJXW",
       "fsn": "HOLHE2KDEXJHZJXW",
@@ -4158,7 +4158,7 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:16:07.655Z"
     },
     {
       "doc_id": "BC-PO-CO3-200__HOLHE38Z7USWYNHR",
@@ -4857,7 +4857,7 @@
       "doc_id": "CB-FAW-SKC-008__CBKHBZGDPTSAMQQR",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "CB-FAW-SKC-008",
       "platform_id": "CBKHBZGDPTSAMQQR",
       "fsn": "CBKHBZGDPTSAMQQR",
@@ -4872,13 +4872,13 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:16:13.590Z"
     },
     {
       "doc_id": "CB-FAW-SKC-008__CBKHGUHPCHGHKKWV",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "CB-FAW-SKC-008",
       "platform_id": "CBKHGUHPCHGHKKWV",
       "fsn": "CBKHGUHPCHGHKKWV",
@@ -4893,7 +4893,7 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:16:16.978Z"
     },
     {
       "doc_id": "CB-FAW-SKG-12__CBKHJRT9WWHCQ2RT",
@@ -5655,7 +5655,7 @@
       "doc_id": "FC-DM-AA2-030__MSCHH3ZTGQHFXANS",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-DM-AA2-030",
       "platform_id": "MSCHH3ZTGQHFXANS",
       "fsn": "MSCHH3ZTGQHFXANS",
@@ -5670,7 +5670,7 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:16:21.000Z"
     },
     {
       "doc_id": "FC-DU-LB-040__FCWGEFZGPEGFPNC3",
@@ -5760,7 +5760,7 @@
       "doc_id": "FC-FL-GU-190__TNRHA89YBGGTTY6C",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-FL-GU-190",
       "platform_id": "TNRHA89YBGGTTY6C",
       "fsn": "TNRHA89YBGGTTY6C",
@@ -5775,7 +5775,7 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:16:25.285Z"
     },
     {
       "doc_id": "FC-FL-GU2-100__TNRGHY6SXMNJVN2E",
@@ -5844,7 +5844,7 @@
       "doc_id": "FC-FW-BNCR-100__FCWGWT6B4HKPDJCH",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-FW-BNCR-100",
       "platform_id": "FCWGWT6B4HKPDJCH",
       "fsn": "FCWGWT6B4HKPDJCH",
@@ -5859,13 +5859,13 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:16:30.265Z"
     },
     {
       "doc_id": "FC-FW-BNCR-100__FCWH4NN9V8P6EQKZ",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-FW-BNCR-100",
       "platform_id": "FCWH4NN9V8P6EQKZ",
       "fsn": "FCWH4NN9V8P6EQKZ",
@@ -5880,13 +5880,13 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:16:34.469Z"
     },
     {
       "doc_id": "FC-FW-BNCR2-100__FCWHFFUXGGGCARJZ",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-FW-BNCR2-100",
       "platform_id": "FCWHFFUXGGGCARJZ",
       "fsn": "FCWHFFUXGGGCARJZ",
@@ -5901,13 +5901,13 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:16:39.400Z"
     },
     {
       "doc_id": "FC-FW-BUCM-02__FCWHE39FEVYBGGX8",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-FW-BUCM-02",
       "platform_id": "FCWHE39FEVYBGGX8",
       "fsn": "FCWHE39FEVYBGGX8",
@@ -5922,7 +5922,7 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:16:43.992Z"
     },
     {
       "doc_id": "FC-FW-GPCR-100__FCWGS3KSDZQDZFJZ",
@@ -6012,7 +6012,7 @@
       "doc_id": "FC-FW-MGNG-02__FCWHEB8674RDD7X2",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-FW-MGNG-02",
       "platform_id": "FCWHEB8674RDD7X2",
       "fsn": "FCWHEB8674RDD7X2",
@@ -6027,7 +6027,7 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:16:47.880Z"
     },
     {
       "doc_id": "FC-FW-RCCR-100__FCWGT8ARAWQHN2EG",
@@ -6264,7 +6264,7 @@
       "doc_id": "FK-AHO-HA-150__HOLHA8F6XWZFHBGC",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FK-AHO-HA-150",
       "platform_id": "HOLHA8F6XWZFHBGC",
       "fsn": "HOLHA8F6XWZFHBGC",
@@ -6279,13 +6279,13 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:20:07.764Z"
     },
     {
       "doc_id": "FK-AHO-TR-150__HOLHA8EF6DRKQZQF",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FK-AHO-TR-150",
       "platform_id": "HOLHA8EF6DRKQZQF",
       "fsn": "HOLHA8EF6DRKQZQF",
@@ -6300,13 +6300,13 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:17:01.124Z"
     },
     {
       "doc_id": "FK-AOSC-HA-03__CBKHFF76A92XRYVS",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FK-AOSC-HA-03",
       "platform_id": "CBKHFF76A92XRYVS",
       "fsn": "CBKHFF76A92XRYVS",
@@ -6321,13 +6321,13 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:19:43.391Z"
     },
     {
       "doc_id": "FK-AOSC-TR-03__CBKHGZNEYZN9MHGE",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FK-AOSC-TR-03",
       "platform_id": "CBKHGZNEYZN9MHGE",
       "fsn": "CBKHGZNEYZN9MHGE",
@@ -6342,13 +6342,13 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:17:11.369Z"
     },
     {
       "doc_id": "FK-BC-CP-CA2-190__HOLHE393MWSX4NHF",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FK-BC-CP-CA2-190",
       "platform_id": "HOLHE393MWSX4NHF",
       "fsn": "HOLHE393MWSX4NHF",
@@ -6363,13 +6363,13 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:17:16.081Z"
     },
     {
       "doc_id": "FK-BC-CPS-NBLT-03__SOPHNGYGSV6FYCYJ",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FK-BC-CPS-NBLT-03",
       "platform_id": "SOPHNGYGSV6FYCYJ",
       "fsn": "SOPHNGYGSV6FYCYJ",
@@ -6384,13 +6384,13 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:17:21.438Z"
     },
     {
       "doc_id": "FK-BC-SM-CID2-120__MSCHHSVZ8KS8PNR4",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FK-BC-SM-CID2-120",
       "platform_id": "MSCHHSVZ8KS8PNR4",
       "fsn": "MSCHHSVZ8KS8PNR4",
@@ -6405,13 +6405,13 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:17:26.053Z"
     },
     {
       "doc_id": "FK-CB-BUPG-02__FCWHGVSH7DHBSY8D",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FK-CB-BUPG-02",
       "platform_id": "FCWHGVSH7DHBSY8D",
       "fsn": "FCWHGVSH7DHBSY8D",
@@ -6426,13 +6426,13 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:17:29.800Z"
     },
     {
       "doc_id": "FK-CB-GFLO-05__CBKHGMMDGCPCFFG4",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FK-CB-GFLO-05",
       "platform_id": "CBKHGMMDGCPCFFG4",
       "fsn": "CBKHGMMDGCPCFFG4",
@@ -6447,7 +6447,7 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:17:34.269Z"
     },
     {
       "doc_id": "FK-CB-GLAS-03__CBKHGKEE29QS6DWX",
@@ -6474,7 +6474,7 @@
       "doc_id": "FK-CB-HIO-03__CBKHGGY6CHHSUMQP",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FK-CB-HIO-03",
       "platform_id": "CBKHGGY6CHHSUMQP",
       "fsn": "CBKHGGY6CHHSUMQP",
@@ -6489,13 +6489,13 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:17:38.847Z"
     },
     {
       "doc_id": "FK-CB-IP-RA-03__HNAHEGPHGFMDBX9W",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FK-CB-IP-RA-03",
       "platform_id": "HNAHEGPHGFMDBX9W",
       "fsn": "HNAHEGPHGFMDBX9W",
@@ -6510,7 +6510,7 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:20:11.531Z"
     },
     {
       "doc_id": "FK-CB-MPLU-05__CBKHGKD4YUXFTPWX",
@@ -6537,7 +6537,7 @@
       "doc_id": "FK-CB-NMOC-03__CBKHGKEMYMZBU6UF",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FK-CB-NMOC-03",
       "platform_id": "CBKHGKEMYMZBU6UF",
       "fsn": "CBKHGKEMYMZBU6UF",
@@ -6552,13 +6552,13 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:17:47.382Z"
     },
     {
       "doc_id": "FK-CB-OMRC-05__CBKHGKDGXFGMKYF3",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FK-CB-OMRC-05",
       "platform_id": "CBKHGKDGXFGMKYF3",
       "fsn": "CBKHGKDGXFGMKYF3",
@@ -6573,13 +6573,13 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:17:52.271Z"
     },
     {
       "doc_id": "FK-CB-OMRC-05__CBKHJPQFYYA6QGV5",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FK-CB-OMRC-05",
       "platform_id": "CBKHJPQFYYA6QGV5",
       "fsn": "CBKHJPQFYYA6QGV5",
@@ -6594,7 +6594,7 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:17:56.779Z"
     },
     {
       "doc_id": "FK-CB-TVBM-04__CBKHGF5AXGGDAHTF",
@@ -6705,7 +6705,7 @@
       "doc_id": "FK-FW-BUPA-150__FCWHA8F4TH3MGKVA",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FK-FW-BUPA-150",
       "platform_id": "FCWHA8F4TH3MGKVA",
       "fsn": "FCWHA8F4TH3MGKVA",
@@ -6720,13 +6720,13 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T07:19:11.811Z"
     },
     {
       "doc_id": "FK-FW-BUPA2-150__FCWHHSPZ9XHHY2WH",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FK-FW-BUPA2-150",
       "platform_id": "FCWHHSPZ9XHHY2WH",
       "fsn": "FCWHHSPZ9XHHY2WH",
@@ -6741,13 +6741,13 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T07:19:16.609Z"
     },
     {
       "doc_id": "FK-HR-CB-HB-03__CBKHJPQYHZ8JGQUU",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FK-HR-CB-HB-03",
       "platform_id": "CBKHJPQYHZ8JGQUU",
       "fsn": "CBKHJPQYHZ8JGQUU",
@@ -6762,7 +6762,7 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:20:27.038Z"
     },
     {
       "doc_id": "FK-HR-CB-TRM-03__CBKHJPQFY7JR3FTA",
@@ -6894,7 +6894,7 @@
       "doc_id": "FK-HR-SH-TR-100__SMPHH5MJT4A8EYZZ",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FK-HR-SH-TR-100",
       "platform_id": "SMPHH5MJT4A8EYZZ",
       "fsn": "SMPHH5MJT4A8EYZZ",
@@ -6909,13 +6909,13 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:20:15.187Z"
     },
     {
       "doc_id": "FK-SH-HB-300__SMPHA8DZCWSGGKZR",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FK-SH-HB-300",
       "platform_id": "SMPHA8DZCWSGGKZR",
       "fsn": "SMPHA8DZCWSGGKZR",
@@ -6930,13 +6930,13 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:20:18.168Z"
     },
     {
       "doc_id": "FK-SH-TR-300__SMPHA8EYHFV5KANG",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FK-SH-TR-300",
       "platform_id": "SMPHA8EYHFV5KANG",
       "fsn": "SMPHA8EYHFV5KANG",
@@ -6951,7 +6951,7 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:20:20.940Z"
     },
     {
       "doc_id": "FK-SHCN-HB-02__CBKHFF72V5KJHKRU",
@@ -7356,7 +7356,7 @@
       "doc_id": "HR-HE-RA-250__HNAGXQS4KYVRR8ZD",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "HR-HE-RA-250",
       "platform_id": "HNAGXQS4KYVRR8ZD",
       "fsn": "HNAGXQS4KYVRR8ZD",
@@ -7371,13 +7371,13 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:19:29.051Z"
     },
     {
       "doc_id": "HR-HE-RA-250__HRCGZHMVDGZKYAHH",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "HR-HE-RA-250",
       "platform_id": "HRCGZHMVDGZKYAHH",
       "fsn": "HRCGZHMVDGZKYAHH",
@@ -7392,13 +7392,13 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:19:34.058Z"
     },
     {
       "doc_id": "HR-HE-RA-250__MEHGUXG9ZGVXFY4N",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "HR-HE-RA-250",
       "platform_id": "MEHGUXG9ZGVXFY4N",
       "fsn": "MEHGUXG9ZGVXFY4N",
@@ -7413,7 +7413,7 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-18T09:19:38.689Z"
     },
     {
       "doc_id": "HR-HE-RA3-250__MEHGV3XZPKGXKHVF",

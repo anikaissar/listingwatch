@@ -6873,7 +6873,7 @@
       "doc_id": "FK-HR-SH-ON-300__SMPHPRE2HQ5ZCKUC",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FK-HR-SH-ON-300",
       "platform_id": "SMPHPRE2HQ5ZCKUC",
       "fsn": "SMPHPRE2HQ5ZCKUC",
@@ -6888,7 +6888,7 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-22T08:31:33.158Z"
     },
     {
       "doc_id": "FK-HR-SH-TR-100__SMPHH5MJT4A8EYZZ",

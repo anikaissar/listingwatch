@@ -6621,7 +6621,7 @@
       "doc_id": "FK-FC-CB-GUBU-02__FCWHHUA2MGZ7GMSV",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FK-FC-CB-GUBU-02",
       "platform_id": "FCWHHUA2MGZ7GMSV",
       "fsn": "FCWHHUA2MGZ7GMSV",
@@ -6636,7 +6636,7 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-22T08:31:10.506Z"
     },
     {
       "doc_id": "FK-FC-CB-MOBU-02__FCWHHUCGS5JNVYKB",

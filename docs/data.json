@@ -6810,7 +6810,7 @@
       "doc_id": "FK-HR-HIP-IP-03__HNAHE38TAEWKTRT5",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FK-HR-HIP-IP-03",
       "platform_id": "HNAHE38TAEWKTRT5",
       "fsn": "HNAHE38TAEWKTRT5",
@@ -6825,7 +6825,7 @@
       "d2c_title": "",
       "reminders_sent": 0,
       "last_reminder_cycle": 0,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-22T08:31:28.829Z"
     },
     {
       "doc_id": "FK-HR-HIP-IP-125__HNAHDBN6GDCZRHH2",

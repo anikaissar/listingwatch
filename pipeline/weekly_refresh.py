@@ -492,7 +492,28 @@ def _format_stats(label, stats):
             f"{stats['dropped']} dropped")
 
 
-def git_commit_and_push(repo_dir, data_json_relpath, stats_by_platform):
+def git_commit_and_push(repo_dir, data_json_relpath, stats_by_platform, max_push_attempts=5):
+    """Commit docs/data.json and push, retrying on a rejected push.
+
+    The kam-status-writer Worker commits directly to main every time a KAM
+    marks a flagged listing "Not an Issue" from the review dashboard. A full
+    refresh run takes several minutes (scraping + image diffing across four
+    platforms), so it's common for one or more of those Worker commits to
+    land on origin/main while this run is still going -- a bare `git push`
+    then gets rejected as non-fast-forward (seen repeatedly the week of
+    2026-09-21; see project notes). This retries pull+push instead of
+    aborting outright and losing the run's results.
+
+    NOTE: this only protects the git-level commit/push from being lost. It
+    does NOT re-incorporate KAM status edits made *during this run* into the
+    freshly-scraped rows -- prior_rows is loaded once at the very start of
+    main(), before scraping, so a "Not an Issue" click that lands mid-run
+    could still be overwritten by this run's regenerated data.json even
+    though the push itself now succeeds. Fixing that properly means
+    reloading prior_rows and re-running the carry-forward merge right before
+    this final commit, which is a bigger change -- flagged separately,
+    not done here.
+    """
     message = "Weekly refresh: " + " | ".join(
         _format_stats(platform, stats) for platform, stats in stats_by_platform.items()
     )
@@ -502,7 +523,29 @@ def git_commit_and_push(repo_dir, data_json_relpath, stats_by_platform):
         print("No changes to commit (data.json is identical to the last run).")
         return
     run(["git", "commit", "-m", message], cwd=repo_dir)
-    run(["git", "push"], cwd=repo_dir)
+
+    for attempt in range(1, max_push_attempts + 1):
+        push_result = subprocess.run(["git", "push"], cwd=repo_dir)
+        if push_result.returncode == 0:
+            return
+        if attempt == max_push_attempts:
+            break
+        print(f"git push rejected (attempt {attempt}/{max_push_attempts}) -- pulling and retrying...")
+        pull_result = subprocess.run(["git", "pull", "--no-edit"], cwd=repo_dir)
+        if pull_result.returncode != 0:
+            subprocess.run(["git", "merge", "--abort"], cwd=repo_dir)
+            raise SystemExit(
+                "git pull failed while retrying a rejected push (likely a real merge "
+                "conflict in docs/data.json, not just a fast-forward). The refresh's own "
+                "commit is still local and unpushed -- resolve by hand: cd into the repo, "
+                "`git pull`, fix the conflict, then `git push`."
+            )
+    raise SystemExit(
+        f"git push was rejected {max_push_attempts} times in a row even after pulling each "
+        "time -- something (likely the kam-status-writer Worker) is committing to main very "
+        "frequently. The refresh's own commit is still local and unpushed -- push it by hand "
+        "once things quiet down: cd into the repo and run `git push` (pulling first if needed)."
+    )
 
 
 def main():

@@ -6663,7 +6663,7 @@
       "doc_id": "FK-FC-DM-PG2-030__MSCHHTTCKYMSDHZK",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FK-FC-DM-PG2-030",
       "platform_id": "MSCHHTTCKYMSDHZK",
       "fsn": "MSCHHTTCKYMSDHZK",
@@ -6678,7 +6678,7 @@
       "d2c_title": "",
       "reminders_sent": 1,
       "last_reminder_cycle": 1,
-      "status_changed_at": null
+      "status_changed_at": "2026-09-24T07:12:02.205Z"
     },
     {
       "doc_id": "FK-FC-FW-KMPA3-100__FCWHGY3NSHVCZ9DJ",

@@ -13488,7 +13488,7 @@
       "doc_id": "HR-HE-RT2-060__myntra__25247830",
       "platform": "myntra",
       "priority": "P1",
-      "status": "Open",
+      "status": "Resolved",
       "nh_sku": "HR-HE-RT2-060",
       "platform_id": "25247830",
       "fsn": "",
@@ -13503,7 +13503,7 @@
       "d2c_title": "Ready-to-Apply Fresh Herbal Henna RootTouch-Up Paste",
       "reminders_sent": 4,
       "last_reminder_cycle": 4,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-15T08:29:29.601Z"
     },
     {
       "doc_id": "HR-NM-CS-040__myntra__32943416",

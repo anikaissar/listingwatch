@@ -13404,7 +13404,7 @@
       "doc_id": "HR-HE-RA2-250__myntra__22048752",
       "platform": "myntra",
       "priority": "P1",
-      "status": "Open",
+      "status": "Resolved",
       "nh_sku": "HR-HE-RA2-250",
       "platform_id": "22048752",
       "fsn": "",
@@ -13419,7 +13419,7 @@
       "d2c_title": "Ready-to-Apply Fresh Henna Paste for Hair, Herbal Hair Color",
       "reminders_sent": 4,
       "last_reminder_cycle": 4,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-15T08:28:42.920Z"
     },
     {
       "doc_id": "HR-HE-RA2H-85__myntra__36861821",

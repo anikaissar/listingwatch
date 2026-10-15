@@ -13551,7 +13551,7 @@
       "doc_id": "HR-NM-CS3-040__myntra__20077848",
       "platform": "myntra",
       "priority": "P1",
-      "status": "Open",
+      "status": "Resolved",
       "nh_sku": "HR-NM-CS3-040",
       "platform_id": "20077848",
       "fsn": "",
@@ -13566,7 +13566,7 @@
       "d2c_title": "Curry Sesame Hair Mask for Grey Hair Control - Nat Habit",
       "reminders_sent": 4,
       "last_reminder_cycle": 4,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-15T08:56:23.346Z"
     },
     {
       "doc_id": "HR-NM-HB2-040__myntra__20077854",

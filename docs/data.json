@@ -4059,7 +4059,7 @@
       "doc_id": "BC-CPS-WA5-125__SOPH4382G6PSARHZ",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BC-CPS-WA5-125",
       "platform_id": "SOPH4382G6PSARHZ",
       "fsn": "SOPH4382G6PSARHZ",
@@ -4074,7 +4074,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-28T07:00:08.753Z"
     },
     {
       "doc_id": "BC-EO-CI-015__BEOGGCWY25NCYXGH",

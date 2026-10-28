@@ -3681,7 +3681,7 @@
       "doc_id": "BA-PBO-ALSC-02__BBCGZWDGJZCHFFYX",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BA-PBO-ALSC-02",
       "platform_id": "BBCGZWDGJZCHFFYX",
       "fsn": "BBCGZWDGJZCHFFYX",
@@ -3696,7 +3696,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-28T06:59:23.459Z"
     },
     {
       "doc_id": "BA-PBO-OLBM-02__BBCGZWKF9AXGWZXB",

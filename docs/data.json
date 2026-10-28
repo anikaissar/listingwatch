@@ -5340,7 +5340,7 @@
       "doc_id": "CB-RA2-RCSN-03__HNAGV2TAMMAFVCNF",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "CB-RA2-RCSN-03",
       "platform_id": "HNAGV2TAMMAFVCNF",
       "fsn": "HNAGV2TAMMAFVCNF",
@@ -5355,7 +5355,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-28T06:54:05.396Z"
     },
     {
       "doc_id": "CB-RA2-RCSN-03__MEHGYRB62ZPHRQAR",

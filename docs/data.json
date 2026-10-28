@@ -783,7 +783,7 @@
       "doc_id": "HR-HE-RA2-250__MEHH2MZTNZRESJKT",
       "platform": "flipkart",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "HR-HE-RA2-250",
       "platform_id": "MEHH2MZTNZRESJKT",
       "fsn": "MEHH2MZTNZRESJKT",
@@ -798,7 +798,7 @@
       "d2c_title": "Ready-to-Apply Fresh Henna Paste for Hair, Herbal Hair Color",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-28T06:08:19.419Z"
     },
     {
       "doc_id": "HR-HO-HA-100__HOLGHTPTVM5HBPQJ",

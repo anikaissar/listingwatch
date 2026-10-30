@@ -13866,7 +13866,7 @@
       "doc_id": "HR-SH-HBHB-02__myntra__30464461",
       "platform": "myntra",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "HR-SH-HBHB-02",
       "platform_id": "30464461",
       "fsn": "",
@@ -13881,7 +13881,7 @@
       "d2c_title": "Hibiscus Navdha Shampoo &amp; Nutri-Conditioner",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:25:56.757Z"
     },
     {
       "doc_id": "HR-SH-TRTR-02__myntra__30464510",

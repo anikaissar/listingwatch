@@ -762,7 +762,7 @@
       "doc_id": "HR-HB-HB-025__HSYG9KE4EZKM3K47",
       "platform": "flipkart",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "HR-HB-HB-025",
       "platform_id": "HSYG9KE4EZKM3K47",
       "fsn": "HSYG9KE4EZKM3K47",
@@ -777,7 +777,7 @@
       "d2c_title": "Hibiscus BlackSeed Post-Wash Hair Balm",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T11:20:48.079Z"
     },
     {
       "doc_id": "HR-HE-RA2-250__MEHH2MZTNZRESJKT",

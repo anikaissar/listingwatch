@@ -13803,7 +13803,7 @@
       "doc_id": "HR-SH-APAP-02__myntra__30464526",
       "platform": "myntra",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "HR-SH-APAP-02",
       "platform_id": "30464526",
       "fsn": "",
@@ -13818,7 +13818,7 @@
       "d2c_title": "Aloe Peanut Navdha Shampoo &amp; Nutri-Conditioner",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:25:46.985Z"
     },
     {
       "doc_id": "HR-SH-CBCB-02__myntra__30464539",

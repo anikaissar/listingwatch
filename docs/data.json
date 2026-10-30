@@ -2043,7 +2043,7 @@
       "doc_id": "FC-DU-SO-040__FCWGEFZMMJD2AYNA",
       "platform": "flipkart",
       "priority": "P2",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-DU-SO-040",
       "platform_id": "FCWGEFZMMJD2AYNA",
       "fsn": "FCWGEFZMMJD2AYNA",
@@ -2058,7 +2058,7 @@
       "d2c_title": "Sweet Orange Brightening Ubtan Face Pack",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T11:32:31.040Z"
     },
     {
       "doc_id": "FC-EM-UJ2-025__FCPGN4ABBZN23KTZ",

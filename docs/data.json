@@ -2400,7 +2400,7 @@
       "doc_id": "BC-SM-CID-200__MSCGNQH7AHRBMAWA",
       "platform": "flipkart",
       "priority": "P3",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BC-SM-CID-200",
       "platform_id": "MSCGNQH7AHRBMAWA",
       "fsn": "MSCGNQH7AHRBMAWA",
@@ -2415,7 +2415,7 @@
       "d2c_title": "Double Cocoa Intense DermaCare Body Malai- 200ml",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T09:59:59.044Z"
     },
     {
       "doc_id": "CB-BA-BNBMSCCM-04__BBCHYFFFPTF3WJKD",

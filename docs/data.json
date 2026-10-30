@@ -384,7 +384,7 @@
       "doc_id": "FC-AC-AC2-050__MSCHYZ2EYA9TN2HM",
       "platform": "flipkart",
       "priority": "P1",
-      "status": "Open",
+      "status": "Resolved",
       "nh_sku": "FC-AC-AC2-050",
       "platform_id": "MSCHYZ2EYA9TN2HM",
       "fsn": "MSCHYZ2EYA9TN2HM",
@@ -399,7 +399,7 @@
       "d2c_title": "Active Aloe Cactus Hydra Lift Gel Moisturiser",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T10:41:04.417Z"
     },
     {
       "doc_id": "FC-AC-NT2-050__MSCHYZ2ETPKKXGAQ",

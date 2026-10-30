@@ -363,7 +363,7 @@
       "doc_id": "CB-SM-MNFR-02__MSCGSZE53GWNEGDG",
       "platform": "flipkart",
       "priority": "P1",
-      "status": "Open",
+      "status": "Resolved",
       "nh_sku": "CB-SM-MNFR-02",
       "platform_id": "MSCGSZE53GWNEGDG",
       "fsn": "MSCGSZE53GWNEGDG",
@@ -378,7 +378,7 @@
       "d2c_title": "Multi Nut &amp; Fig Rose Body Malai Combo",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T11:09:17.426Z"
     },
     {
       "doc_id": "FC-AC-AC2-050__MSCHYZ2EYA9TN2HM",

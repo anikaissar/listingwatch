@@ -13992,7 +13992,7 @@
       "doc_id": "BC-CP-AL-100__myntra__20191174",
       "platform": "myntra",
       "priority": "P4",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BC-CP-AL-100",
       "platform_id": "20191174",
       "fsn": "",
@@ -14007,7 +14007,7 @@
       "d2c_title": "Pure Cold Pressed Almond (Badam) Oil",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:40:01.491Z"
     },
     {
       "doc_id": "BC-CP-CO-200__myntra__20191176",

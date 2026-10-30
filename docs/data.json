@@ -5739,7 +5739,7 @@
       "doc_id": "FC-DU-LC2-040__FCWGEFZGHGBFKD8Y",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-DU-LC2-040",
       "platform_id": "FCWGEFZGHGBFKD8Y",
       "fsn": "FCWGEFZGHGBFKD8Y",
@@ -5754,7 +5754,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T10:00:51.244Z"
     },
     {
       "doc_id": "FC-FL-GU-190__TNRHA89YBGGTTY6C",

@@ -5256,7 +5256,7 @@
       "doc_id": "CB-PC-MSAG-04__CANGUEFQMY3AUZVX",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "CB-PC-MSAG-04",
       "platform_id": "CANGUEFQMY3AUZVX",
       "fsn": "CANGUEFQMY3AUZVX",
@@ -5271,7 +5271,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T07:53:50.730Z"
     },
     {
       "doc_id": "CB-PC-SNMS-04__CANGUEFQU5QVYYKB",

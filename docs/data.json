@@ -13446,7 +13446,7 @@
       "doc_id": "HR-HE-RASB-03__myntra__32829302",
       "platform": "myntra",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "HR-HE-RASB-03",
       "platform_id": "32829302",
       "fsn": "",
@@ -13461,7 +13461,7 @@
       "d2c_title": "Ready to Apply Henna Paste &amp; Stain Boost Oil",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:10:05.991Z"
     },
     {
       "doc_id": "HR-HE-RASB-05__myntra__32829297",

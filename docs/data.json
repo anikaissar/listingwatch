@@ -153,7 +153,7 @@
       "doc_id": "BC-HM-PWR-030__MSCGKWDUWUXZHN2Y",
       "platform": "flipkart",
       "priority": "P1",
-      "status": "Open",
+      "status": "Resolved",
       "nh_sku": "BC-HM-PWR-030",
       "platform_id": "MSCGKWDUWUXZHN2Y",
       "fsn": "MSCGKWDUWUXZHN2Y",
@@ -168,7 +168,7 @@
       "d2c_title": "Pumpkin Walnut Hand Malai",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T11:01:35.463Z"
     },
     {
       "doc_id": "BC-MA-GM-100__MSOGGUHMCQCQWBZX",

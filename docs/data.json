@@ -4458,7 +4458,7 @@
       "doc_id": "BC-UU-WY2-040__BWSGKGZPAKWAZYDE",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BC-UU-WY2-040",
       "platform_id": "BWSGKGZPAKWAZYDE",
       "fsn": "BWSGKGZPAKWAZYDE",
@@ -4473,7 +4473,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T07:52:04.840Z"
     },
     {
       "doc_id": "BC-UU-WY3-040__BWSGGVU87YDRE5WJ",

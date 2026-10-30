@@ -468,7 +468,7 @@
       "doc_id": "FC-DU-DR-040__FCWGEFZGYPXRUGYM",
       "platform": "flipkart",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-DU-DR-040",
       "platform_id": "FCWGEFZGYPXRUGYM",
       "fsn": "FCWGEFZGYPXRUGYM",
@@ -483,7 +483,7 @@
       "d2c_title": "Delicate Rose Brightening Ubtan Face Pack",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T10:52:43.760Z"
     },
     {
       "doc_id": "FC-EM-NML3-025__SCBGR2G3GKZCAYDV",

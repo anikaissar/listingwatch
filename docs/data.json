@@ -13572,7 +13572,7 @@
       "doc_id": "HR-NM-HB2-040__myntra__20077854",
       "platform": "myntra",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "HR-NM-HB2-040",
       "platform_id": "20077854",
       "fsn": "",
@@ -13587,7 +13587,7 @@
       "d2c_title": "Five Oil Hibiscus Hair Mask for Hair Growth – Nat Habit",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:10:09.637Z"
     },
     {
       "doc_id": "HR-NM-HB3-040__myntra__20077844",

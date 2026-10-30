@@ -13362,7 +13362,7 @@
       "doc_id": "FT-FS-LU2-050__myntra__20189198",
       "platform": "myntra",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FT-FS-LU2-050",
       "platform_id": "20189198",
       "fsn": "",
@@ -13377,7 +13377,7 @@
       "d2c_title": "Lavender Unwind Foot Salt",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:14:44.679Z"
     },
     {
       "doc_id": "HR-CB-IPRA-02__myntra__38737189",

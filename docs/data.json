@@ -657,7 +657,7 @@
       "doc_id": "HR-CN-CC-150__CNDH3YHS2R2YGB5N",
       "platform": "flipkart",
       "priority": "P1",
-      "status": "Open",
+      "status": "Resolved",
       "nh_sku": "HR-CN-CC-150",
       "platform_id": "CNDH3YHS2R2YGB5N",
       "fsn": "CNDH3YHS2R2YGB5N",
@@ -672,7 +672,7 @@
       "d2c_title": "No Dry, No Frizz Shine Nutri-Conditioner",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T10:47:38.546Z"
     },
     {
       "doc_id": "HR-CN-CC2-150__CNDH4FGDNHPCSAAM",

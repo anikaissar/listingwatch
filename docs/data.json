@@ -5025,7 +5025,7 @@
       "doc_id": "CB-GS-BV-19__CBKGUGX8KCSQ3UKZ",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "CB-GS-BV-19",
       "platform_id": "CBKGUGX8KCSQ3UKZ",
       "fsn": "CBKGUGX8KCSQ3UKZ",
@@ -5040,7 +5040,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T07:53:17.904Z"
     },
     {
       "doc_id": "CB-GS-CM-04__CBKH59JSSEVV3GF7",

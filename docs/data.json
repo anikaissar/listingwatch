@@ -12585,7 +12585,7 @@
       "doc_id": "BC-BU-TB2-080__myntra__21967096",
       "platform": "myntra",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BC-BU-TB2-080",
       "platform_id": "21967096",
       "fsn": "",
@@ -12600,7 +12600,7 @@
       "d2c_title": "Wild Turmeric Bath Ubtan",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:19:30.289Z"
     },
     {
       "doc_id": "BC-BU-TB3-080__myntra__20188920",

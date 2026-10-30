@@ -4227,7 +4227,7 @@
       "doc_id": "BC-SM-SCS2-120__MSCGHVPYSZDXZTBD",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BC-SM-SCS2-120",
       "platform_id": "MSCGHVPYSZDXZTBD",
       "fsn": "MSCGHVPYSZDXZTBD",
@@ -4242,7 +4242,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T07:51:30.737Z"
     },
     {
       "doc_id": "BC-UU-AC-040__BWSGGVU7XVYFUTG8",

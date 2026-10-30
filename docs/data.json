@@ -5613,7 +5613,7 @@
       "doc_id": "CB-SHO-TTR-02__HOLH9EHCVNB9WM6R",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "CB-SHO-TTR-02",
       "platform_id": "HOLH9EHCVNB9WM6R",
       "fsn": "HOLH9EHCVNB9WM6R",
@@ -5628,7 +5628,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T07:54:10.043Z"
     },
     {
       "doc_id": "FC-CM-CEM-030__KMTH9PMYZXG8ZJCV",

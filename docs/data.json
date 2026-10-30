@@ -3408,7 +3408,7 @@
       "doc_id": "HR-HIP-IP-85__HNAH8UNWYEKQRHUK",
       "platform": "flipkart",
       "priority": "P4",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "HR-HIP-IP-85",
       "platform_id": "HNAH8UNWYEKQRHUK",
       "fsn": "HNAH8UNWYEKQRHUK",
@@ -3423,7 +3423,7 @@
       "d2c_title": "HUFA Pigment Indigo Powder",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:16:19.642Z"
     },
     {
       "doc_id": "HR-NJ-HJ-200__HSMHJGPECYE6DQKA",

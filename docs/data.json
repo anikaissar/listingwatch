@@ -279,7 +279,7 @@
       "doc_id": "BC-MA-TM-200__MSOGGUHMHZCF6RCX",
       "platform": "flipkart",
       "priority": "P1",
-      "status": "Open",
+      "status": "Resolved",
       "nh_sku": "BC-MA-TM-200",
       "platform_id": "MSOGGUHMHZCF6RCX",
       "fsn": "MSOGGUHMHZCF6RCX",
@@ -294,7 +294,7 @@
       "d2c_title": "Pure Turmeric Manjistha Maahu",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T10:41:50.954Z"
     },
     {
       "doc_id": "BC-PO-OL-200__HOLGZJ4QZMHR2HW2",

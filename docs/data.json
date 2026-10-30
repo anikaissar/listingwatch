@@ -12921,7 +12921,7 @@
       "doc_id": "FC-EM-UJ2-025__myntra__22195262",
       "platform": "myntra",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-EM-UJ2-025",
       "platform_id": "22195262",
       "fsn": "",
@@ -12936,7 +12936,7 @@
       "d2c_title": "Urad Jojoba Exfoliating Mura",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:15:14.535Z"
     },
     {
       "doc_id": "FC-EM-UJ3-025__myntra__23832166",

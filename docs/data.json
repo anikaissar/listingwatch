@@ -1917,7 +1917,7 @@
       "doc_id": "CB-GS-AC-06__CBKGU7HSKRFYGCXW",
       "platform": "flipkart",
       "priority": "P2",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "CB-GS-AC-06",
       "platform_id": "CBKGU7HSKRFYGCXW",
       "fsn": "CBKGU7HSKRFYGCXW",
@@ -1932,7 +1932,7 @@
       "d2c_title": "The Ultimate Nourishment Blast",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T11:32:09.521Z"
     },
     {
       "doc_id": "CB-GS-AG-08__CBKGU7HXVWGFYV2T",

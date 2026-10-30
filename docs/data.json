@@ -636,7 +636,7 @@
       "doc_id": "HR-CN-CB2-150__CNDH4FGDMRPWRGXW",
       "platform": "flipkart",
       "priority": "P1",
-      "status": "Open",
+      "status": "Resolved",
       "nh_sku": "HR-CN-CB2-150",
       "platform_id": "CNDH4FGDMRPWRGXW",
       "fsn": "CNDH4FGDMRPWRGXW",
@@ -651,7 +651,7 @@
       "d2c_title": "Men’s Hair Revital Nutri-Conditioner",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T10:39:22.474Z"
     },
     {
       "doc_id": "HR-CN-CC-150__CNDH3YHS2R2YGB5N",

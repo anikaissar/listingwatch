@@ -12963,7 +12963,7 @@
       "doc_id": "FC-KL-BM-040__myntra__20470746",
       "platform": "myntra",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-KL-BM-040",
       "platform_id": "20470746",
       "fsn": "",
@@ -12978,7 +12978,7 @@
       "d2c_title": "Fresh Banana Mulethi Lepa Face Pack",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:15:03.895Z"
     },
     {
       "doc_id": "FC-KL-BM2-040__myntra__22036198",

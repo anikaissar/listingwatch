@@ -804,7 +804,7 @@
       "doc_id": "HR-HO-HA-100__HOLGHTPTVM5HBPQJ",
       "platform": "flipkart",
       "priority": "P1",
-      "status": "Open",
+      "status": "Resolved",
       "nh_sku": "HR-HO-HA-100",
       "platform_id": "HOLGHTPTVM5HBPQJ",
       "fsn": "HOLGHTPTVM5HBPQJ",
@@ -819,7 +819,7 @@
       "d2c_title": "Hibiscus Amla DASABUTI Winter Hair Oil",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T10:51:45.684Z"
     },
     {
       "doc_id": "HR-HO-MR-100__HOLGHSHZMHRBHEHD",

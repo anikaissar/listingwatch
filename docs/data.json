@@ -1245,7 +1245,7 @@
       "doc_id": "HR-SHO-NB-100__HOLGHTNAG5GSTZU4",
       "platform": "flipkart",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "HR-SHO-NB-100",
       "platform_id": "HOLGHTNAG5GSTZU4",
       "fsn": "HOLGHTNAG5GSTZU4",
@@ -1260,7 +1260,7 @@
       "d2c_title": "Anti-Dandruff DASABUTI Summer Hair Oil",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T10:45:25.468Z"
     },
     {
       "doc_id": "HR-SHO-NB-200__HOLG9JH2EYFWYT38",

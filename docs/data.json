@@ -1938,7 +1938,7 @@
       "doc_id": "CB-GS-AG-08__CBKGU7HXVWGFYV2T",
       "platform": "flipkart",
       "priority": "P2",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "CB-GS-AG-08",
       "platform_id": "CBKGU7HXVWGFYV2T",
       "fsn": "CBKGU7HXVWGFYV2T",
@@ -1953,7 +1953,7 @@
       "d2c_title": "Couple Favorites Gift Set",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T11:32:12.830Z"
     },
     {
       "doc_id": "CB-GS-AI-06__CBKGU7HS92HXBP2P",

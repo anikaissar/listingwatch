@@ -12417,7 +12417,7 @@
       "doc_id": "BA-BU-GG2-080__myntra__25173568",
       "platform": "myntra",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BA-BU-GG2-080",
       "platform_id": "25173568",
       "fsn": "",
@@ -12432,7 +12432,7 @@
       "d2c_title": "Fresh Baby Daily Ubtan - Grain &amp; Gram",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:19:11.553Z"
     },
     {
       "doc_id": "BA-BU-MN-080__myntra__22267358",

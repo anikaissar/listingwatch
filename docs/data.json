@@ -14097,7 +14097,7 @@
       "doc_id": "BC-CP-VC-200__myntra__20191178",
       "platform": "myntra",
       "priority": "P4",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BC-CP-VC-200",
       "platform_id": "20191178",
       "fsn": "",
@@ -14112,7 +14112,7 @@
       "d2c_title": "Pure Cold Pressed Virgin Coconut Oil",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:37:04.325Z"
     },
     {
       "doc_id": "BC-EO-RM-030__myntra__31622841",

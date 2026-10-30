@@ -2652,7 +2652,7 @@
       "doc_id": "SL-GR-MCGP-050__HCOGN35EGH4ZZQYD",
       "platform": "flipkart",
       "priority": "P3",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "SL-GR-MCGP-050",
       "platform_id": "HCOGN35EGH4ZZQYD",
       "fsn": "HCOGN35EGH4ZZQYD",
@@ -2667,7 +2667,7 @@
       "d2c_title": "Marigold &amp; Gulaab Gulaal Raas",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T10:00:36.664Z"
     },
     {
       "doc_id": "SL-GR-MCNM-050__HCOGN357TAZCUXHN",

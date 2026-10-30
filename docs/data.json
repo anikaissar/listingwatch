@@ -5109,7 +5109,7 @@
       "doc_id": "CB-GS-CP-08__CBKH59JSH3CE3VD6",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "CB-GS-CP-08",
       "platform_id": "CBKH59JSH3CE3VD6",
       "fsn": "CBKH59JSH3CE3VD6",
@@ -5124,7 +5124,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T07:53:29.377Z"
     },
     {
       "doc_id": "CB-HO-HHBN-03__HTTGV2ZQGB3XED7G",

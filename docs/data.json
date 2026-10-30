@@ -12690,7 +12690,7 @@
       "doc_id": "FC-DU-SO2-040__myntra__20188410",
       "platform": "myntra",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-DU-SO2-040",
       "platform_id": "20188410",
       "fsn": "",
@@ -12705,7 +12705,7 @@
       "d2c_title": "Sweet Orange Brightening Ubtan Face Pack",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:14:22.459Z"
     },
     {
       "doc_id": "FC-EM-CN2-025__myntra__22195264",

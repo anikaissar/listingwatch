@@ -12375,7 +12375,7 @@
       "doc_id": "BA-BU-CMA2-080__myntra__22267352",
       "platform": "myntra",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BA-BU-CMA2-080",
       "platform_id": "22267352",
       "fsn": "",
@@ -12390,7 +12390,7 @@
       "d2c_title": "Fresh Baby Daily Ubtan - Charoli Milk Almond",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:19:08.712Z"
     },
     {
       "doc_id": "BA-BU-GG-080__myntra__25173570",

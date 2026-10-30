@@ -2463,7 +2463,7 @@
       "doc_id": "FC-CWDM-TP-030__MSCGHUQVZSAHWP26",
       "platform": "flipkart",
       "priority": "P3",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-CWDM-TP-030",
       "platform_id": "MSCGHUQVZSAHWP26",
       "fsn": "MSCGHUQVZSAHWP26",
@@ -2478,7 +2478,7 @@
       "d2c_title": "48HR Malai Moisturiser - 20-35Yrs - Cold Winter",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T10:00:08.537Z"
     },
     {
       "doc_id": "FC-EM-NML2-025__FCPGN4ABUVZKWZCX",

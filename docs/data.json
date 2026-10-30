@@ -13173,7 +13173,7 @@
       "doc_id": "FC-KL-NA-040__myntra__20470754",
       "platform": "myntra",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-KL-NA-040",
       "platform_id": "20470754",
       "fsn": "",
@@ -13188,7 +13188,7 @@
       "d2c_title": "Fresh Neem Ajwain Lepa Face Pack",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:14:25.645Z"
     },
     {
       "doc_id": "FC-KL-NA2-040__myntra__22206158",

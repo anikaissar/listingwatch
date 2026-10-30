@@ -5298,7 +5298,7 @@
       "doc_id": "CB-PC-SNNL-04__CANGUEFQYEW4THUG",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "CB-PC-SNNL-04",
       "platform_id": "CANGUEFQYEW4THUG",
       "fsn": "CANGUEFQYEW4THUG",
@@ -5313,7 +5313,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T07:53:56.040Z"
     },
     {
       "doc_id": "CB-RA2-RBUP-100__HNAGYSA226CZXX6D",

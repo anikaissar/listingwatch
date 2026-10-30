@@ -12858,7 +12858,7 @@
       "doc_id": "FC-EM-NML3-025__myntra__23832164",
       "platform": "myntra",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-EM-NML3-025",
       "platform_id": "23832164",
       "fsn": "",
@@ -12873,7 +12873,7 @@
       "d2c_title": "Neem-Marigold-Laung Exfoliating Mura",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:19:54.029Z"
     },
     {
       "doc_id": "FC-EM-PC2-025__myntra__22195266",

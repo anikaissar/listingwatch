@@ -13740,7 +13740,7 @@
       "doc_id": "HR-NM-TL-040__myntra__32943420",
       "platform": "myntra",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "HR-NM-TL-040",
       "platform_id": "32943420",
       "fsn": "",
@@ -13755,7 +13755,7 @@
       "d2c_title": "Crushed Tri-Leaf Hair Mask for HairFall - Nat Habit",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:25:44.230Z"
     },
     {
       "doc_id": "HR-NM-TL2-040__myntra__20077840",

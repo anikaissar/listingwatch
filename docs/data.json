@@ -1329,7 +1329,7 @@
       "doc_id": "LP-LB-BG-010__LPBG9JH454NZ5BEN",
       "platform": "flipkart",
       "priority": "P1",
-      "status": "Open",
+      "status": "Resolved",
       "nh_sku": "LP-LB-BG-010",
       "platform_id": "LPBG9JH454NZ5BEN",
       "fsn": "LPBG9JH454NZ5BEN",
@@ -1344,7 +1344,7 @@
       "d2c_title": "Men&#x27;s Black Grape Vit-E Lip Butter",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T11:03:59.808Z"
     },
     {
       "doc_id": "LP-LB-BG2-010__LPBGZH84CF4ZBERQ",

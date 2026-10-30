@@ -2589,7 +2589,7 @@
       "doc_id": "SL-GR-GPNM-050__HCOGY2K7KZKHWAGV",
       "platform": "flipkart",
       "priority": "P3",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "SL-GR-GPNM-050",
       "platform_id": "HCOGY2K7KZKHWAGV",
       "fsn": "HCOGY2K7KZKHWAGV",
@@ -2604,7 +2604,7 @@
       "d2c_title": "Neem &amp; Gulaab Gulaal Raas",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T10:00:27.374Z"
     },
     {
       "doc_id": "SL-GR-JJGP-050__HCOGYHGCJGYNJCKB",

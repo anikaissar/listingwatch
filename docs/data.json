@@ -951,7 +951,7 @@
       "doc_id": "HR-NM-HB3-040__HTTG9KG4VJAUZXYR",
       "platform": "flipkart",
       "priority": "P1",
-      "status": "Open",
+      "status": "Resolved",
       "nh_sku": "HR-NM-HB3-040",
       "platform_id": "HTTG9KG4VJAUZXYR",
       "fsn": "HTTG9KG4VJAUZXYR",
@@ -966,7 +966,7 @@
       "d2c_title": "Five Oil Hibiscus Hair Mask for Hair Growth – Nat Habit",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T11:23:36.702Z"
     },
     {
       "doc_id": "HR-NM-MR-040__HTTG9K3ZHC5YUND4",

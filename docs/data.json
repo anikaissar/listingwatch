@@ -846,7 +846,7 @@
       "doc_id": "HR-HO-NB-100__HOLGHSHNZTTYSJRF",
       "platform": "flipkart",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "HR-HO-NB-100",
       "platform_id": "HOLGHSHNZTTYSJRF",
       "fsn": "HOLGHSHNZTTYSJRF",
@@ -861,7 +861,7 @@
       "d2c_title": "Anti-Dandruff DASABUTI Winter Hair Oil",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T11:16:45.181Z"
     },
     {
       "doc_id": "HR-NM-CS-040__HTTG9K3ER4N6ABA5",

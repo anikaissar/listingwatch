@@ -1455,7 +1455,7 @@
       "doc_id": "LP-LB-PR-010__LPBG9JKUAWGKKKST",
       "platform": "flipkart",
       "priority": "P1",
-      "status": "Open",
+      "status": "Resolved",
       "nh_sku": "LP-LB-PR-010",
       "platform_id": "LPBG9JKUAWGKKKST",
       "fsn": "LPBG9JKUAWGKKKST",
@@ -1470,7 +1470,7 @@
       "d2c_title": "Pomegranate Rosehip Vit-E Lip Butter",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T10:48:23.689Z"
     },
     {
       "doc_id": "LP-LB-PR2-010__LPBGZH84NG8NQYHH",

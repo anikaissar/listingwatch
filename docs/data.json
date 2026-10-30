@@ -13110,7 +13110,7 @@
       "doc_id": "FC-KL-GK2-040__myntra__22036196",
       "platform": "myntra",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-KL-GK2-040",
       "platform_id": "22036196",
       "fsn": "",
@@ -13125,7 +13125,7 @@
       "d2c_title": "Fresh Gulab Khus Lepa Face Pack",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:20:08.675Z"
     },
     {
       "doc_id": "FC-KL-KA-040__myntra__20470752",

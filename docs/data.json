@@ -17373,7 +17373,7 @@
       "doc_id": "HR-HE-RA4-250__myntra__22185992",
       "platform": "myntra",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "HR-HE-RA4-250",
       "platform_id": "22185992",
       "fsn": "",
@@ -17388,7 +17388,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T10:17:08.860Z"
     },
     {
       "doc_id": "HR-HO-OA-100__myntra__21304914",

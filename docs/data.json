@@ -1434,7 +1434,7 @@
       "doc_id": "LP-LB-OM2-010__LPBGZH84JWYNZZWF",
       "platform": "flipkart",
       "priority": "P1",
-      "status": "Open",
+      "status": "Resolved",
       "nh_sku": "LP-LB-OM2-010",
       "platform_id": "LPBGZH84JWYNZZWF",
       "fsn": "LPBGZH84JWYNZZWF",
@@ -1449,7 +1449,7 @@
       "d2c_title": "Orange Marigold Vit-C Lip Butter",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T10:37:10.134Z"
     },
     {
       "doc_id": "LP-LB-PR-010__LPBG9JKUAWGKKKST",

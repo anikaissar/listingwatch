@@ -2925,7 +2925,7 @@
       "doc_id": "BC-CPS-NLHL2-125__SOPHEGP7PYDXN9HV",
       "platform": "flipkart",
       "priority": "P4",
-      "status": "Open",
+      "status": "Resolved",
       "nh_sku": "BC-CPS-NLHL2-125",
       "platform_id": "SOPHEGP7PYDXN9HV",
       "fsn": "SOPHEGP7PYDXN9HV",
@@ -2940,7 +2940,7 @@
       "d2c_title": "Cold Processed Himalayan Lavender Moisturising Soap",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:12:51.996Z"
     },
     {
       "doc_id": "BC-CPS-NLTB2-125__SOPHEGZDGUBHENGH",

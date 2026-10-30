@@ -1707,7 +1707,7 @@
       "doc_id": "BC-BU-MR3-080__BWSGGFGND6JFUTK6",
       "platform": "flipkart",
       "priority": "P2",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BC-BU-MR3-080",
       "platform_id": "BWSGGFGND6JFUTK6",
       "fsn": "BWSGGFGND6JFUTK6",
@@ -1722,7 +1722,7 @@
       "d2c_title": "Masoor Rub Bath Ubtan",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T11:31:35.600Z"
     },
     {
       "doc_id": "BC-BU-NC3-080__BWSGGFGNNRKWNZ7U",

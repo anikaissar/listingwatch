@@ -1875,7 +1875,7 @@
       "doc_id": "CB-FAS-SKC-008__CBKHDHG5FVFFKHB9",
       "platform": "flipkart",
       "priority": "P2",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "CB-FAS-SKC-008",
       "platform_id": "CBKHDHG5FVFFKHB9",
       "fsn": "CBKHDHG5FVFFKHB9",
@@ -1890,7 +1890,7 @@
       "d2c_title": "Fresh Ayurveda Starter Kit",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T11:32:02.567Z"
     },
     {
       "doc_id": "CB-FAS-SKG-12__CBKHCHWJ6GA4XTTD",

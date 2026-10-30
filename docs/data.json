@@ -10023,7 +10023,7 @@
       "doc_id": "AC-SDL-LO4-00__nykaa__9412201",
       "platform": "nykaa",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "AC-SDL-LO4-00",
       "platform_id": "9412201",
       "fsn": "",
@@ -10038,7 +10038,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:35:05.817Z"
     },
     {
       "doc_id": "BA-BM-AD-120__nykaa__19398353",

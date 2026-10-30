@@ -12438,7 +12438,7 @@
       "doc_id": "BA-BU-MN-080__myntra__22267358",
       "platform": "myntra",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BA-BU-MN-080",
       "platform_id": "22267358",
       "fsn": "",
@@ -12453,7 +12453,7 @@
       "d2c_title": "Fresh Baby Daily Ubtan - Milk &amp; Nut",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:19:14.538Z"
     },
     {
       "doc_id": "BA-BU-MN2-080__myntra__22267356",

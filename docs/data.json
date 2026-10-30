@@ -12795,7 +12795,7 @@
       "doc_id": "FC-EM-HS2-025__myntra__22195258",
       "platform": "myntra",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-EM-HS2-025",
       "platform_id": "22195258",
       "fsn": "",
@@ -12810,7 +12810,7 @@
       "d2c_title": "Honey Sunflower Exfoliating Mura",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:15:00.678Z"
     },
     {
       "doc_id": "FC-EM-HS3-025__myntra__23832162",

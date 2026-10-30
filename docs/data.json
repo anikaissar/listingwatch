@@ -13341,7 +13341,7 @@
       "doc_id": "FT-FS-CR2-050__myntra__20189202",
       "platform": "myntra",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FT-FS-CR2-050",
       "platform_id": "20189202",
       "fsn": "",
@@ -13356,7 +13356,7 @@
       "d2c_title": "Cinnamon Respite Foot Salt",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:20:27.178Z"
     },
     {
       "doc_id": "FT-FS-LU2-050__myntra__20189198",

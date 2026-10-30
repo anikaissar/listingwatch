@@ -1161,7 +1161,7 @@
       "doc_id": "HR-SH-APAP-02__CBKH3FP6DZGZWJFN",
       "platform": "flipkart",
       "priority": "P1",
-      "status": "Open",
+      "status": "Resolved",
       "nh_sku": "HR-SH-APAP-02",
       "platform_id": "CBKH3FP6DZGZWJFN",
       "fsn": "CBKH3FP6DZGZWJFN",
@@ -1176,7 +1176,7 @@
       "d2c_title": "Aloe Peanut Navdha Shampoo &amp; Nutri-Conditioner",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T10:19:35.371Z"
     },
     {
       "doc_id": "HR-SH-HB-650__SMPHG566WQWZSJGV",

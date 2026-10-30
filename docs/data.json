@@ -1392,7 +1392,7 @@
       "doc_id": "LP-LB-KH2-010__LPBGZH84CVKSGX3F",
       "platform": "flipkart",
       "priority": "P1",
-      "status": "Open",
+      "status": "Resolved",
       "nh_sku": "LP-LB-KH2-010",
       "platform_id": "LPBGZH84CVKSGX3F",
       "fsn": "LPBGZH84CVKSGX3F",
@@ -1407,7 +1407,7 @@
       "d2c_title": "Kokum Honey Vit-E Lip Butter",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T10:38:04.689Z"
     },
     {
       "doc_id": "LP-LB-OM-010__LPBG9JKVGVBGEW2Z",

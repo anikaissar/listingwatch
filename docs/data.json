@@ -2715,7 +2715,7 @@
       "doc_id": "SL-GR-NMJJMCGP-050__HCOGY2K7GZ68KMEC",
       "platform": "flipkart",
       "priority": "P3",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "SL-GR-NMJJMCGP-050",
       "platform_id": "HCOGY2K7GZ68KMEC",
       "fsn": "HCOGY2K7GZ68KMEC",
@@ -2730,7 +2730,7 @@
       "d2c_title": "Rang Bahaar Gulaal Raas",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T10:00:45.448Z"
     },
     {
       "doc_id": "AC-SDL-LO2-00__LFHGGBV9NUHPQTGZ",

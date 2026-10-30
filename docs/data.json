@@ -4626,7 +4626,7 @@
       "doc_id": "CB-CPS-MC2-125__SOPHYGDMPGAT4ZXE",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "CB-CPS-MC2-125",
       "platform_id": "SOPHYGDMPGAT4ZXE",
       "fsn": "SOPHYGDMPGAT4ZXE",
@@ -4641,7 +4641,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T07:52:27.962Z"
     },
     {
       "doc_id": "CB-CPS-MO2-125__SOPHYGDHGPPX8GKM",

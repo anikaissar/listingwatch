@@ -13845,7 +13845,7 @@
       "doc_id": "HR-SH-CCCC-02__myntra__30464493",
       "platform": "myntra",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "HR-SH-CCCC-02",
       "platform_id": "30464493",
       "fsn": "",
@@ -13860,7 +13860,7 @@
       "d2c_title": "Curry Cider Navdha Shampoo &amp; Nutri-Conditioner",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:25:53.135Z"
     },
     {
       "doc_id": "HR-SH-HBHB-02__myntra__30464461",

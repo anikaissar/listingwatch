@@ -132,7 +132,7 @@
       "doc_id": "BC-HM-BVE-030__MSCGHFF29AEDFAGG",
       "platform": "flipkart",
       "priority": "P1",
-      "status": "Open",
+      "status": "Resolved",
       "nh_sku": "BC-HM-BVE-030",
       "platform_id": "MSCGHFF29AEDFAGG",
       "fsn": "MSCGHFF29AEDFAGG",
@@ -147,7 +147,7 @@
       "d2c_title": "Berry Vanilla Elastin Hand Malai",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T11:02:06.437Z"
     },
     {
       "doc_id": "BC-HM-PWR-030__MSCGKWDUWUXZHN2Y",

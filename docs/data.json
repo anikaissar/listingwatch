@@ -6033,7 +6033,7 @@
       "doc_id": "FC-FW-RCCR-100__FCWGT8ARAWQHN2EG",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-FW-RCCR-100",
       "platform_id": "FCWGT8ARAWQHN2EG",
       "fsn": "FCWGT8ARAWQHN2EG",
@@ -6048,7 +6048,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T10:01:14.591Z"
     },
     {
       "doc_id": "FC-FW-RCCR2-100__FCWHYXFYTFZEBT7M",

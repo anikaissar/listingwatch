@@ -13131,7 +13131,7 @@
       "doc_id": "FC-KL-KA-040__myntra__20470752",
       "platform": "myntra",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-KL-KA-040",
       "platform_id": "20470752",
       "fsn": "",
@@ -13146,7 +13146,7 @@
       "d2c_title": "Fresh Kaolin Aparajita Lepa Face Pack",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:20:12.041Z"
     },
     {
       "doc_id": "FC-KL-KA2-040__myntra__22036204",

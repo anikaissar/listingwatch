@@ -825,7 +825,7 @@
       "doc_id": "HR-HO-MR-100__HOLGHSHZMHRBHEHD",
       "platform": "flipkart",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "HR-HO-MR-100",
       "platform_id": "HOLGHSHZMHRBHEHD",
       "fsn": "HOLGHSHZMHRBHEHD",
@@ -840,7 +840,7 @@
       "d2c_title": "Men’s Hair Revital DASABUTI Winter Hair Oil",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T11:17:06.892Z"
     },
     {
       "doc_id": "HR-HO-NB-100__HOLGHSHNZTTYSJRF",

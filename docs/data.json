@@ -12711,7 +12711,7 @@
       "doc_id": "FC-EM-CN2-025__myntra__22195264",
       "platform": "myntra",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-EM-CN2-025",
       "platform_id": "22195264",
       "fsn": "",
@@ -12726,7 +12726,7 @@
       "d2c_title": "Cinnamon Nashpati Radiance Exfoliating Mura",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:14:09.564Z"
     },
     {
       "doc_id": "FC-EM-CN3-025__myntra__23832160",

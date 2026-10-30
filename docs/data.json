@@ -5949,7 +5949,7 @@
       "doc_id": "FC-FW-GPCR2-100__FCWHYWWE3NVZWE8Q",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-FW-GPCR2-100",
       "platform_id": "FCWHYWWE3NVZWE8Q",
       "fsn": "FCWHYWWE3NVZWE8Q",
@@ -5964,7 +5964,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T10:01:06.756Z"
     },
     {
       "doc_id": "FC-FW-GPGL-100__FCWGS243FFHUAFJE",

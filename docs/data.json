@@ -12753,7 +12753,7 @@
       "doc_id": "FC-EM-FG2-025__myntra__22195268",
       "platform": "myntra",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-EM-FG2-025",
       "platform_id": "22195268",
       "fsn": "",
@@ -12768,7 +12768,7 @@
       "d2c_title": "Five Gram &amp; Clay Fuse Exfoliating Mura",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:15:10.599Z"
     },
     {
       "doc_id": "FC-EM-FG3-025__myntra__23832170",

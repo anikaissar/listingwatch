@@ -14139,7 +14139,7 @@
       "doc_id": "BC-EO-TT-015__myntra__20191802",
       "platform": "myntra",
       "priority": "P4",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BC-EO-TT-015",
       "platform_id": "20191802",
       "fsn": "",
@@ -14154,7 +14154,7 @@
       "d2c_title": "Pure Tea Tree Essential Oil",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:39:35.223Z"
     },
     {
       "doc_id": "BC-EO-TU-015__myntra__20191806",

@@ -2547,7 +2547,7 @@
       "doc_id": "FC-HDDM-PT-030__MSCGHTPKHWFRDBTR",
       "platform": "flipkart",
       "priority": "P3",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-HDDM-PT-030",
       "platform_id": "MSCGHTPKHWFRDBTR",
       "fsn": "MSCGHTPKHWFRDBTR",
@@ -2562,7 +2562,7 @@
       "d2c_title": "48HR Malai Moisturiser - 13-19Yrs - Hot Dry Weather",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T10:00:21.177Z"
     },
     {
       "doc_id": "SL-GR-GPN2-200__HCOHK8GT7JUGMQ54",

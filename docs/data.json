@@ -2421,7 +2421,7 @@
       "doc_id": "CB-BA-BNBMSCCM-04__BBCHYFFFPTF3WJKD",
       "platform": "flipkart",
       "priority": "P3",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "CB-BA-BNBMSCCM-04",
       "platform_id": "BBCHYFFFPTF3WJKD",
       "fsn": "BBCHYFFFPTF3WJKD",
@@ -2436,7 +2436,7 @@
       "d2c_title": "Cuddly New Born Gift Set",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T10:00:02.198Z"
     },
     {
       "doc_id": "FC-CWDM-FW-030__MSCGHUVA7EVHKFXJ",

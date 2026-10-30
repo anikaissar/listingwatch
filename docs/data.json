@@ -12480,7 +12480,7 @@
       "doc_id": "BC-BU-MR2-080__myntra__21967106",
       "platform": "myntra",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BC-BU-MR2-080",
       "platform_id": "21967106",
       "fsn": "",
@@ -12495,7 +12495,7 @@
       "d2c_title": "Masoor Rub Bath Ubtan",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:15:07.319Z"
     },
     {
       "doc_id": "BC-BU-MR3-080__myntra__20188922",

@@ -1308,7 +1308,7 @@
       "doc_id": "LP-LB-BC2-010__LPBGZH84GNJGV6BH",
       "platform": "flipkart",
       "priority": "P1",
-      "status": "Open",
+      "status": "Resolved",
       "nh_sku": "LP-LB-BC2-010",
       "platform_id": "LPBGZH84GNJGV6BH",
       "fsn": "LPBGZH84GNJGV6BH",
@@ -1323,7 +1323,7 @@
       "d2c_title": "Beetroot Squalane Vit-E Lip Butter",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T10:42:50.756Z"
     },
     {
       "doc_id": "LP-LB-BG-010__LPBG9JH454NZ5BEN",

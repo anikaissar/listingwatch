@@ -13047,7 +13047,7 @@
       "doc_id": "FC-KL-FM-040__myntra__31700291",
       "platform": "myntra",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-KL-FM-040",
       "platform_id": "31700291",
       "fsn": "",
@@ -13062,7 +13062,7 @@
       "d2c_title": "Fresh Flaxseed Manjistha Lepa Face Pack",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:14:19.330Z"
     },
     {
       "doc_id": "FC-KL-FM2-040__myntra__22036206",

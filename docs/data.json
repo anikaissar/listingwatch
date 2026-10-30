@@ -342,7 +342,7 @@
       "doc_id": "BC-SM-MNS2-120__MSCGKX6EC4YGTUCG",
       "platform": "flipkart",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BC-SM-MNS2-120",
       "platform_id": "MSCGKX6EC4YGTUCG",
       "fsn": "MSCGKX6EC4YGTUCG",
@@ -357,7 +357,7 @@
       "d2c_title": "Multi-Nut Shea Omega-3 Body Malai",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T11:08:44.950Z"
     },
     {
       "doc_id": "CB-SM-MNFR-02__MSCGSZE53GWNEGDG",

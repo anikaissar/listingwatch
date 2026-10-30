@@ -12249,7 +12249,7 @@
       "doc_id": "HR-HE-RA4-250__nykaa__10346641",
       "platform": "nykaa",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "HR-HE-RA4-250",
       "platform_id": "10346641",
       "fsn": "",
@@ -12264,7 +12264,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:34:32.264Z"
     },
     {
       "doc_id": "HR-HE-RTSB-03__nykaa__17694099",

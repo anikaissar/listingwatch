@@ -12522,7 +12522,7 @@
       "doc_id": "BC-BU-NC-080__myntra__20188912",
       "platform": "myntra",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BC-BU-NC-080",
       "platform_id": "20188912",
       "fsn": "",
@@ -12537,7 +12537,7 @@
       "d2c_title": "Neem Cure Bath Ubtan",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:19:23.322Z"
     },
     {
       "doc_id": "BC-BU-NC2-080__myntra__21967100",

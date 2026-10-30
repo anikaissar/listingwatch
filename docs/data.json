@@ -4899,7 +4899,7 @@
       "doc_id": "CB-FAW-SKG-12__CBKHJRT9WWHCQ2RT",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "CB-FAW-SKG-12",
       "platform_id": "CBKHJRT9WWHCQ2RT",
       "fsn": "CBKHJRT9WWHCQ2RT",
@@ -4914,7 +4914,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T07:52:59.633Z"
     },
     {
       "doc_id": "CB-GS-AH-09__CBKGU7HXD8KQGNZH",

@@ -1581,7 +1581,7 @@
       "doc_id": "BA-BU-CMA-080__FCPHF5HFFPS82DGD",
       "platform": "flipkart",
       "priority": "P2",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BA-BU-CMA-080",
       "platform_id": "FCPHF5HFFPS82DGD",
       "fsn": "FCPHF5HFFPS82DGD",
@@ -1596,7 +1596,7 @@
       "d2c_title": "Fresh Baby Daily Ubtan - Charoli Milk Almond",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T11:31:15.947Z"
     },
     {
       "doc_id": "BA-BU-CMA-080__BWSGKY4GS9MHPKQF",

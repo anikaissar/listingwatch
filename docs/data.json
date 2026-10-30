@@ -69,7 +69,7 @@
       "doc_id": "BA-SMA-BN-100__BBCGGBWPMDTQXTFB",
       "platform": "flipkart",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BA-SMA-BN-100",
       "platform_id": "BBCGGBWPMDTQXTFB",
       "fsn": "BBCGGBWPMDTQXTFB",
@@ -84,7 +84,7 @@
       "d2c_title": "Balamool Nimbuka Summer Baby Massage Maahu",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T11:22:12.029Z"
     },
     {
       "doc_id": "BC-BU-MR2-080__BWSGKJF8TC9HVANV",

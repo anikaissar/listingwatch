@@ -17331,7 +17331,7 @@
       "doc_id": "HR-CN-TR-150__myntra__30348838",
       "platform": "myntra",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "HR-CN-TR-150",
       "platform_id": "30348838",
       "fsn": "",
@@ -17346,7 +17346,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T10:16:58.927Z"
     },
     {
       "doc_id": "HR-HE-RA3-250__myntra__22185994",

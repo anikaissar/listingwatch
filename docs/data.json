@@ -14055,7 +14055,7 @@
       "doc_id": "BC-CP-JO-050__myntra__31622843",
       "platform": "myntra",
       "priority": "P4",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BC-CP-JO-050",
       "platform_id": "31622843",
       "fsn": "",
@@ -14070,7 +14070,7 @@
       "d2c_title": "Pure Cold Pressed Jojoba Oil",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:32:56.885Z"
     },
     {
       "doc_id": "BC-CP-VC-100__myntra__20191188",

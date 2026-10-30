@@ -13635,7 +13635,7 @@
       "doc_id": "HR-NM-MR2-040__myntra__20077860",
       "platform": "myntra",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "HR-NM-MR2-040",
       "platform_id": "20077860",
       "fsn": "",
@@ -13650,7 +13650,7 @@
       "d2c_title": "8Herbs Hair Revital HairMask for Men-Hairfall &amp; Anti-Greying",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:25:28.206Z"
     },
     {
       "doc_id": "HR-NM-MR3-040__myntra__20077846",

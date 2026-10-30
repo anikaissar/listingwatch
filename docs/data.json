@@ -9792,7 +9792,7 @@
       "doc_id": "HR-HB-AG-025__nykaa__6546336",
       "platform": "nykaa",
       "priority": "P4",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "HR-HB-AG-025",
       "platform_id": "6546336",
       "fsn": "",
@@ -9807,7 +9807,7 @@
       "d2c_title": "Argan Grapeseed PostWash HairBalm",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:31:56.420Z"
     },
     {
       "doc_id": "HR-HB-AM-025__nykaa__6884509",

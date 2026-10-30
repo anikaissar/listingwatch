@@ -8826,7 +8826,7 @@
       "doc_id": "AC-SDL-LO2-00__nykaa__7307766",
       "platform": "nykaa",
       "priority": "P4",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "AC-SDL-LO2-00",
       "platform_id": "7307766",
       "fsn": "",
@@ -8841,7 +8841,7 @@
       "d2c_title": "Sun Dried Loofah - Twin Pack",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:31:46.612Z"
     },
     {
       "doc_id": "BA-BP-RHSC-150__nykaa__12424325",

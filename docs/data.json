@@ -1665,7 +1665,7 @@
       "doc_id": "BA-BU-MN2-080__FCPHF5HFGTHTFZQX",
       "platform": "flipkart",
       "priority": "P2",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BA-BU-MN2-080",
       "platform_id": "FCPHF5HFGTHTFZQX",
       "fsn": "FCPHF5HFGTHTFZQX",
@@ -1680,7 +1680,7 @@
       "d2c_title": "Fresh Baby Daily Ubtan - Milk &amp; Nut",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T11:31:29.888Z"
     },
     {
       "doc_id": "BC-BU-MR-080__BWSGGFGNTWFXJRTC",

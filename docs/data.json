@@ -2694,7 +2694,7 @@
       "doc_id": "SL-GR-NM2-050__HCOGN35AWSSHWE46",
       "platform": "flipkart",
       "priority": "P3",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "SL-GR-NM2-050",
       "platform_id": "HCOGN35AWSSHWE46",
       "fsn": "HCOGN35AWSSHWE46",
@@ -2709,7 +2709,7 @@
       "d2c_title": "Neem Mauj Gulaal Raas",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T10:00:42.414Z"
     },
     {
       "doc_id": "SL-GR-NMJJMCGP-050__HCOGY2K7GZ68KMEC",

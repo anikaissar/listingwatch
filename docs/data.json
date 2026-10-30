@@ -1623,7 +1623,7 @@
       "doc_id": "BA-BU-GG-080__BWSGKY5QM9PXZVRW",
       "platform": "flipkart",
       "priority": "P2",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BA-BU-GG-080",
       "platform_id": "BWSGKY5QM9PXZVRW",
       "fsn": "BWSGKY5QM9PXZVRW",
@@ -1638,7 +1638,7 @@
       "d2c_title": "Fresh Baby Daily Ubtan - Grain &amp; Gram",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T11:31:23.071Z"
     },
     {
       "doc_id": "BA-BU-MN-080__BWSGKF93UEK4XZ3G",

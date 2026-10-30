@@ -12648,7 +12648,7 @@
       "doc_id": "FC-DU-DR2-040__myntra__20188412",
       "platform": "myntra",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-DU-DR2-040",
       "platform_id": "20188412",
       "fsn": "",
@@ -12663,7 +12663,7 @@
       "d2c_title": "Delicate Rose Brightening Ubtan Face Pack",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:14:15.812Z"
     },
     {
       "doc_id": "FC-DU-SO-040__myntra__32937098",

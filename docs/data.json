@@ -1833,7 +1833,7 @@
       "doc_id": "BC-EO-SO-015__BEOGGCX2VHHNRHRE",
       "platform": "flipkart",
       "priority": "P2",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BC-EO-SO-015",
       "platform_id": "BEOGGCX2VHHNRHRE",
       "fsn": "BEOGGCX2VHHNRHRE",
@@ -1848,7 +1848,7 @@
       "d2c_title": "Pure Sweet Orange Essential Oil",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T11:31:56.180Z"
     },
     {
       "doc_id": "BC-SM-CID2-120__MSCGKXCGWYUDKG9T",

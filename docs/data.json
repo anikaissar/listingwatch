@@ -2022,7 +2022,7 @@
       "doc_id": "FC-CM-CNM-030__KMTH9PMWRE5VBTZE",
       "platform": "flipkart",
       "priority": "P2",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-CM-CNM-030",
       "platform_id": "KMTH9PMWRE5VBTZE",
       "fsn": "KMTH9PMWRE5VBTZE",
@@ -2037,7 +2037,7 @@
       "d2c_title": "Classical Nalpamaradi Mukhalaya Face Oil",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T11:32:26.017Z"
     },
     {
       "doc_id": "FC-DU-SO-040__FCWGEFZMMJD2AYNA",

@@ -13236,7 +13236,7 @@
       "doc_id": "FC-KL-OK2-040__myntra__22036202",
       "platform": "myntra",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-KL-OK2-040",
       "platform_id": "22036202",
       "fsn": "",
@@ -13251,7 +13251,7 @@
       "d2c_title": "Fresh Orange Kalonji Brightening Lepa Face Pack",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:20:20.752Z"
     },
     {
       "doc_id": "FC-KL-PBC-040__myntra__20470756",

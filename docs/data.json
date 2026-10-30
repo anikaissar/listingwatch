@@ -12333,7 +12333,7 @@
       "doc_id": "BA-BML-AD-200__myntra__32857901",
       "platform": "myntra",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BA-BML-AD-200",
       "platform_id": "32857901",
       "fsn": "",
@@ -12348,7 +12348,7 @@
       "d2c_title": "Almond &amp; Date Fresh Baby Malai Lotion",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:14:28.805Z"
     },
     {
       "doc_id": "BA-BU-CMA-080__myntra__22267422",

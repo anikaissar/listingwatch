@@ -1728,7 +1728,7 @@
       "doc_id": "BC-BU-NC3-080__BWSGGFGNNRKWNZ7U",
       "platform": "flipkart",
       "priority": "P2",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BC-BU-NC3-080",
       "platform_id": "BWSGGFGNNRKWNZ7U",
       "fsn": "BWSGGFGNNRKWNZ7U",
@@ -1743,7 +1743,7 @@
       "d2c_title": "Neem Cure Bath Ubtan",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T11:31:38.677Z"
     },
     {
       "doc_id": "BC-CPS-EO4-125__SOPHYRFNXNUCHFJW",

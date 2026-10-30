@@ -4773,7 +4773,7 @@
       "doc_id": "CB-CPS-OS2-125__SOPHYGBKWX3XPZW9",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "CB-CPS-OS2-125",
       "platform_id": "SOPHYGBKWX3XPZW9",
       "fsn": "SOPHYGBKWX3XPZW9",
@@ -4788,7 +4788,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T07:52:48.504Z"
     },
     {
       "doc_id": "CB-CPS-OT2-125__SOPHYKGBEM27SF5K",

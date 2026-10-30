@@ -1980,7 +1980,7 @@
       "doc_id": "CB-KNC-WTRA-02__CBKGTQ4CFTCPZRQY",
       "platform": "flipkart",
       "priority": "P2",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "CB-KNC-WTRA-02",
       "platform_id": "CBKGTQ4CFTCPZRQY",
       "fsn": "CBKGTQ4CFTCPZRQY",
@@ -1995,7 +1995,7 @@
       "d2c_title": "Wide Tooth Comb &amp; Henna Paste",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T11:32:19.255Z"
     },
     {
       "doc_id": "FC-AC-BT-050__MSCGVCTJ9QKPRF4W",

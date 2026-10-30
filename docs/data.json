@@ -13677,7 +13677,7 @@
       "doc_id": "HR-NM-NB-040__myntra__32943418",
       "platform": "myntra",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "HR-NM-NB-040",
       "platform_id": "32943418",
       "fsn": "",
@@ -13692,7 +13692,7 @@
       "d2c_title": "Neem &amp; Bhringraj Blend Hair Mask for Dandruff - Nat Habit",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T08:25:40.773Z"
     },
     {
       "doc_id": "HR-NM-NB2-040__myntra__20077850",

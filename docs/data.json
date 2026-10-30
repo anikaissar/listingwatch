@@ -1497,7 +1497,7 @@
       "doc_id": "LP-LM-BR-012__LPBGEY6DYY3TWGGN",
       "platform": "flipkart",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "LP-LM-BR-012",
       "platform_id": "LPBGEY6DYY3TWGGN",
       "fsn": "LPBGEY6DYY3TWGGN",
@@ -1512,7 +1512,7 @@
       "d2c_title": "Beetroot Rose Lip Mura",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-30T11:05:06.910Z"
     },
     {
       "doc_id": "LP-LM-BR-020__LPBGEY6E3JTMHT5U",

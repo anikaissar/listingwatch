@@ -16785,7 +16785,7 @@
       "doc_id": "FC-HG-OK-080__myntra__32906228",
       "platform": "myntra",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-HG-OK-080",
       "platform_id": "32906228",
       "fsn": "",
@@ -16800,7 +16800,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T06:47:27.147Z"
     },
     {
       "doc_id": "FC-HG-OV-080__myntra__32906227",

@@ -16827,7 +16827,7 @@
       "doc_id": "FC-HG-PA-080__myntra__32906223",
       "platform": "myntra",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-HG-PA-080",
       "platform_id": "32906223",
       "fsn": "",
@@ -16842,7 +16842,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T06:47:24.779Z"
     },
     {
       "doc_id": "FC-HG-RT-080__myntra__32906224",

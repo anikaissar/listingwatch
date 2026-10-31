@@ -3492,7 +3492,7 @@
       "doc_id": "SL-GR-GP2-050__HCOGN4YZ6MH35UHJ",
       "platform": "flipkart",
       "priority": "P4",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "SL-GR-GP2-050",
       "platform_id": "HCOGN4YZ6MH35UHJ",
       "fsn": "HCOGN4YZ6MH35UHJ",
@@ -3507,7 +3507,7 @@
       "d2c_title": "Gulaab-e-Preet Gulaal Raas",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T07:06:47.905Z"
     },
     {
       "doc_id": "SL-GR-MC2-050__HCOGN4F6URG6S7J5",

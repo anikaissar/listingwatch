@@ -17289,7 +17289,7 @@
       "doc_id": "HR-CB-HJSC-03__myntra__44514835",
       "platform": "myntra",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "HR-CB-HJSC-03",
       "platform_id": "44514835",
       "fsn": "",
@@ -17304,7 +17304,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T06:47:51.757Z"
     },
     {
       "doc_id": "HR-CB-RJSC-03__myntra__44518871",

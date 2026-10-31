@@ -14706,7 +14706,7 @@
       "doc_id": "BC-CPS-NLTB3-125__myntra__44808695",
       "platform": "myntra",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BC-CPS-NLTB3-125",
       "platform_id": "44808695",
       "fsn": "",
@@ -14721,7 +14721,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T06:48:49.220Z"
     },
     {
       "doc_id": "BC-EO-CI-015__myntra__20191792",

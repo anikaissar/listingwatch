@@ -2106,7 +2106,7 @@
       "doc_id": "FC-FW-RCGL2-100__FCWHYX58KMTHZEHK",
       "platform": "flipkart",
       "priority": "P2",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-FW-RCGL2-100",
       "platform_id": "FCWHYX58KMTHZEHK",
       "fsn": "FCWHYX58KMTHZEHK",
@@ -2121,7 +2121,7 @@
       "d2c_title": "Men’s Brightening &amp; Oil Balance Tikta Face Wash",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T07:04:36.673Z"
     },
     {
       "doc_id": "FC-HG-NT2-080__FCPGNY6VWHVXRWQF",

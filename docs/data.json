@@ -2190,7 +2190,7 @@
       "doc_id": "FC-HG-PA2-080__FCPGNY6VD79FYZJT",
       "platform": "flipkart",
       "priority": "P2",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-HG-PA2-080",
       "platform_id": "FCPGNY6VD79FYZJT",
       "fsn": "FCPGNY6VD79FYZJT",
@@ -2205,7 +2205,7 @@
       "d2c_title": "Pure Aloe Vera Gel",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T07:04:28.900Z"
     },
     {
       "doc_id": "FC-HG-RT2-080__FCPGNY6V6A4KYZHZ",

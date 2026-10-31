@@ -16176,7 +16176,7 @@
       "doc_id": "CB-LP-BRBC-02__myntra__31402744",
       "platform": "myntra",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "CB-LP-BRBC-02",
       "platform_id": "31402744",
       "fsn": "",
@@ -16191,7 +16191,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T06:48:46.596Z"
     },
     {
       "doc_id": "CB-LP-SCPR-02__myntra__31402746",

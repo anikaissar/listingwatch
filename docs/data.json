@@ -15987,7 +15987,7 @@
       "doc_id": "CB-KNC-SSL-02__myntra__29552338",
       "platform": "myntra",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "CB-KNC-SSL-02",
       "platform_id": "29552338",
       "fsn": "",
@@ -16002,7 +16002,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T06:49:09.130Z"
     },
     {
       "doc_id": "CB-KNC-SSS-02__myntra__29552340",

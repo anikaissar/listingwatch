@@ -2274,7 +2274,7 @@
       "doc_id": "HR-MJ-RM-200__HSMG9K2PVZEZ6UVB",
       "platform": "flipkart",
       "priority": "P2",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "HR-MJ-RM-200",
       "platform_id": "HSMG9K2PVZEZ6UVB",
       "fsn": "HSMG9K2PVZEZ6UVB",
@@ -2289,7 +2289,7 @@
       "d2c_title": "Rosemary Conditioning Methi Jal",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T07:04:54.211Z"
     },
     {
       "doc_id": "HR-SH-HB-250__HTTH2HEZBCZF5DG5",

@@ -2337,7 +2337,7 @@
       "doc_id": "SL-GR-JJMC050__HCOGYPYDFEMQGFQ6",
       "platform": "flipkart",
       "priority": "P2",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "SL-GR-JJMC050",
       "platform_id": "HCOGYPYDFEMQGFQ6",
       "fsn": "HCOGYPYDFEMQGFQ6",
@@ -2352,7 +2352,7 @@
       "d2c_title": "Jamuni &amp; Marigold Gulaal Raas",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T07:05:10.843Z"
     },
     {
       "doc_id": "SL-GR-JJNM050__HCOGYQYDYZY79JYK",

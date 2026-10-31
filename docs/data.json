@@ -2316,7 +2316,7 @@
       "doc_id": "HR-SHO-CS-200__HOLGHTZZFNCHJNHM",
       "platform": "flipkart",
       "priority": "P2",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "HR-SHO-CS-200",
       "platform_id": "HOLGHTZZFNCHJNHM",
       "fsn": "HOLGHTZZFNCHJNHM",
@@ -2331,7 +2331,7 @@
       "d2c_title": "Anti-Greys DASABUTI Summer Hair Oil",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T07:04:58.126Z"
     },
     {
       "doc_id": "SL-GR-JJMC050__HCOGYPYDFEMQGFQ6",

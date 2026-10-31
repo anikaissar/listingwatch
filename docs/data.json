@@ -14433,7 +14433,7 @@
       "doc_id": "AC-KNC-FTP2-00__myntra__25224064",
       "platform": "myntra",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "AC-KNC-FTP2-00",
       "platform_id": "25224064",
       "fsn": "",
@@ -14448,7 +14448,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T06:47:48.725Z"
     },
     {
       "doc_id": "AC-SDL-LO3-00__myntra__22625476",

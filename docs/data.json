@@ -14496,7 +14496,7 @@
       "doc_id": "BA-BM-AD-120__myntra__36938665",
       "platform": "myntra",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BA-BM-AD-120",
       "platform_id": "36938665",
       "fsn": "",
@@ -14511,7 +14511,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T06:48:30.657Z"
     },
     {
       "doc_id": "BA-BM-AD2-120__myntra__36938667",

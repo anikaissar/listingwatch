@@ -2148,7 +2148,7 @@
       "doc_id": "FC-HG-OK2-080__FCPGNY6WEDPEKHMH",
       "platform": "flipkart",
       "priority": "P2",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-HG-OK2-080",
       "platform_id": "FCPGNY6WEDPEKHMH",
       "fsn": "FCPGNY6WEDPEKHMH",
@@ -2163,7 +2163,7 @@
       "d2c_title": "Fresh Orange Kiwi Vit-C Gel Face Pack",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T07:04:41.439Z"
     },
     {
       "doc_id": "FC-HG-OV2-080__FCPGNY6WKQFUY5BW",

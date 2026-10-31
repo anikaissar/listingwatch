@@ -17268,7 +17268,7 @@
       "doc_id": "HR-AHO-OA-200__myntra__20186052",
       "platform": "myntra",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "HR-AHO-OA-200",
       "platform_id": "20186052",
       "fsn": "",
@@ -17283,7 +17283,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T06:47:46.075Z"
     },
     {
       "doc_id": "HR-CB-HJSC-03__myntra__44514835",

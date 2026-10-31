@@ -2358,7 +2358,7 @@
       "doc_id": "SL-GR-JJNM050__HCOGYQYDYZY79JYK",
       "platform": "flipkart",
       "priority": "P2",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "SL-GR-JJNM050",
       "platform_id": "HCOGYQYDYZY79JYK",
       "fsn": "HCOGYQYDYZY79JYK",
@@ -2373,7 +2373,7 @@
       "d2c_title": "Jamuni &amp; Neem Gulaal Raas",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T07:05:15.162Z"
     },
     {
       "doc_id": "SL-GR-MCN2-200__HCOGN358RRSCWUDH",

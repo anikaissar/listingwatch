@@ -2169,7 +2169,7 @@
       "doc_id": "FC-HG-OV2-080__FCPGNY6WKQFUY5BW",
       "platform": "flipkart",
       "priority": "P2",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-HG-OV2-080",
       "platform_id": "FCPGNY6WKQFUY5BW",
       "fsn": "FCPGNY6WKQFUY5BW",
@@ -2184,7 +2184,7 @@
       "d2c_title": "Fresh Olive Vit-E Night Gel Face Pack",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T07:04:45.849Z"
     },
     {
       "doc_id": "FC-HG-PA2-080__FCPGNY6VD79FYZJT",

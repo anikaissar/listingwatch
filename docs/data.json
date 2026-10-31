@@ -489,7 +489,7 @@
       "doc_id": "FC-EM-NML3-025__SCBGR2G3GKZCAYDV",
       "platform": "flipkart",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-EM-NML3-025",
       "platform_id": "SCBGR2G3GKZCAYDV",
       "fsn": "SCBGR2G3GKZCAYDV",
@@ -504,7 +504,7 @@
       "d2c_title": "Neem-Marigold-Laung Exfoliating Mura",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T06:40:27.759Z"
     },
     {
       "doc_id": "FC-HG-PA2-080__MSCHCGTQMVC9M65G",

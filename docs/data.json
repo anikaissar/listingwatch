@@ -195,7 +195,7 @@
       "doc_id": "BC-MA-GM-200__MSOGGUHMBMWGECD3",
       "platform": "flipkart",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BC-MA-GM-200",
       "platform_id": "MSOGGUHMBMWGECD3",
       "fsn": "MSOGGUHMBMWGECD3",
@@ -210,7 +210,7 @@
       "d2c_title": "Pure Ginger Maricha Maahu",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T06:41:55.981Z"
     },
     {
       "doc_id": "BC-MA-TA-100__MSOGGUHMHJM8RMKU",

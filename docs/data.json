@@ -1077,7 +1077,7 @@
       "doc_id": "HR-NM-NB3-040__HTTG9KG4SWREPW58",
       "platform": "flipkart",
       "priority": "P1",
-      "status": "Open",
+      "status": "Resolved",
       "nh_sku": "HR-NM-NB3-040",
       "platform_id": "HTTG9KG4SWREPW58",
       "fsn": "HTTG9KG4SWREPW58",
@@ -1092,7 +1092,7 @@
       "d2c_title": "Neem &amp; Bhringraj Blend Hair Mask for Dandruff - Nat Habit",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T06:51:23.714Z"
     },
     {
       "doc_id": "HR-NM-TL-040__HTTG9K66B8JZFCB7",

@@ -14559,7 +14559,7 @@
       "doc_id": "BA-BM-TC2-120__myntra__36938668",
       "platform": "myntra",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BA-BM-TC2-120",
       "platform_id": "36938668",
       "fsn": "",
@@ -14574,7 +14574,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T06:49:47.471Z"
     },
     {
       "doc_id": "BA-WMA-BS-100__myntra__21304872",

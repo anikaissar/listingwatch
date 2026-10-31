@@ -14580,7 +14580,7 @@
       "doc_id": "BA-WMA-BS-100__myntra__21304872",
       "platform": "myntra",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BA-WMA-BS-100",
       "platform_id": "21304872",
       "fsn": "",
@@ -14595,7 +14595,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T06:49:33.129Z"
     },
     {
       "doc_id": "BC-BU-MN-080__myntra__20188914",

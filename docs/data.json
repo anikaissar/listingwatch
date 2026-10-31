@@ -1224,7 +1224,7 @@
       "doc_id": "HR-SH-TR-650__SMPHG56ZTWSXTGG4",
       "platform": "flipkart",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "HR-SH-TR-650",
       "platform_id": "SMPHG56ZTWSXTGG4",
       "fsn": "SMPHG56ZTWSXTGG4",
@@ -1239,7 +1239,7 @@
       "d2c_title": "Anti-HairFall Tri-Leaf Rosemary Navdha Shampoo",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T06:53:24.210Z"
     },
     {
       "doc_id": "HR-SHO-NB-100__HOLGHTNAG5GSTZU4",

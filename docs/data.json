@@ -2946,7 +2946,7 @@
       "doc_id": "BC-CPS-NLTB2-125__SOPHEGZDGUBHENGH",
       "platform": "flipkart",
       "priority": "P4",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BC-CPS-NLTB2-125",
       "platform_id": "SOPHEGZDGUBHENGH",
       "fsn": "SOPHEGZDGUBHENGH",
@@ -2961,7 +2961,7 @@
       "d2c_title": "Cold Processed Tomato Basil AHA-BHA Moisturising Soap",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T07:06:24.196Z"
     },
     {
       "doc_id": "BC-CPS-WA2-125__SOPGAC56VUMCFKKF",

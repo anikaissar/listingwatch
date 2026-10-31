@@ -2253,7 +2253,7 @@
       "doc_id": "HR-HE-RT2-060__HNAGXAPN2VKNVBJS",
       "platform": "flipkart",
       "priority": "P2",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "HR-HE-RT2-060",
       "platform_id": "HNAGXAPN2VKNVBJS",
       "fsn": "HNAGXAPN2VKNVBJS",
@@ -2268,7 +2268,7 @@
       "d2c_title": "Ready-to-Apply Fresh Herbal Henna RootTouch-Up Paste",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T07:04:49.565Z"
     },
     {
       "doc_id": "HR-MJ-RM-200__HSMG9K2PVZEZ6UVB",

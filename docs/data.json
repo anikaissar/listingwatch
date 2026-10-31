@@ -1203,7 +1203,7 @@
       "doc_id": "HR-SH-HBHB-02__CBKH3FP4J4VHQBST",
       "platform": "flipkart",
       "priority": "P1",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "HR-SH-HBHB-02",
       "platform_id": "CBKH3FP4J4VHQBST",
       "fsn": "CBKH3FP4J4VHQBST",
@@ -1218,7 +1218,7 @@
       "d2c_title": "Hibiscus Navdha Shampoo &amp; Nutri-Conditioner",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T06:56:16.540Z"
     },
     {
       "doc_id": "HR-SH-TR-650__SMPHG56ZTWSXTGG4",

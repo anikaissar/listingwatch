@@ -17037,7 +17037,7 @@
       "doc_id": "FT-FS-LU4-050__myntra__21929532",
       "platform": "myntra",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FT-FS-LU4-050",
       "platform_id": "21929532",
       "fsn": "",
@@ -17052,7 +17052,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T06:49:44.767Z"
     },
     {
       "doc_id": "FT-PFU-3P-040__myntra__20189232",

@@ -16281,7 +16281,7 @@
       "doc_id": "FC-CM-CEM-030__myntra__31678053",
       "platform": "myntra",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-CM-CEM-030",
       "platform_id": "31678053",
       "fsn": "",
@@ -16296,7 +16296,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T06:49:30.563Z"
     },
     {
       "doc_id": "FC-CWDM-BT-050__myntra__44375698",

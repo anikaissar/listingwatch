@@ -14769,7 +14769,7 @@
       "doc_id": "BC-HM-CBB-030__myntra__21968004",
       "platform": "myntra",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "BC-HM-CBB-030",
       "platform_id": "21968004",
       "fsn": "",
@@ -14784,7 +14784,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T06:48:58.739Z"
     },
     {
       "doc_id": "BC-MA-FA-100__myntra__20190532",

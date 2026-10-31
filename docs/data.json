@@ -2379,7 +2379,7 @@
       "doc_id": "SL-GR-MCN2-200__HCOGN358RRSCWUDH",
       "platform": "flipkart",
       "priority": "P2",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "SL-GR-MCN2-200",
       "platform_id": "HCOGN358RRSCWUDH",
       "fsn": "HCOGN358RRSCWUDH",
@@ -2394,7 +2394,7 @@
       "d2c_title": "Neem &amp; Marigold Gulaal Raas",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T07:05:20.189Z"
     },
     {
       "doc_id": "BC-SM-CID-200__MSCGNQH7AHRBMAWA",

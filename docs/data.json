@@ -15819,7 +15819,7 @@
       "doc_id": "CB-KNC-BPDT-03__myntra__29552344",
       "platform": "myntra",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "CB-KNC-BPDT-03",
       "platform_id": "29552344",
       "fsn": "",
@@ -15834,7 +15834,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T06:47:38.070Z"
     },
     {
       "doc_id": "CB-KNC-DARH-02__myntra__29656248",

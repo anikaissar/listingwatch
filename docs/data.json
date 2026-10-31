@@ -15084,7 +15084,7 @@
       "doc_id": "CB-BA-BNBM-02__myntra__20188638",
       "platform": "myntra",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "CB-BA-BNBM-02",
       "platform_id": "20188638",
       "fsn": "",
@@ -15099,7 +15099,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T06:50:02.928Z"
     },
     {
       "doc_id": "CB-BA-BSBM-02__myntra__21304874",

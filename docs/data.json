@@ -3513,7 +3513,7 @@
       "doc_id": "SL-GR-MC2-050__HCOGN4F6URG6S7J5",
       "platform": "flipkart",
       "priority": "P4",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "SL-GR-MC2-050",
       "platform_id": "HCOGN4F6URG6S7J5",
       "fsn": "HCOGN4F6URG6S7J5",
@@ -3528,7 +3528,7 @@
       "d2c_title": "Marigold Chhalak Gulaal Raas",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T07:06:52.594Z"
     },
     {
       "doc_id": "AC-KNC-WT2-002__HCBGVGBU4A26MWPS",

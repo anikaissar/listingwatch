@@ -16029,7 +16029,7 @@
       "doc_id": "CB-KNC-WHBN-03__myntra__22554256",
       "platform": "myntra",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "CB-KNC-WHBN-03",
       "platform_id": "22554256",
       "fsn": "",
@@ -16044,7 +16044,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T06:49:11.812Z"
     },
     {
       "doc_id": "CB-KNC-WNBN-03__myntra__22554270",

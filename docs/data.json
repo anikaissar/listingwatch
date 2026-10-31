@@ -2295,7 +2295,7 @@
       "doc_id": "HR-SH-HB-250__HTTH2HEZBCZF5DG5",
       "platform": "flipkart",
       "priority": "P2",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "HR-SH-HB-250",
       "platform_id": "HTTH2HEZBCZF5DG5",
       "fsn": "HTTH2HEZBCZF5DG5",
@@ -2310,7 +2310,7 @@
       "d2c_title": "Five Oil Hibiscus Repair Navdha Shampoo",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T07:04:24.204Z"
     },
     {
       "doc_id": "HR-SHO-CS-200__HOLGHTZZFNCHJNHM",

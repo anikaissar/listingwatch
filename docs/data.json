@@ -1014,7 +1014,7 @@
       "doc_id": "HR-NM-MR3-040__HTTG9KG4WK3RYYZR",
       "platform": "flipkart",
       "priority": "P1",
-      "status": "Open",
+      "status": "Resolved",
       "nh_sku": "HR-NM-MR3-040",
       "platform_id": "HTTG9KG4WK3RYYZR",
       "fsn": "HTTG9KG4WK3RYYZR",
@@ -1029,7 +1029,7 @@
       "d2c_title": "8Herbs Hair Revital HairMask for Men-Hairfall &amp; Anti-Greying",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T06:46:01.243Z"
     },
     {
       "doc_id": "HR-NM-NB-040__HTTG9K48GGPB2TUY",

@@ -15273,7 +15273,7 @@
       "doc_id": "CB-CPS-NC2-125__myntra__22610510",
       "platform": "myntra",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "CB-CPS-NC2-125",
       "platform_id": "22610510",
       "fsn": "",
@@ -15288,7 +15288,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-10-31T06:48:41.119Z"
     },
     {
       "doc_id": "CB-CPS-NS2-125__myntra__22615802",

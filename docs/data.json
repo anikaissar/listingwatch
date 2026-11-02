@@ -594,7 +594,7 @@
       "doc_id": "HR-CN-AP-150__CNDH3YHS5GQJEMJA",
       "platform": "flipkart",
       "priority": "P1",
-      "status": "Open",
+      "status": "Resolved",
       "nh_sku": "HR-CN-AP-150",
       "platform_id": "CNDH3YHS5GQJEMJA",
       "fsn": "CNDH3YHS5GQJEMJA",
@@ -609,7 +609,7 @@
       "d2c_title": "Aloe Hydra Lock Nutri-Conditioner",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-11-02T06:15:57.457Z"
     },
     {
       "doc_id": "HR-CN-CB-150__CNDH3YHSEMT5MAVH",

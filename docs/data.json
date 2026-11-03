@@ -7419,7 +7419,7 @@
       "doc_id": "HR-HE-RA3-250__MEHGV3XZPKGXKHVF",
       "platform": "flipkart",
       "priority": "P5",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "HR-HE-RA3-250",
       "platform_id": "MEHGV3XZPKGXKHVF",
       "fsn": "MEHGV3XZPKGXKHVF",
@@ -7434,7 +7434,7 @@
       "d2c_title": "",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-11-03T06:43:11.523Z"
     },
     {
       "doc_id": "HR-HE-RA3-250__HNAGK2BMDZVKCYJ2",

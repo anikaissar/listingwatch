@@ -8805,7 +8805,7 @@
       "doc_id": "FC-HHDM-TV-050__nykaa__25679202",
       "platform": "nykaa",
       "priority": "P3",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-HHDM-TV-050",
       "platform_id": "25679202",
       "fsn": "",
@@ -8820,7 +8820,7 @@
       "d2c_title": "48HR Malai Moisturiser - 20-35Yrs - Hot Humid Weather",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-11-12T10:35:52.817Z"
     },
     {
       "doc_id": "AC-SDL-LO2-00__nykaa__7307766",

@@ -8784,7 +8784,7 @@
       "doc_id": "FC-HHDM-GAT-030__nykaa__9412173",
       "platform": "nykaa",
       "priority": "P3",
-      "status": "Open",
+      "status": "Not an Issue",
       "nh_sku": "FC-HHDM-GAT-030",
       "platform_id": "9412173",
       "fsn": "",
@@ -8799,7 +8799,7 @@
       "d2c_title": "48HR Malai Moisturiser - 13-19Yrs - Hot Humid Weather",
       "reminders_sent": 5,
       "last_reminder_cycle": 5,
-      "status_changed_at": null
+      "status_changed_at": "2026-11-12T10:35:49.396Z"
     },
     {
       "doc_id": "FC-HHDM-TV-050__nykaa__25679202",

@@ -196,6 +196,7 @@ import datetime
 import json
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 PIPELINE_DIR = Path(__file__).resolve().parent
@@ -205,6 +206,26 @@ from build_kam_review import (  # noqa: E402
     classify, classify_nykaa, classify_myntra, classify_amazon, load_diff_rows,
     DIFF_COLS_TYPES, NYKAA_DIFF_COLS_TYPES, MYNTRA_DIFF_COLS_TYPES, AMAZON_DIFF_COLS_TYPES,
 )
+
+
+# Scrapers resume from their own output file: any (sku, id) already present in
+# observed_*_latest.csv is skipped ("already done N | to scrape 0"). That is
+# right for resuming a crashed run, but with nothing ever clearing those files
+# every later weekly run re-diffed the FIRST scrape forever (confirmed in the
+# run logs: "already done 639 | to scrape 0" week after week). So: before
+# scraping, delete any scraper output file that has not been written to for
+# STALE_AFTER_DAYS. A re-run within the same week still resumes; a run in a
+# new week starts fresh. (Added 2026-11-12, new-laptop setup.)
+STALE_AFTER_DAYS = 3
+
+
+def clear_stale_outputs(paths, max_age_days=STALE_AFTER_DAYS):
+    now = time.time()
+    for p in paths:
+        if p.exists() and (now - p.stat().st_mtime) > max_age_days * 86400:
+            age = (now - p.stat().st_mtime) / 86400
+            print(f"Clearing stale scraper output {p.name} (last written {age:.1f} days ago) so it is re-scraped.")
+            p.unlink()
 
 
 def run(cmd, cwd=None):
@@ -627,6 +648,16 @@ def main():
     amazon_diff_csv = pipeline_dir / "amazon_diff_latest.csv"
 
     if not args.skip_scrape:
+        stale = [d2c_csv, pipeline_dir / "nathabit_reference_failures.csv"]
+        if not args.skip_flipkart:
+            stale += [flipkart_csv, pipeline_dir / "observed_flipkart_v2_failures.csv"]
+        if not args.skip_nykaa:
+            stale += [nykaa_csv, nykaa_fail_csv]
+        if not args.skip_myntra:
+            stale += [myntra_csv, myntra_fail_csv]
+        if not args.skip_amazon:
+            stale += [amazon_csv, amazon_fail_csv]
+        clear_stale_outputs(stale)
         scrape_d2c(pipeline_dir, d2c_csv, limit=args.limit)
         if not args.skip_flipkart:
             scrape_flipkart(pipeline_dir, flipkart_csv, limit=args.limit)

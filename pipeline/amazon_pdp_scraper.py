@@ -107,6 +107,8 @@ OUT_COLS = [
     "obs_page_not_found", "scraped_at",
 ]
 
+MAX_FIELD_CHARS = 8000  # see the safety-net comment in extract()
+
 CONCURRENCY = 2  # kept low -- see the bot-check finding above; a lower
                  # concurrency + real delay between requests is the main
                  # lever available against a request-pacing-based check
@@ -130,7 +132,12 @@ def _strip_tags(html_fragment):
     "&lt;/br&gt;" appearing in rendered text, confirmed on B0BK1V96Z4), so a
     single htmllib.unescape() leaves visible junk behind; unescaping twice
     cleans that up harmlessly for normal single-escaped text too."""
-    text = re.sub(r"<[^>]+>", " ", html_fragment or "")
+    # Drop <script>/<style> CONTENT first -- stripping only the tags leaves
+    # the raw CSS/JS behind as "text" (seen 2026-11-13 once a captured block
+    # accidentally included Amazon's A+ content module).
+    text = re.sub(r"<(script|style)\b[^>]*>.*?</\1\s*>", " ", html_fragment or "",
+                  flags=re.DOTALL | re.IGNORECASE)
+    text = re.sub(r"<[^>]+>", " ", text)
     text = htmllib.unescape(htmllib.unescape(text))
     return _clean(text)
 
@@ -194,6 +201,39 @@ _LABEL_SPLIT_RE = re.compile(
 )
 
 
+_DIV_TOKEN_RE = re.compile(r"<div\b|</div\s*>", re.IGNORECASE)
+
+
+def _extract_div_block(html, marker):
+    """Inner HTML of the <div ...marker...> element, found by counting
+    <div> / </div> nesting until the element's OWN closing tag. Replaces the
+    old "everything up to the next <div id=btfSubNavDesktop>" regex: confirmed
+    2026-11-13 (real dumps B0B7NL9893, B09TFQ63ZK) that Amazon now puts other
+    sections (product description, the whole A+ content module with its
+    CSS/JS) between the Important-information block and btfSubNavDesktop, so
+    that regex swallowed ~45-55k characters of unrelated page into
+    "ingredients" / "storage" (shelf life) / the description. Returns None if
+    the marker isn't found or the element never closes."""
+    idx = html.find(marker)
+    if idx == -1:
+        return None
+    start = html.rfind("<div", 0, idx)
+    if start == -1:
+        return None
+    open_end = html.find(">", idx)
+    if open_end == -1:
+        return None
+    depth = 1
+    for m in _DIV_TOKEN_RE.finditer(html, open_end + 1):
+        if m.group(0).lower().startswith("</"):
+            depth -= 1
+            if depth == 0:
+                return html[open_end + 1:m.start()]
+        else:
+            depth += 1
+    return None
+
+
 def parse_important_information(html):
     """Returns {lowercase_label: text} for every recognized sub-section
     found inside the "Important information" block, worked out on the
@@ -205,17 +245,10 @@ def parse_important_information(html):
     either way. Returns {} if the block isn't present at all (lazy-loaded
     content that didn't render -- see the module docstring -- or a listing
     that genuinely has none of these, like a non-perishable item)."""
-    m = re.search(
-        r'<div id="important-information"(.*?)</div>\s*</div>\s*<div id="btfSubNavDesktop',
-        html, re.DOTALL,
-    )
-    if not m:
-        # Fall back to a looser bound in case the following sibling id ever
-        # changes -- stop at the next big section boundary instead.
-        m = re.search(r'<div id="important-information"(.*?)</div>\s*</div>\s*</div>', html, re.DOTALL)
-    if not m:
+    block = _extract_div_block(html, 'id="important-information"')
+    if block is None:
         return {}
-    plain = _strip_tags(m.group(1))
+    plain = _strip_tags(block)
     plain = re.sub(r"^\s*Important information\s*", "", plain, flags=re.I)
 
     matches = list(_LABEL_SPLIT_RE.finditer(plain))
@@ -352,6 +385,15 @@ def extract(html):
     shelf_life = sections.get("storage", "")
     description = _build_description_text(bullets, sections)
     price = parse_price(html)
+
+    # Safety net: no real description / ingredient list / storage note is
+    # anywhere near this long. If a parser ever over-captures again (as in
+    # the 2026-11-13 incident, which produced 20k-200k character fields and
+    # crashed the diff step's CSV reader), keep the run alive with bounded
+    # text rather than letting one odd page take the whole refresh down.
+    description = description[:MAX_FIELD_CHARS]
+    ingredients = ingredients[:MAX_FIELD_CHARS]
+    shelf_life = shelf_life[:MAX_FIELD_CHARS]
 
     pdp_availability = "unavailable" if availability == "unavailable" else "available"
 
@@ -602,6 +644,25 @@ FIXTURE_INSTOCK_WITH_MISLEADING_TEXT = """
 """
 
 
+# 2026-11-13 layout (real dumps B0B7NL9893 / B09TFQ63ZK): Important information
+# is now followed by OTHER sections -- product description and the A+ content
+# module, full of CSS/JS -- before btfSubNavDesktop. The old end-of-block regex
+# ran all the way to btfSubNavDesktop and swallowed all of it into
+# "ingredients" / "storage" / the description (~24k-chars fields).
+FIXTURE_IMPORTANT_INFO_FOLLOWED_BY_APLUS = """
+<html><head><title>Buy Nat Habit Neem Hair Oil Online</title></head>
+<body>
+<span id="productTitle" class="a-size-large product-title-word-break"> Nat Habit Neem Hair Oil </span>
+<div id="availability"><span class="a-size-medium a-color-success"> In stock </span></div>
+<div id="feature-bullets"><ul><li><span class="a-list-item"> About this item </span></li><li><span class="a-list-item"> HAIR OIL for growth </span></li></ul></div>
+<div id="importantInformation_feature_div"> <div id="important-information" class="a-section a-spacing-extra-large bucket"> <h2>Important information</h2> <div class="a-section content"> <h4>Safety Information:</h4> <p>Keep away from direct sunlight</p> </div> <div class="a-section content"> <h4>Ingredients:</h4> <p>neem, bhringraj, amla, coconut oil</p> </div> </div> </div>
+<div id="productDescription_feature_div"> <div> </div> </div>
+<div id="aplus"><style>.aplus-v2 .aplus-content-wrapper { position: relative; overflow: hidden; }</style><script>function logShoppableMetrics(moduleName) { return 1; }</script><div class="aplus-v2"><p>Premium A+ marketing copy that must not end up in ingredients</p></div></div>
+<div id="btfSubNavDesktopCopy"></div>
+</body></html>
+"""
+
+
 def selftest():
     mask = extract(FIXTURE_MASK_WITH_STORAGE)
     assert mask["pdp_availability"] == "available", mask
@@ -652,6 +713,16 @@ def selftest():
     for label, rec in [("mask", mask), ("comb", comb), ("fallback", fallback), ("oos", oos), ("misleading", misleading)]:
         assert rec["obs_page_not_found"] is False, (label, rec)
     print("PASS  obs_page_not_found is False on every other fixture (no false positives)")
+
+    aplus = extract(FIXTURE_IMPORTANT_INFO_FOLLOWED_BY_APLUS)
+    assert aplus["obs_ingredients"] == "neem, bhringraj, amla, coconut oil", aplus
+    assert aplus["obs_shelf_life"] == "", aplus
+    assert "A+ marketing" not in aplus["obs_ingredients"] + aplus["obs_description_text"], aplus
+    assert "aplus-content-wrapper" not in aplus["obs_description_text"], aplus
+    assert aplus["obs_description_len"] < 200, aplus
+    print("PASS  Important information followed by A+ content/CSS/JS before "
+          "btfSubNavDesktop (the real 2026-11-13 layout) -- ingredients/shelf "
+          "life/description stay bounded to the block itself")
 
     print("\nAll parser self-tests passed.")
 
